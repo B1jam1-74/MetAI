@@ -133,15 +133,63 @@ On the STM32U545, the uplink payload is encoded as a compact binary frame carryi
 4. Predicted class index (unsigned 8-bit)  
 
 On **The Things Network (TTN)**, a JavaScript *Payload Formatter* (uplink codec) decodes this binary frame back into a structured JSON object:  
-{  
-  "device_id": "metai",  
-  "received_at": "2026-04-22T14:29:10.467Z",  
-  "temperature_deg_c": 25.84,  
-  "humidity_percent": 39.6,  
-  "pressure_hpa": 981,  
-  "predicted_class": 5,  
-  "prediction_fr": "Averses"  
-}  
+```javascript
+function decodeUplink(input) {
+  var classesFr = [
+    "Clair / ensoleille",
+    "Peu nuageux",
+    "Partiellement nuageux",
+    "Nuageux / couvert",
+    "Pluie",
+    "Averses",
+    "Neige",
+    "Neige legere / averses de neige",
+    "Pluie et neige melees",
+    "Orage",
+    "Brouillard / brume",
+    "Vent fort",
+    "Orage violent"
+  ];
+
+  var text = "";
+  for (var i = 0; i < input.bytes.length; i++) {
+    text += String.fromCharCode(input.bytes[i]);
+  }
+
+  var data = {};
+  var parts = text.split(",");
+
+  for (var j = 0; j < parts.length; j++) {
+    var kv = parts[j].split("=");
+    if (kv.length !== 2) continue;
+
+    var key = kv[0].trim();
+    var raw = kv[1].trim();
+
+    if (key === "C") {
+      var cls = parseInt(raw, 10);
+      if (!isNaN(cls)) {
+        data.predicted_class = cls;
+        data.prediction_fr =
+          (cls >= 0 && cls < classesFr.length) ? classesFr[cls] : "Classe inconnue";
+      }
+      continue;
+    }
+
+    var val = parseFloat(raw);
+    if (isNaN(val)) continue;
+
+    if (key === "P") data.pressure_hpa = val;
+    else if (key === "H") data.humidity_percent = val;
+    else if (key === "T") data.temperature_deg_c = val;
+    else data[key] = val;
+  }
+
+  return {
+    data: data
+  };
+}
+```
    
 ### **Node-RED Integration**  
 Once decoded by TTN, the data is forwarded to a **Node-RED** flow that performs an HTTP POST to a [Request Baskets](https://rbaskets.in/ "https://rbaskets.in/") endpoint. This makes the payload immediately inspectable from a browser, as shown in the screenshot below, and provides a convenient webhook URL that any downstream service can subscribe to.  
