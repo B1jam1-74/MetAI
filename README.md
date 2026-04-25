@@ -4,9 +4,22 @@
 
 <div align="justify">
 
+## **Summary**
+- [Introduction](#introduction)
+- [Part 1 - Hardware](#part-1-hardware)
+- [Part 2 - AI Models](#part-2-ai-models)
+- [Part 3 - LoRaWAN](#part-3-lorawan)
+- [Part 4 - Power Consumption](#part-4-power-consumption)
+- [Part 5 - Conclusion](#part-5-conclusion)
+- [Repository Structure](#repository-structure)
+- [Dependencies](#dependencies)
+
+
+<a id="introduction"></a>
 ## **Introduction**  
 MetAI is an embedded AI project that runs a weather prediction model directly on an ultra-low-power STM32U545 microcontroller. Using onboard sensors (temperature, humidity, pressure), the system infers the current weather condition locally — no cloud compute required — and transmits the result over LoRaWAN for remote monitoring. The project demonstrates that meaningful AI inference can coexist with strict energy budgets, making it relevant for battery-operated or energy-harvesting IoT nodes.  
 
+<a id="part-1-hardware"></a>
 ## **Part 1 — Hardware**  
 ### **STM32U545 — The Microcontroller**  
 The brain of the project is the **STM32U545**, a member of STMicroelectronics' ultra-low-power  **STM32U5** family. Key characteristics relevant to this project:  
@@ -48,6 +61,7 @@ Handles the LoRaWAN radio link (see Part 3).
 	<img src="Images/LoRa-E5.png" alt="LoRa-E5 module"  width="50%" />
 </p>
 
+<a id="part-2-ai-models"></a>
 ## **Part 2 — AI Models**  
 Both models were trained in Python (TensorFlow/Keras) on historical meteorological data sourced via [Meteostat](https://meteostat.net/ "https://meteostat.net/"), using a weather station near Le Bourget du Lac, France. They take three scalar inputs:  
 <table align="center">
@@ -95,6 +109,7 @@ The 12 predicted classes are:
 
 The firmware reads the argmax of the softmax output and encodes both the class index (predicted_class) and its French label (prediction_fr) into the LoRaWAN uplink payload.  
 
+<a id="part-3-lorawan"></a>
 ## **Part 3 — LoRaWAN**  
 
 ### **What is LoRaWAN?**  
@@ -128,6 +143,7 @@ Once decoded by TTN, the data is forwarded to a **Node-RED** flow that performs 
  
 **Note on the network side:** Routing, cloud dashboards, and persistent storage fall outside our electronics/embedded speciality, so we kept the network stack intentionally minimal. That said, since the full structured JSON is already being POSTed by Node-RED, plugging in a database (InfluxDB, TimescaleDB) or a dashboard (Grafana, Datacake) is straightforward and requires no firmware changes.  
 
+<a id="part-4-power-consumption"></a>
 ## **Part 4 — Power Consumption**  
 
 ### **Why It Matters for AI**  
@@ -148,11 +164,13 @@ Our system operates at **1.8 V** supply and draws approximately  **3 mA** in the
 $$P = V \times I = 1.8,\text{V} \times 3,\text{mA} = \mathbf{5.4,mW}$$  
 Between acquisitions, the MCU enters a low-power Stop mode, bringing average consumption well below the active peak.  
 
+<a id="part-5-conclusion"></a>
 ## **Part 5 — Conclusion**  
 This project was an introduction to on-device artificial intelligence in a constrained embedded context. Building and training the models highlighted how much representational power even a small dense network can have — the multi-class classifier reaches solid accuracy using only three sensor inputs. Deploying that model on a Cortex-M33 with a hardware neural accelerator, and watching it produce correct predictions at 5 mW, made the energy argument for edge AI very concrete.  
 At the same time, the project reinforced that **energy consumption is a first-class constraint** in embedded AI, not an afterthought. Every design choice — quantization, model depth, duty cycle, supply voltage — has a direct impact on battery life. Future work could explore INT8 quantization (vs the current float32 baseline) and adaptive duty cycling to extend autonomy further.  
 More broadly, the number of connected objects in our daily lives keeps growing — smartphones, cars, dishwashers, toothbrushes — and it seems inevitable that AI will progressively find its way into all of them. MetAI is a small but concrete glimpse of what that future could look like: intelligence running locally, efficiently, at the very edge of the network.
 
+<a id="repository-structure"></a>
 ## **Repository Structure**  
 MetAI/  
 ├── Notebooks/              # Jupyter notebooks — data prep, training, evaluation  
@@ -166,6 +184,7 @@ MetAI/
 ├── TTN/                    # TTN payload formatter (JavaScript)  
 └── docs/                   # Images and schematics  
    
+<a id="dependencies"></a>
 ## **Dependencies**  
 <table align="center">
 	<tr>
