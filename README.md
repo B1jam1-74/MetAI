@@ -27,7 +27,7 @@ The brain of the project is the **STM32U545**, a member of STMicroelectronics' u
 The U545's **Neural-ART Accelerator** is what makes on-device AI inference viable at milliwatt-level power: it offloads the multiply-accumulate operations of the neural network from the CPU, dramatically reducing inference time and energy per prediction.  
 
 <p align="center">
-	<img src="Images/U545.jpg" alt="STM32U545 board" />
+	<img src="Images/U545.jpg" alt="STM32U545 board"/>
 </p>
 
 ### **Extension Board**  
@@ -38,14 +38,14 @@ The U545 board is connected to an IKS01A3 extension board. It carries all kind o
 The three inputs fed to the AI model.  
 
 <p align="center">
-	<img src="Images/IKS01A3.png" alt="IKS01A3 extension board" />
+	<img src="Images/IKS01A3.png" alt="IKS01A3 extension board"  width="50%" />
 </p>
 
 ### **LoRa-E5 module** 
 Handles the LoRaWAN radio link (see Part 3). 
 
 <p align="center">
-	<img src="Images/LoRa-E5.png" alt="LoRa-E5 module" />
+	<img src="Images/LoRa-E5.png" alt="LoRa-E5 module"  width="50%" />
 </p>
 
 ## **Part 2 — AI Models**  
