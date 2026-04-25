@@ -1,9 +1,9 @@
-# **🌦️ MeteAI — Embedded Weather Prediction with AI on STM32U545**  
+# **🌦️ MetAI — Embedded Weather Prediction with AI on STM32U545**  
 **Université Savoie Mont-Blanc** — Licence 3 ESET  
  *Maram Mezlini & Benjamin Avocat-Maulaz*  
 
 ## **Introduction**  
-MeteAI is an embedded AI project that runs a weather prediction model directly on an ultra-low-power STM32U545 microcontroller. Using onboard sensors (temperature, humidity, pressure), the system infers the current weather condition locally — no cloud compute required — and transmits the result over LoRaWAN for remote monitoring. The project demonstrates that meaningful AI inference can coexist with strict energy budgets, making it relevant for battery-operated or energy-harvesting IoT nodes.  
+MetAI is an embedded AI project that runs a weather prediction model directly on an ultra-low-power STM32U545 microcontroller. Using onboard sensors (temperature, humidity, pressure), the system infers the current weather condition locally — no cloud compute required — and transmits the result over LoRaWAN for remote monitoring. The project demonstrates that meaningful AI inference can coexist with strict energy budgets, making it relevant for battery-operated or energy-harvesting IoT nodes.  
 
 ## **Part 1 — Hardware**  
 ### **STM32U545 — The Microcontroller**  
@@ -22,14 +22,17 @@ The U545's **Neural-ART Accelerator** is what makes on-device AI inference viabl
 
 ### **Extension Board**  
 The U545 board is connected to an IKS01A3 extension board. It carries all kind of sensors such as :  
-- **temperature (°C)** — provides temperature (°C), relative humidity (%) and barometric pressure (hPa), the three inputs fed to the AI model.  
+- **temperature (°C)**
 - **relative humidity (%)**
 - **barometric pressure (hPa)**
+The three inputs fed to the AI model.  
 
 ![alt text](Images/IKS01A3.png)
 
 ### **LoRa-E5 module** 
 Handles the LoRaWAN radio link (see Part 3). 
+
+![alt text](Images/LoRa-E5.png)
 
 ## **Part 2 — AI Models**  
 Both models were trained in Python (TensorFlow/Keras) on historical meteorological data sourced via [Meteostat](https://meteostat.net/ "https://meteostat.net/"), using a weather station near Chambéry, France. They take three scalar inputs:  
@@ -107,7 +110,7 @@ STMicroelectronics' **X-NUCLEO-LPM01A** (Power Shield) is the reference tool for
 This project was an introduction to on-device artificial intelligence in a constrained embedded context. Building and training the models highlighted how much representational power even a small dense network can have — the multi-class classifier reaches solid accuracy using only three sensor inputs. Deploying that model on a Cortex-M33 with a hardware neural accelerator, and watching it produce correct predictions at 5 mW, made the energy argument for edge AI very concrete.  
 At the same time, the project reinforced that **energy consumption is a first-class constraint** in embedded AI, not an afterthought. Every design choice — quantization, model depth, duty cycle, supply voltage — has a direct impact on battery life. Future work could explore INT8 quantization (vs the current float32 baseline) and adaptive duty cycling to extend autonomy further.  
 ## **Repository Structure**  
-MeteAI/  
+MetAI/  
 ├── Notebooks/              # Jupyter notebooks — data prep, training, evaluation  
 │   ├── binary_rain_model.ipynb  
 │   └── multiclass_weather_model.ipynb  
