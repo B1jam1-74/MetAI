@@ -113,7 +113,7 @@ This model does not deliver the highest possible accuracy: predicting upcoming w
 A key improvement would be to include additional temporal features (for example, measurements from the previous hour) to increase predictive reliability. Due to project time constraints, we could not fully validate this approach and therefore kept the current model:
 
 <p align="center">
-	<img src="Images/model_overview.png" alt="Model overview" />
+	<img src="Images/model.png" alt="Model overview" />
 </p>
 
 <a id="part-3-lorawan"></a>
