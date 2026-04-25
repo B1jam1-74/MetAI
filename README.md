@@ -1,8 +1,10 @@
 # **🌦️ MeteAI — Embedded Weather Prediction with AI on STM32U545**  
-**Université Savoie Mont-Blanc** — Licence ESET  
+**Université Savoie Mont-Blanc** — Licence 3 ESET  
  *Maram Mezlini & Benjamin Avocat-Maulaz*  
+
 ## **Introduction**  
 MeteAI is an embedded AI project that runs a weather prediction model directly on an ultra-low-power STM32U545 microcontroller. Using onboard sensors (temperature, humidity, pressure), the system infers the current weather condition locally — no cloud compute required — and transmits the result over LoRaWAN for remote monitoring. The project demonstrates that meaningful AI inference can coexist with strict energy budgets, making it relevant for battery-operated or energy-harvesting IoT nodes.  
+
 ## **Part 1 — Hardware**  
 ### **STM32U545 — The Microcontroller**  
 The brain of the project is the **STM32U545**, a member of STMicroelectronics' ultra-low-power  **STM32U5** family. Key characteristics relevant to this project:  
@@ -17,11 +19,18 @@ The brain of the project is the **STM32U545**, a member of STMicroelectronics' u
 | Neural-ART Accelerator | Hardware MAC units for AI inference |   
 | Development board | NUCLEO-U545RE-Q |   
 The U545's **Neural-ART Accelerator** is what makes on-device AI inference viable at milliwatt-level power: it offloads the multiply-accumulate operations of the neural network from the CPU, dramatically reducing inference time and energy per prediction.  
+
 ### **Extension Board**  
-The extension board connects the NUCLEO to the outside world. It carries:  
-- **Environmental sensor** — provides temperature (°C), relative humidity (%) and barometric pressure (hPa), the three inputs fed to the AI model.  
-- **LoRa-E5 module** — handles the LoRaWAN radio link (see Part 3).  
-- **Power measurement headers** — break-out pads compatible with the STM32 LPM01A current probe (see Part 4).  
+The U545 board is connected to an IKS01A3 extension board. It carries all kind of sensors such as :  
+- **temperature (°C)** — provides temperature (°C), relative humidity (%) and barometric pressure (hPa), the three inputs fed to the AI model.  
+- **relative humidity (%)**
+- **barometric pressure (hPa)**
+
+![alt text](Images/IKS01A3.png)
+
+### **LoRa-E5 module** 
+Handles the LoRaWAN radio link (see Part 3). 
+
 ## **Part 2 — AI Models**  
 Both models were trained in Python (TensorFlow/Keras) on historical meteorological data sourced via [Meteostat](https://meteostat.net/ "https://meteostat.net/"), using a weather station near Chambéry, France. They take three scalar inputs:  
 | | |  
