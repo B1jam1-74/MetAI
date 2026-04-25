@@ -75,7 +75,7 @@ Both models were trained in Python (TensorFlow/Keras) on historical meteorologic
 </table>
 
 <p align="center">
-	<img src="image.png" alt="Model overview" />
+	<img src="Images/meteostat.png" alt="Model overview" />
 </p>
 
 ### **Model A — Binary Rain Classifier**  
@@ -108,6 +108,13 @@ The 12 predicted classes are:
 </table>
 
 The firmware reads the argmax of the softmax output and encodes both the class index (predicted_class) and its French label (prediction_fr) into the LoRaWAN uplink payload.  
+
+This model does not deliver the highest possible accuracy: predicting upcoming weather conditions from only three instantaneous meteorological measurements, without temporal context, is inherently challenging.
+A key improvement would be to include additional temporal features (for example, measurements from the previous hour) to increase predictive reliability. Due to project time constraints, we could not fully validate this approach and therefore kept the current model:
+
+<p align="center">
+	<img src="Images/model_overview.png" alt="Model overview" />
+</p>
 
 <a id="part-3-lorawan"></a>
 ## **Part 3 — LoRaWAN**  
