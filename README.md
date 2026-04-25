@@ -8,7 +8,7 @@ MetAI is an embedded AI project that runs a weather prediction model directly on
 ## **Part 1 — Hardware**  
 ### **STM32U545 — The Microcontroller**  
 The brain of the project is the **STM32U545**, a member of STMicroelectronics' ultra-low-power  **STM32U5** family. Key characteristics relevant to this project:  
-| | |  
+
 |-|-|  
 | **Feature** | **Value** |   
 | Core | Arm Cortex-M33, up to 160 MHz |   
@@ -18,7 +18,11 @@ The brain of the project is the **STM32U545**, a member of STMicroelectronics' u
 | Low-power modes | Stop 0/1/2/3, Standby, Shutdown |   
 | Neural-ART Accelerator | Hardware MAC units for AI inference |   
 | Development board | NUCLEO-U545RE-Q |   
+|-|-|  
+
 The U545's **Neural-ART Accelerator** is what makes on-device AI inference viable at milliwatt-level power: it offloads the multiply-accumulate operations of the neural network from the CPU, dramatically reducing inference time and energy per prediction.  
+
+![alt text](Images/U545.jpg)
 
 ### **Extension Board**  
 The U545 board is connected to an IKS01A3 extension board. It carries all kind of sensors such as :  
