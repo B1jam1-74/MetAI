@@ -1,0 +1,3281 @@
+ARM GAS  /tmp/cc2pEp1Z.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"network.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "X-CUBE-AI/App/network.c"
+  21              		.section	.text.network_configure_weights,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	network_configure_weights:
+  28              	.LVL0:
+  29              	.LFB5:
+   1:X-CUBE-AI/App/network.c **** /**
+   2:X-CUBE-AI/App/network.c ****   ******************************************************************************
+   3:X-CUBE-AI/App/network.c ****   * @file    network.c
+   4:X-CUBE-AI/App/network.c ****   * @author  AST Embedded Analytics Research Platform
+   5:X-CUBE-AI/App/network.c ****   * @date    2026-04-18T16:09:02+0200
+   6:X-CUBE-AI/App/network.c ****   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
+   7:X-CUBE-AI/App/network.c ****   ******************************************************************************
+   8:X-CUBE-AI/App/network.c ****   * @attention
+   9:X-CUBE-AI/App/network.c ****   *
+  10:X-CUBE-AI/App/network.c ****   * Copyright (c) 2026 STMicroelectronics.
+  11:X-CUBE-AI/App/network.c ****   * All rights reserved.
+  12:X-CUBE-AI/App/network.c ****   *
+  13:X-CUBE-AI/App/network.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:X-CUBE-AI/App/network.c ****   * in the root directory of this software component.
+  15:X-CUBE-AI/App/network.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:X-CUBE-AI/App/network.c ****   ******************************************************************************
+  17:X-CUBE-AI/App/network.c ****   */
+  18:X-CUBE-AI/App/network.c **** 
+  19:X-CUBE-AI/App/network.c **** 
+  20:X-CUBE-AI/App/network.c **** #include "network.h"
+  21:X-CUBE-AI/App/network.c **** #include "network_data.h"
+  22:X-CUBE-AI/App/network.c **** 
+  23:X-CUBE-AI/App/network.c **** #include "ai_platform.h"
+  24:X-CUBE-AI/App/network.c **** #include "ai_platform_interface.h"
+  25:X-CUBE-AI/App/network.c **** #include "ai_math_helpers.h"
+  26:X-CUBE-AI/App/network.c **** 
+  27:X-CUBE-AI/App/network.c **** #include "core_common.h"
+  28:X-CUBE-AI/App/network.c **** #include "core_convert.h"
+  29:X-CUBE-AI/App/network.c **** 
+ARM GAS  /tmp/cc2pEp1Z.s 			page 2
+
+
+  30:X-CUBE-AI/App/network.c **** #include "layers.h"
+  31:X-CUBE-AI/App/network.c **** 
+  32:X-CUBE-AI/App/network.c **** 
+  33:X-CUBE-AI/App/network.c **** 
+  34:X-CUBE-AI/App/network.c **** #undef AI_NET_OBJ_INSTANCE
+  35:X-CUBE-AI/App/network.c **** #define AI_NET_OBJ_INSTANCE g_network
+  36:X-CUBE-AI/App/network.c ****  
+  37:X-CUBE-AI/App/network.c **** #undef AI_NETWORK_MODEL_SIGNATURE
+  38:X-CUBE-AI/App/network.c **** #define AI_NETWORK_MODEL_SIGNATURE     "0x044e8f0aefb9c9dc7aab19bb346d26d2"
+  39:X-CUBE-AI/App/network.c **** 
+  40:X-CUBE-AI/App/network.c **** #ifndef AI_TOOLS_REVISION_ID
+  41:X-CUBE-AI/App/network.c **** #define AI_TOOLS_REVISION_ID     ""
+  42:X-CUBE-AI/App/network.c **** #endif
+  43:X-CUBE-AI/App/network.c **** 
+  44:X-CUBE-AI/App/network.c **** #undef AI_TOOLS_DATE_TIME
+  45:X-CUBE-AI/App/network.c **** #define AI_TOOLS_DATE_TIME   "2026-04-18T16:09:02+0200"
+  46:X-CUBE-AI/App/network.c **** 
+  47:X-CUBE-AI/App/network.c **** #undef AI_TOOLS_COMPILE_TIME
+  48:X-CUBE-AI/App/network.c **** #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
+  49:X-CUBE-AI/App/network.c **** 
+  50:X-CUBE-AI/App/network.c **** #undef AI_NETWORK_N_BATCHES
+  51:X-CUBE-AI/App/network.c **** #define AI_NETWORK_N_BATCHES         (1)
+  52:X-CUBE-AI/App/network.c **** 
+  53:X-CUBE-AI/App/network.c **** static ai_ptr g_network_activations_map[1] = AI_C_ARRAY_INIT;
+  54:X-CUBE-AI/App/network.c **** static ai_ptr g_network_weights_map[1] = AI_C_ARRAY_INIT;
+  55:X-CUBE-AI/App/network.c **** 
+  56:X-CUBE-AI/App/network.c **** 
+  57:X-CUBE-AI/App/network.c **** 
+  58:X-CUBE-AI/App/network.c **** /**  Array declarations section  **********************************************/
+  59:X-CUBE-AI/App/network.c **** /* Array#0 */
+  60:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  61:X-CUBE-AI/App/network.c ****   serving_default_keras_tensor_80_output_array, AI_ARRAY_FORMAT_FLOAT|AI_FMT_FLAG_IS_IO,
+  62:X-CUBE-AI/App/network.c ****   NULL, NULL, 3, AI_STATIC)
+  63:X-CUBE-AI/App/network.c **** 
+  64:X-CUBE-AI/App/network.c **** /* Array#1 */
+  65:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  66:X-CUBE-AI/App/network.c ****   gemm_0_output_array, AI_ARRAY_FORMAT_FLOAT,
+  67:X-CUBE-AI/App/network.c ****   NULL, NULL, 64, AI_STATIC)
+  68:X-CUBE-AI/App/network.c **** 
+  69:X-CUBE-AI/App/network.c **** /* Array#2 */
+  70:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  71:X-CUBE-AI/App/network.c ****   nl_0_nl_output_array, AI_ARRAY_FORMAT_FLOAT,
+  72:X-CUBE-AI/App/network.c ****   NULL, NULL, 64, AI_STATIC)
+  73:X-CUBE-AI/App/network.c **** 
+  74:X-CUBE-AI/App/network.c **** /* Array#3 */
+  75:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  76:X-CUBE-AI/App/network.c ****   gemm_1_output_array, AI_ARRAY_FORMAT_FLOAT,
+  77:X-CUBE-AI/App/network.c ****   NULL, NULL, 32, AI_STATIC)
+  78:X-CUBE-AI/App/network.c **** 
+  79:X-CUBE-AI/App/network.c **** /* Array#4 */
+  80:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  81:X-CUBE-AI/App/network.c ****   nl_1_nl_output_array, AI_ARRAY_FORMAT_FLOAT,
+  82:X-CUBE-AI/App/network.c ****   NULL, NULL, 32, AI_STATIC)
+  83:X-CUBE-AI/App/network.c **** 
+  84:X-CUBE-AI/App/network.c **** /* Array#5 */
+  85:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  86:X-CUBE-AI/App/network.c ****   gemm_2_output_array, AI_ARRAY_FORMAT_FLOAT,
+ARM GAS  /tmp/cc2pEp1Z.s 			page 3
+
+
+  87:X-CUBE-AI/App/network.c ****   NULL, NULL, 1, AI_STATIC)
+  88:X-CUBE-AI/App/network.c **** 
+  89:X-CUBE-AI/App/network.c **** /* Array#6 */
+  90:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  91:X-CUBE-AI/App/network.c ****   nl_3_output_array, AI_ARRAY_FORMAT_FLOAT|AI_FMT_FLAG_IS_IO,
+  92:X-CUBE-AI/App/network.c ****   NULL, NULL, 1, AI_STATIC)
+  93:X-CUBE-AI/App/network.c **** 
+  94:X-CUBE-AI/App/network.c **** /* Array#7 */
+  95:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+  96:X-CUBE-AI/App/network.c ****   gemm_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
+  97:X-CUBE-AI/App/network.c ****   NULL, NULL, 192, AI_STATIC)
+  98:X-CUBE-AI/App/network.c **** 
+  99:X-CUBE-AI/App/network.c **** /* Array#8 */
+ 100:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+ 101:X-CUBE-AI/App/network.c ****   gemm_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
+ 102:X-CUBE-AI/App/network.c ****   NULL, NULL, 64, AI_STATIC)
+ 103:X-CUBE-AI/App/network.c **** 
+ 104:X-CUBE-AI/App/network.c **** /* Array#9 */
+ 105:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+ 106:X-CUBE-AI/App/network.c ****   gemm_1_weights_array, AI_ARRAY_FORMAT_FLOAT,
+ 107:X-CUBE-AI/App/network.c ****   NULL, NULL, 2048, AI_STATIC)
+ 108:X-CUBE-AI/App/network.c **** 
+ 109:X-CUBE-AI/App/network.c **** /* Array#10 */
+ 110:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+ 111:X-CUBE-AI/App/network.c ****   gemm_1_bias_array, AI_ARRAY_FORMAT_FLOAT,
+ 112:X-CUBE-AI/App/network.c ****   NULL, NULL, 32, AI_STATIC)
+ 113:X-CUBE-AI/App/network.c **** 
+ 114:X-CUBE-AI/App/network.c **** /* Array#11 */
+ 115:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+ 116:X-CUBE-AI/App/network.c ****   gemm_2_weights_array, AI_ARRAY_FORMAT_FLOAT,
+ 117:X-CUBE-AI/App/network.c ****   NULL, NULL, 32, AI_STATIC)
+ 118:X-CUBE-AI/App/network.c **** 
+ 119:X-CUBE-AI/App/network.c **** /* Array#12 */
+ 120:X-CUBE-AI/App/network.c **** AI_ARRAY_OBJ_DECLARE(
+ 121:X-CUBE-AI/App/network.c ****   gemm_2_bias_array, AI_ARRAY_FORMAT_FLOAT,
+ 122:X-CUBE-AI/App/network.c ****   NULL, NULL, 1, AI_STATIC)
+ 123:X-CUBE-AI/App/network.c **** 
+ 124:X-CUBE-AI/App/network.c **** /**  Tensor declarations section  *********************************************/
+ 125:X-CUBE-AI/App/network.c **** /* Tensor #0 */
+ 126:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 127:X-CUBE-AI/App/network.c ****   gemm_0_bias, AI_STATIC,
+ 128:X-CUBE-AI/App/network.c ****   0, 0x0,
+ 129:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 64, 1, 1), AI_STRIDE_INIT(4, 4, 4, 256, 256),
+ 130:X-CUBE-AI/App/network.c ****   1, &gemm_0_bias_array, NULL)
+ 131:X-CUBE-AI/App/network.c **** 
+ 132:X-CUBE-AI/App/network.c **** /* Tensor #1 */
+ 133:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 134:X-CUBE-AI/App/network.c ****   gemm_0_output, AI_STATIC,
+ 135:X-CUBE-AI/App/network.c ****   1, 0x0,
+ 136:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 64, 1, 1), AI_STRIDE_INIT(4, 4, 4, 256, 256),
+ 137:X-CUBE-AI/App/network.c ****   1, &gemm_0_output_array, NULL)
+ 138:X-CUBE-AI/App/network.c **** 
+ 139:X-CUBE-AI/App/network.c **** /* Tensor #2 */
+ 140:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 141:X-CUBE-AI/App/network.c ****   gemm_0_weights, AI_STATIC,
+ 142:X-CUBE-AI/App/network.c ****   2, 0x0,
+ 143:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 3, 64, 1, 1), AI_STRIDE_INIT(4, 4, 12, 768, 768),
+ARM GAS  /tmp/cc2pEp1Z.s 			page 4
+
+
+ 144:X-CUBE-AI/App/network.c ****   1, &gemm_0_weights_array, NULL)
+ 145:X-CUBE-AI/App/network.c **** 
+ 146:X-CUBE-AI/App/network.c **** /* Tensor #3 */
+ 147:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 148:X-CUBE-AI/App/network.c ****   gemm_1_bias, AI_STATIC,
+ 149:X-CUBE-AI/App/network.c ****   3, 0x0,
+ 150:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 32, 1, 1), AI_STRIDE_INIT(4, 4, 4, 128, 128),
+ 151:X-CUBE-AI/App/network.c ****   1, &gemm_1_bias_array, NULL)
+ 152:X-CUBE-AI/App/network.c **** 
+ 153:X-CUBE-AI/App/network.c **** /* Tensor #4 */
+ 154:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 155:X-CUBE-AI/App/network.c ****   gemm_1_output, AI_STATIC,
+ 156:X-CUBE-AI/App/network.c ****   4, 0x0,
+ 157:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 32, 1, 1), AI_STRIDE_INIT(4, 4, 4, 128, 128),
+ 158:X-CUBE-AI/App/network.c ****   1, &gemm_1_output_array, NULL)
+ 159:X-CUBE-AI/App/network.c **** 
+ 160:X-CUBE-AI/App/network.c **** /* Tensor #5 */
+ 161:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 162:X-CUBE-AI/App/network.c ****   gemm_1_weights, AI_STATIC,
+ 163:X-CUBE-AI/App/network.c ****   5, 0x0,
+ 164:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 64, 32, 1, 1), AI_STRIDE_INIT(4, 4, 256, 8192, 8192),
+ 165:X-CUBE-AI/App/network.c ****   1, &gemm_1_weights_array, NULL)
+ 166:X-CUBE-AI/App/network.c **** 
+ 167:X-CUBE-AI/App/network.c **** /* Tensor #6 */
+ 168:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 169:X-CUBE-AI/App/network.c ****   gemm_2_bias, AI_STATIC,
+ 170:X-CUBE-AI/App/network.c ****   6, 0x0,
+ 171:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 1, 1, 1), AI_STRIDE_INIT(4, 4, 4, 4, 4),
+ 172:X-CUBE-AI/App/network.c ****   1, &gemm_2_bias_array, NULL)
+ 173:X-CUBE-AI/App/network.c **** 
+ 174:X-CUBE-AI/App/network.c **** /* Tensor #7 */
+ 175:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 176:X-CUBE-AI/App/network.c ****   gemm_2_output, AI_STATIC,
+ 177:X-CUBE-AI/App/network.c ****   7, 0x0,
+ 178:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 1, 1, 1), AI_STRIDE_INIT(4, 4, 4, 4, 4),
+ 179:X-CUBE-AI/App/network.c ****   1, &gemm_2_output_array, NULL)
+ 180:X-CUBE-AI/App/network.c **** 
+ 181:X-CUBE-AI/App/network.c **** /* Tensor #8 */
+ 182:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 183:X-CUBE-AI/App/network.c ****   gemm_2_weights, AI_STATIC,
+ 184:X-CUBE-AI/App/network.c ****   8, 0x0,
+ 185:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 32, 1, 1, 1), AI_STRIDE_INIT(4, 4, 128, 128, 128),
+ 186:X-CUBE-AI/App/network.c ****   1, &gemm_2_weights_array, NULL)
+ 187:X-CUBE-AI/App/network.c **** 
+ 188:X-CUBE-AI/App/network.c **** /* Tensor #9 */
+ 189:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 190:X-CUBE-AI/App/network.c ****   nl_0_nl_output, AI_STATIC,
+ 191:X-CUBE-AI/App/network.c ****   9, 0x0,
+ 192:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 64, 1, 1), AI_STRIDE_INIT(4, 4, 4, 256, 256),
+ 193:X-CUBE-AI/App/network.c ****   1, &nl_0_nl_output_array, NULL)
+ 194:X-CUBE-AI/App/network.c **** 
+ 195:X-CUBE-AI/App/network.c **** /* Tensor #10 */
+ 196:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 197:X-CUBE-AI/App/network.c ****   nl_1_nl_output, AI_STATIC,
+ 198:X-CUBE-AI/App/network.c ****   10, 0x0,
+ 199:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 32, 1, 1), AI_STRIDE_INIT(4, 4, 4, 128, 128),
+ 200:X-CUBE-AI/App/network.c ****   1, &nl_1_nl_output_array, NULL)
+ARM GAS  /tmp/cc2pEp1Z.s 			page 5
+
+
+ 201:X-CUBE-AI/App/network.c **** 
+ 202:X-CUBE-AI/App/network.c **** /* Tensor #11 */
+ 203:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 204:X-CUBE-AI/App/network.c ****   nl_3_output, AI_STATIC,
+ 205:X-CUBE-AI/App/network.c ****   11, 0x0,
+ 206:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 1, 1, 1), AI_STRIDE_INIT(4, 4, 4, 4, 4),
+ 207:X-CUBE-AI/App/network.c ****   1, &nl_3_output_array, NULL)
+ 208:X-CUBE-AI/App/network.c **** 
+ 209:X-CUBE-AI/App/network.c **** /* Tensor #12 */
+ 210:X-CUBE-AI/App/network.c **** AI_TENSOR_OBJ_DECLARE(
+ 211:X-CUBE-AI/App/network.c ****   serving_default_keras_tensor_80_output, AI_STATIC,
+ 212:X-CUBE-AI/App/network.c ****   12, 0x0,
+ 213:X-CUBE-AI/App/network.c ****   AI_SHAPE_INIT(4, 1, 3, 1, 1), AI_STRIDE_INIT(4, 4, 4, 12, 12),
+ 214:X-CUBE-AI/App/network.c ****   1, &serving_default_keras_tensor_80_output_array, NULL)
+ 215:X-CUBE-AI/App/network.c **** 
+ 216:X-CUBE-AI/App/network.c **** 
+ 217:X-CUBE-AI/App/network.c **** 
+ 218:X-CUBE-AI/App/network.c **** /**  Layer declarations section  **********************************************/
+ 219:X-CUBE-AI/App/network.c **** 
+ 220:X-CUBE-AI/App/network.c **** 
+ 221:X-CUBE-AI/App/network.c **** AI_TENSOR_CHAIN_OBJ_DECLARE(
+ 222:X-CUBE-AI/App/network.c ****   nl_3_chain, AI_STATIC_CONST, 4,
+ 223:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &gemm_2_output),
+ 224:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &nl_3_output),
+ 225:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY,
+ 226:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY
+ 227:X-CUBE-AI/App/network.c **** )
+ 228:X-CUBE-AI/App/network.c **** 
+ 229:X-CUBE-AI/App/network.c **** AI_LAYER_OBJ_DECLARE(
+ 230:X-CUBE-AI/App/network.c ****   nl_3_layer, 3,
+ 231:X-CUBE-AI/App/network.c ****   NL_TYPE, 0x0, NULL,
+ 232:X-CUBE-AI/App/network.c ****   nl, forward_sigmoid,
+ 233:X-CUBE-AI/App/network.c ****   &nl_3_chain,
+ 234:X-CUBE-AI/App/network.c ****   NULL, &nl_3_layer, AI_STATIC, 
+ 235:X-CUBE-AI/App/network.c ****   .nl_params = NULL, 
+ 236:X-CUBE-AI/App/network.c **** )
+ 237:X-CUBE-AI/App/network.c **** 
+ 238:X-CUBE-AI/App/network.c **** AI_TENSOR_CHAIN_OBJ_DECLARE(
+ 239:X-CUBE-AI/App/network.c ****   gemm_2_chain, AI_STATIC_CONST, 4,
+ 240:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &nl_1_nl_output),
+ 241:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &gemm_2_output),
+ 242:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 2, &gemm_2_weights, &gemm_2_bias),
+ 243:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY
+ 244:X-CUBE-AI/App/network.c **** )
+ 245:X-CUBE-AI/App/network.c **** 
+ 246:X-CUBE-AI/App/network.c **** AI_LAYER_OBJ_DECLARE(
+ 247:X-CUBE-AI/App/network.c ****   gemm_2_layer, 2,
+ 248:X-CUBE-AI/App/network.c ****   DENSE_TYPE, 0x0, NULL,
+ 249:X-CUBE-AI/App/network.c ****   dense, forward_dense,
+ 250:X-CUBE-AI/App/network.c ****   &gemm_2_chain,
+ 251:X-CUBE-AI/App/network.c ****   NULL, &nl_3_layer, AI_STATIC, 
+ 252:X-CUBE-AI/App/network.c **** )
+ 253:X-CUBE-AI/App/network.c **** 
+ 254:X-CUBE-AI/App/network.c **** AI_TENSOR_CHAIN_OBJ_DECLARE(
+ 255:X-CUBE-AI/App/network.c ****   nl_1_nl_chain, AI_STATIC_CONST, 4,
+ 256:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &gemm_1_output),
+ 257:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &nl_1_nl_output),
+ARM GAS  /tmp/cc2pEp1Z.s 			page 6
+
+
+ 258:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY,
+ 259:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY
+ 260:X-CUBE-AI/App/network.c **** )
+ 261:X-CUBE-AI/App/network.c **** 
+ 262:X-CUBE-AI/App/network.c **** AI_LAYER_OBJ_DECLARE(
+ 263:X-CUBE-AI/App/network.c ****   nl_1_nl_layer, 1,
+ 264:X-CUBE-AI/App/network.c ****   NL_TYPE, 0x0, NULL,
+ 265:X-CUBE-AI/App/network.c ****   nl, forward_relu,
+ 266:X-CUBE-AI/App/network.c ****   &nl_1_nl_chain,
+ 267:X-CUBE-AI/App/network.c ****   NULL, &gemm_2_layer, AI_STATIC, 
+ 268:X-CUBE-AI/App/network.c ****   .nl_params = NULL, 
+ 269:X-CUBE-AI/App/network.c **** )
+ 270:X-CUBE-AI/App/network.c **** 
+ 271:X-CUBE-AI/App/network.c **** AI_TENSOR_CHAIN_OBJ_DECLARE(
+ 272:X-CUBE-AI/App/network.c ****   gemm_1_chain, AI_STATIC_CONST, 4,
+ 273:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &nl_0_nl_output),
+ 274:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &gemm_1_output),
+ 275:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 2, &gemm_1_weights, &gemm_1_bias),
+ 276:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY
+ 277:X-CUBE-AI/App/network.c **** )
+ 278:X-CUBE-AI/App/network.c **** 
+ 279:X-CUBE-AI/App/network.c **** AI_LAYER_OBJ_DECLARE(
+ 280:X-CUBE-AI/App/network.c ****   gemm_1_layer, 1,
+ 281:X-CUBE-AI/App/network.c ****   DENSE_TYPE, 0x0, NULL,
+ 282:X-CUBE-AI/App/network.c ****   dense, forward_dense,
+ 283:X-CUBE-AI/App/network.c ****   &gemm_1_chain,
+ 284:X-CUBE-AI/App/network.c ****   NULL, &nl_1_nl_layer, AI_STATIC, 
+ 285:X-CUBE-AI/App/network.c **** )
+ 286:X-CUBE-AI/App/network.c **** 
+ 287:X-CUBE-AI/App/network.c **** AI_TENSOR_CHAIN_OBJ_DECLARE(
+ 288:X-CUBE-AI/App/network.c ****   nl_0_nl_chain, AI_STATIC_CONST, 4,
+ 289:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &gemm_0_output),
+ 290:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &nl_0_nl_output),
+ 291:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY,
+ 292:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY
+ 293:X-CUBE-AI/App/network.c **** )
+ 294:X-CUBE-AI/App/network.c **** 
+ 295:X-CUBE-AI/App/network.c **** AI_LAYER_OBJ_DECLARE(
+ 296:X-CUBE-AI/App/network.c ****   nl_0_nl_layer, 0,
+ 297:X-CUBE-AI/App/network.c ****   NL_TYPE, 0x0, NULL,
+ 298:X-CUBE-AI/App/network.c ****   nl, forward_relu,
+ 299:X-CUBE-AI/App/network.c ****   &nl_0_nl_chain,
+ 300:X-CUBE-AI/App/network.c ****   NULL, &gemm_1_layer, AI_STATIC, 
+ 301:X-CUBE-AI/App/network.c ****   .nl_params = NULL, 
+ 302:X-CUBE-AI/App/network.c **** )
+ 303:X-CUBE-AI/App/network.c **** 
+ 304:X-CUBE-AI/App/network.c **** AI_TENSOR_CHAIN_OBJ_DECLARE(
+ 305:X-CUBE-AI/App/network.c ****   gemm_0_chain, AI_STATIC_CONST, 4,
+ 306:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &serving_default_keras_tensor_80_output),
+ 307:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &gemm_0_output),
+ 308:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 2, &gemm_0_weights, &gemm_0_bias),
+ 309:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_OBJ_EMPTY
+ 310:X-CUBE-AI/App/network.c **** )
+ 311:X-CUBE-AI/App/network.c **** 
+ 312:X-CUBE-AI/App/network.c **** AI_LAYER_OBJ_DECLARE(
+ 313:X-CUBE-AI/App/network.c ****   gemm_0_layer, 0,
+ 314:X-CUBE-AI/App/network.c ****   DENSE_TYPE, 0x0, NULL,
+ARM GAS  /tmp/cc2pEp1Z.s 			page 7
+
+
+ 315:X-CUBE-AI/App/network.c ****   dense, forward_dense,
+ 316:X-CUBE-AI/App/network.c ****   &gemm_0_chain,
+ 317:X-CUBE-AI/App/network.c ****   NULL, &nl_0_nl_layer, AI_STATIC, 
+ 318:X-CUBE-AI/App/network.c **** )
+ 319:X-CUBE-AI/App/network.c **** 
+ 320:X-CUBE-AI/App/network.c **** 
+ 321:X-CUBE-AI/App/network.c **** #if (AI_TOOLS_API_VERSION < AI_TOOLS_API_VERSION_1_5)
+ 322:X-CUBE-AI/App/network.c **** 
+ 323:X-CUBE-AI/App/network.c **** AI_NETWORK_OBJ_DECLARE(
+ 324:X-CUBE-AI/App/network.c ****   AI_NET_OBJ_INSTANCE, AI_STATIC,
+ 325:X-CUBE-AI/App/network.c ****   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
+ 326:X-CUBE-AI/App/network.c ****     AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 9476, 1, 1),
+ 327:X-CUBE-AI/App/network.c ****     9476, NULL, NULL),
+ 328:X-CUBE-AI/App/network.c ****   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
+ 329:X-CUBE-AI/App/network.c ****     AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 384, 1, 1),
+ 330:X-CUBE-AI/App/network.c ****     384, NULL, NULL),
+ 331:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_IN_NUM, &serving_default_keras_tensor_80_outp
+ 332:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_OUT_NUM, &nl_3_output),
+ 333:X-CUBE-AI/App/network.c ****   &gemm_0_layer, 0xf3cafc0a, NULL)
+ 334:X-CUBE-AI/App/network.c **** 
+ 335:X-CUBE-AI/App/network.c **** #else
+ 336:X-CUBE-AI/App/network.c **** 
+ 337:X-CUBE-AI/App/network.c **** AI_NETWORK_OBJ_DECLARE(
+ 338:X-CUBE-AI/App/network.c ****   AI_NET_OBJ_INSTANCE, AI_STATIC,
+ 339:X-CUBE-AI/App/network.c ****   AI_BUFFER_ARRAY_OBJ_INIT_STATIC(
+ 340:X-CUBE-AI/App/network.c ****   	AI_FLAG_NONE, 1,
+ 341:X-CUBE-AI/App/network.c ****     AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
+ 342:X-CUBE-AI/App/network.c ****       AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 9476, 1, 1),
+ 343:X-CUBE-AI/App/network.c ****       9476, NULL, NULL)
+ 344:X-CUBE-AI/App/network.c ****   ),
+ 345:X-CUBE-AI/App/network.c ****   AI_BUFFER_ARRAY_OBJ_INIT_STATIC(
+ 346:X-CUBE-AI/App/network.c ****   	AI_FLAG_NONE, 1,
+ 347:X-CUBE-AI/App/network.c ****     AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
+ 348:X-CUBE-AI/App/network.c ****       AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 384, 1, 1),
+ 349:X-CUBE-AI/App/network.c ****       384, NULL, NULL)
+ 350:X-CUBE-AI/App/network.c ****   ),
+ 351:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_IN_NUM, &serving_default_keras_tensor_80_outp
+ 352:X-CUBE-AI/App/network.c ****   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_NETWORK_OUT_NUM, &nl_3_output),
+ 353:X-CUBE-AI/App/network.c ****   &gemm_0_layer, 0xf3cafc0a, NULL)
+ 354:X-CUBE-AI/App/network.c **** 
+ 355:X-CUBE-AI/App/network.c **** #endif	/*(AI_TOOLS_API_VERSION < AI_TOOLS_API_VERSION_1_5)*/
+ 356:X-CUBE-AI/App/network.c **** 
+ 357:X-CUBE-AI/App/network.c **** 
+ 358:X-CUBE-AI/App/network.c **** 
+ 359:X-CUBE-AI/App/network.c **** /******************************************************************************/
+ 360:X-CUBE-AI/App/network.c **** AI_DECLARE_STATIC
+ 361:X-CUBE-AI/App/network.c **** ai_bool network_configure_activations(
+ 362:X-CUBE-AI/App/network.c ****   ai_network* net_ctx, const ai_network_params* params)
+ 363:X-CUBE-AI/App/network.c **** {
+ 364:X-CUBE-AI/App/network.c ****   AI_ASSERT(net_ctx)
+ 365:X-CUBE-AI/App/network.c **** 
+ 366:X-CUBE-AI/App/network.c ****   if (ai_platform_get_activations_map(g_network_activations_map, 1, params)) {
+ 367:X-CUBE-AI/App/network.c ****     /* Updating activations (byte) offsets */
+ 368:X-CUBE-AI/App/network.c ****     
+ 369:X-CUBE-AI/App/network.c ****     serving_default_keras_tensor_80_output_array.data = AI_PTR(g_network_activations_map[0] + 116);
+ 370:X-CUBE-AI/App/network.c ****     serving_default_keras_tensor_80_output_array.data_start = AI_PTR(g_network_activations_map[0] +
+ 371:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ARM GAS  /tmp/cc2pEp1Z.s 			page 8
+
+
+ 372:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 373:X-CUBE-AI/App/network.c ****     nl_0_nl_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 374:X-CUBE-AI/App/network.c ****     nl_0_nl_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 375:X-CUBE-AI/App/network.c ****     gemm_1_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+ 376:X-CUBE-AI/App/network.c ****     gemm_1_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+ 377:X-CUBE-AI/App/network.c ****     nl_1_nl_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 378:X-CUBE-AI/App/network.c ****     nl_1_nl_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 379:X-CUBE-AI/App/network.c ****     gemm_2_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+ 380:X-CUBE-AI/App/network.c ****     gemm_2_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+ 381:X-CUBE-AI/App/network.c ****     nl_3_output_array.data = AI_PTR(g_network_activations_map[0] + 4);
+ 382:X-CUBE-AI/App/network.c ****     nl_3_output_array.data_start = AI_PTR(g_network_activations_map[0] + 4);
+ 383:X-CUBE-AI/App/network.c ****     return true;
+ 384:X-CUBE-AI/App/network.c ****   }
+ 385:X-CUBE-AI/App/network.c ****   AI_ERROR_TRAP(net_ctx, INIT_FAILED, NETWORK_ACTIVATIONS);
+ 386:X-CUBE-AI/App/network.c ****   return false;
+ 387:X-CUBE-AI/App/network.c **** }
+ 388:X-CUBE-AI/App/network.c **** 
+ 389:X-CUBE-AI/App/network.c **** 
+ 390:X-CUBE-AI/App/network.c **** 
+ 391:X-CUBE-AI/App/network.c **** 
+ 392:X-CUBE-AI/App/network.c **** /******************************************************************************/
+ 393:X-CUBE-AI/App/network.c **** AI_DECLARE_STATIC
+ 394:X-CUBE-AI/App/network.c **** ai_bool network_configure_weights(
+ 395:X-CUBE-AI/App/network.c ****   ai_network* net_ctx, const ai_network_params* params)
+ 396:X-CUBE-AI/App/network.c **** {
+  30              		.loc 1 396 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 396 1 is_stmt 0 view .LVU1
+  35 0000 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  42 0002 0446     		mov	r4, r0
+  43 0004 0A46     		mov	r2, r1
+ 397:X-CUBE-AI/App/network.c ****   AI_ASSERT(net_ctx)
+  44              		.loc 1 397 3 is_stmt 1 view .LVU2
+ 398:X-CUBE-AI/App/network.c **** 
+ 399:X-CUBE-AI/App/network.c ****   if (ai_platform_get_weights_map(g_network_weights_map, 1, params)) {
+  45              		.loc 1 399 3 view .LVU3
+  46              		.loc 1 399 7 is_stmt 0 view .LVU4
+  47 0006 0121     		movs	r1, #1
+  48              	.LVL1:
+  49              		.loc 1 399 7 view .LVU5
+  50 0008 2148     		ldr	r0, .L5
+  51              	.LVL2:
+  52              		.loc 1 399 7 view .LVU6
+  53 000a FFF7FEFF 		bl	ai_platform_get_weights_map
+  54              	.LVL3:
+  55              		.loc 1 399 6 discriminator 1 view .LVU7
+  56 000e 0546     		mov	r5, r0
+  57 0010 0028     		cmp	r0, #0
+  58 0012 37D0     		beq	.L2
+ARM GAS  /tmp/cc2pEp1Z.s 			page 9
+
+
+ 400:X-CUBE-AI/App/network.c ****     /* Updating weights (byte) offsets */
+ 401:X-CUBE-AI/App/network.c ****     
+ 402:X-CUBE-AI/App/network.c ****     gemm_0_weights_array.format |= AI_FMT_FLAG_CONST;
+  59              		.loc 1 402 5 is_stmt 1 view .LVU8
+  60              		.loc 1 402 25 is_stmt 0 view .LVU9
+  61 0014 1F4A     		ldr	r2, .L5+4
+  62 0016 1368     		ldr	r3, [r2]
+  63              		.loc 1 402 33 view .LVU10
+  64 0018 43F08043 		orr	r3, r3, #1073741824
+  65 001c 1360     		str	r3, [r2]
+ 403:X-CUBE-AI/App/network.c ****     gemm_0_weights_array.data = AI_PTR(g_network_weights_map[0] + 0);
+  66              		.loc 1 403 5 is_stmt 1 view .LVU11
+  67              		.loc 1 403 33 is_stmt 0 view .LVU12
+  68 001e 1C4B     		ldr	r3, .L5
+  69 0020 1B68     		ldr	r3, [r3]
+  70              		.loc 1 403 31 view .LVU13
+  71 0022 9360     		str	r3, [r2, #8]
+ 404:X-CUBE-AI/App/network.c ****     gemm_0_weights_array.data_start = AI_PTR(g_network_weights_map[0] + 0);
+  72              		.loc 1 404 5 is_stmt 1 view .LVU14
+  73              		.loc 1 404 37 is_stmt 0 view .LVU15
+  74 0024 D360     		str	r3, [r2, #12]
+ 405:X-CUBE-AI/App/network.c ****     gemm_0_bias_array.format |= AI_FMT_FLAG_CONST;
+  75              		.loc 1 405 5 is_stmt 1 view .LVU16
+  76              		.loc 1 405 22 is_stmt 0 view .LVU17
+  77 0026 1C4A     		ldr	r2, .L5+8
+  78 0028 1168     		ldr	r1, [r2]
+  79              		.loc 1 405 30 view .LVU18
+  80 002a 41F08041 		orr	r1, r1, #1073741824
+  81 002e 1160     		str	r1, [r2]
+ 406:X-CUBE-AI/App/network.c ****     gemm_0_bias_array.data = AI_PTR(g_network_weights_map[0] + 768);
+  82              		.loc 1 406 5 is_stmt 1 view .LVU19
+  83              		.loc 1 406 30 is_stmt 0 view .LVU20
+  84 0030 03F54071 		add	r1, r3, #768
+  85              		.loc 1 406 28 view .LVU21
+  86 0034 9160     		str	r1, [r2, #8]
+ 407:X-CUBE-AI/App/network.c ****     gemm_0_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 768);
+  87              		.loc 1 407 5 is_stmt 1 view .LVU22
+  88              		.loc 1 407 34 is_stmt 0 view .LVU23
+  89 0036 D160     		str	r1, [r2, #12]
+ 408:X-CUBE-AI/App/network.c ****     gemm_1_weights_array.format |= AI_FMT_FLAG_CONST;
+  90              		.loc 1 408 5 is_stmt 1 view .LVU24
+  91              		.loc 1 408 25 is_stmt 0 view .LVU25
+  92 0038 184A     		ldr	r2, .L5+12
+  93 003a 1168     		ldr	r1, [r2]
+  94              		.loc 1 408 33 view .LVU26
+  95 003c 41F08041 		orr	r1, r1, #1073741824
+  96 0040 1160     		str	r1, [r2]
+ 409:X-CUBE-AI/App/network.c ****     gemm_1_weights_array.data = AI_PTR(g_network_weights_map[0] + 1024);
+  97              		.loc 1 409 5 is_stmt 1 view .LVU27
+  98              		.loc 1 409 33 is_stmt 0 view .LVU28
+  99 0042 03F58061 		add	r1, r3, #1024
+ 100              		.loc 1 409 31 view .LVU29
+ 101 0046 9160     		str	r1, [r2, #8]
+ 410:X-CUBE-AI/App/network.c ****     gemm_1_weights_array.data_start = AI_PTR(g_network_weights_map[0] + 1024);
+ 102              		.loc 1 410 5 is_stmt 1 view .LVU30
+ 103              		.loc 1 410 37 is_stmt 0 view .LVU31
+ 104 0048 D160     		str	r1, [r2, #12]
+ARM GAS  /tmp/cc2pEp1Z.s 			page 10
+
+
+ 411:X-CUBE-AI/App/network.c ****     gemm_1_bias_array.format |= AI_FMT_FLAG_CONST;
+ 105              		.loc 1 411 5 is_stmt 1 view .LVU32
+ 106              		.loc 1 411 22 is_stmt 0 view .LVU33
+ 107 004a 154A     		ldr	r2, .L5+16
+ 108 004c 1168     		ldr	r1, [r2]
+ 109              		.loc 1 411 30 view .LVU34
+ 110 004e 41F08041 		orr	r1, r1, #1073741824
+ 111 0052 1160     		str	r1, [r2]
+ 412:X-CUBE-AI/App/network.c ****     gemm_1_bias_array.data = AI_PTR(g_network_weights_map[0] + 9216);
+ 112              		.loc 1 412 5 is_stmt 1 view .LVU35
+ 113              		.loc 1 412 30 is_stmt 0 view .LVU36
+ 114 0054 03F51051 		add	r1, r3, #9216
+ 115              		.loc 1 412 28 view .LVU37
+ 116 0058 9160     		str	r1, [r2, #8]
+ 413:X-CUBE-AI/App/network.c ****     gemm_1_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 9216);
+ 117              		.loc 1 413 5 is_stmt 1 view .LVU38
+ 118              		.loc 1 413 34 is_stmt 0 view .LVU39
+ 119 005a D160     		str	r1, [r2, #12]
+ 414:X-CUBE-AI/App/network.c ****     gemm_2_weights_array.format |= AI_FMT_FLAG_CONST;
+ 120              		.loc 1 414 5 is_stmt 1 view .LVU40
+ 121              		.loc 1 414 25 is_stmt 0 view .LVU41
+ 122 005c 114A     		ldr	r2, .L5+20
+ 123 005e 1168     		ldr	r1, [r2]
+ 124              		.loc 1 414 33 view .LVU42
+ 125 0060 41F08041 		orr	r1, r1, #1073741824
+ 126 0064 1160     		str	r1, [r2]
+ 415:X-CUBE-AI/App/network.c ****     gemm_2_weights_array.data = AI_PTR(g_network_weights_map[0] + 9344);
+ 127              		.loc 1 415 5 is_stmt 1 view .LVU43
+ 128              		.loc 1 415 33 is_stmt 0 view .LVU44
+ 129 0066 03F51251 		add	r1, r3, #9344
+ 130              		.loc 1 415 31 view .LVU45
+ 131 006a 9160     		str	r1, [r2, #8]
+ 416:X-CUBE-AI/App/network.c ****     gemm_2_weights_array.data_start = AI_PTR(g_network_weights_map[0] + 9344);
+ 132              		.loc 1 416 5 is_stmt 1 view .LVU46
+ 133              		.loc 1 416 37 is_stmt 0 view .LVU47
+ 134 006c D160     		str	r1, [r2, #12]
+ 417:X-CUBE-AI/App/network.c ****     gemm_2_bias_array.format |= AI_FMT_FLAG_CONST;
+ 135              		.loc 1 417 5 is_stmt 1 view .LVU48
+ 136              		.loc 1 417 22 is_stmt 0 view .LVU49
+ 137 006e 0E4A     		ldr	r2, .L5+24
+ 138 0070 1168     		ldr	r1, [r2]
+ 139              		.loc 1 417 30 view .LVU50
+ 140 0072 41F08041 		orr	r1, r1, #1073741824
+ 141 0076 1160     		str	r1, [r2]
+ 418:X-CUBE-AI/App/network.c ****     gemm_2_bias_array.data = AI_PTR(g_network_weights_map[0] + 9472);
+ 142              		.loc 1 418 5 is_stmt 1 view .LVU51
+ 143              		.loc 1 418 30 is_stmt 0 view .LVU52
+ 144 0078 03F51453 		add	r3, r3, #9472
+ 145              		.loc 1 418 28 view .LVU53
+ 146 007c 9360     		str	r3, [r2, #8]
+ 419:X-CUBE-AI/App/network.c ****     gemm_2_bias_array.data_start = AI_PTR(g_network_weights_map[0] + 9472);
+ 147              		.loc 1 419 5 is_stmt 1 view .LVU54
+ 148              		.loc 1 419 34 is_stmt 0 view .LVU55
+ 149 007e D360     		str	r3, [r2, #12]
+ 420:X-CUBE-AI/App/network.c ****     return true;
+ 150              		.loc 1 420 5 is_stmt 1 view .LVU56
+ 151              	.L3:
+ARM GAS  /tmp/cc2pEp1Z.s 			page 11
+
+
+ 421:X-CUBE-AI/App/network.c ****   }
+ 422:X-CUBE-AI/App/network.c ****   AI_ERROR_TRAP(net_ctx, INIT_FAILED, NETWORK_WEIGHTS);
+ 423:X-CUBE-AI/App/network.c ****   return false;
+ 424:X-CUBE-AI/App/network.c **** }
+ 152              		.loc 1 424 1 is_stmt 0 view .LVU57
+ 153 0080 2846     		mov	r0, r5
+ 154 0082 38BD     		pop	{r3, r4, r5, pc}
+ 155              	.LVL4:
+ 156              	.L2:
+ 422:X-CUBE-AI/App/network.c ****   return false;
+ 157              		.loc 1 422 3 is_stmt 1 view .LVU58
+ 158 0084 1222     		movs	r2, #18
+ 159 0086 3021     		movs	r1, #48
+ 160 0088 2046     		mov	r0, r4
+ 161 008a FFF7FEFF 		bl	ai_platform_network_set_error
+ 162              	.LVL5:
+ 423:X-CUBE-AI/App/network.c **** }
+ 163              		.loc 1 423 3 view .LVU59
+ 423:X-CUBE-AI/App/network.c **** }
+ 164              		.loc 1 423 10 is_stmt 0 view .LVU60
+ 165 008e F7E7     		b	.L3
+ 166              	.L6:
+ 167              		.align	2
+ 168              	.L5:
+ 169 0090 00000000 		.word	g_network_weights_map
+ 170 0094 00000000 		.word	gemm_0_weights_array
+ 171 0098 00000000 		.word	gemm_0_bias_array
+ 172 009c 00000000 		.word	gemm_1_weights_array
+ 173 00a0 00000000 		.word	gemm_1_bias_array
+ 174 00a4 00000000 		.word	gemm_2_weights_array
+ 175 00a8 00000000 		.word	gemm_2_bias_array
+ 176              		.cfi_endproc
+ 177              	.LFE5:
+ 179              		.section	.text.network_configure_activations,"ax",%progbits
+ 180              		.align	1
+ 181              		.syntax unified
+ 182              		.thumb
+ 183              		.thumb_func
+ 185              	network_configure_activations:
+ 186              	.LVL6:
+ 187              	.LFB4:
+ 363:X-CUBE-AI/App/network.c ****   AI_ASSERT(net_ctx)
+ 188              		.loc 1 363 1 is_stmt 1 view -0
+ 189              		.cfi_startproc
+ 190              		@ args = 0, pretend = 0, frame = 0
+ 191              		@ frame_needed = 0, uses_anonymous_args = 0
+ 363:X-CUBE-AI/App/network.c ****   AI_ASSERT(net_ctx)
+ 192              		.loc 1 363 1 is_stmt 0 view .LVU62
+ 193 0000 38B5     		push	{r3, r4, r5, lr}
+ 194              	.LCFI1:
+ 195              		.cfi_def_cfa_offset 16
+ 196              		.cfi_offset 3, -16
+ 197              		.cfi_offset 4, -12
+ 198              		.cfi_offset 5, -8
+ 199              		.cfi_offset 14, -4
+ 200 0002 0446     		mov	r4, r0
+ 201 0004 0A46     		mov	r2, r1
+ARM GAS  /tmp/cc2pEp1Z.s 			page 12
+
+
+ 364:X-CUBE-AI/App/network.c **** 
+ 202              		.loc 1 364 3 is_stmt 1 view .LVU63
+ 366:X-CUBE-AI/App/network.c ****     /* Updating activations (byte) offsets */
+ 203              		.loc 1 366 3 view .LVU64
+ 366:X-CUBE-AI/App/network.c ****     /* Updating activations (byte) offsets */
+ 204              		.loc 1 366 7 is_stmt 0 view .LVU65
+ 205 0006 0121     		movs	r1, #1
+ 206              	.LVL7:
+ 366:X-CUBE-AI/App/network.c ****     /* Updating activations (byte) offsets */
+ 207              		.loc 1 366 7 view .LVU66
+ 208 0008 1448     		ldr	r0, .L11
+ 209              	.LVL8:
+ 366:X-CUBE-AI/App/network.c ****     /* Updating activations (byte) offsets */
+ 210              		.loc 1 366 7 view .LVU67
+ 211 000a FFF7FEFF 		bl	ai_platform_get_activations_map
+ 212              	.LVL9:
+ 366:X-CUBE-AI/App/network.c ****     /* Updating activations (byte) offsets */
+ 213              		.loc 1 366 6 discriminator 1 view .LVU68
+ 214 000e 0546     		mov	r5, r0
+ 215 0010 E8B1     		cbz	r0, .L8
+ 369:X-CUBE-AI/App/network.c ****     serving_default_keras_tensor_80_output_array.data_start = AI_PTR(g_network_activations_map[0] +
+ 216              		.loc 1 369 5 is_stmt 1 view .LVU69
+ 369:X-CUBE-AI/App/network.c ****     serving_default_keras_tensor_80_output_array.data_start = AI_PTR(g_network_activations_map[0] +
+ 217              		.loc 1 369 57 is_stmt 0 view .LVU70
+ 218 0012 124B     		ldr	r3, .L11
+ 219 0014 1B68     		ldr	r3, [r3]
+ 220 0016 03F17401 		add	r1, r3, #116
+ 369:X-CUBE-AI/App/network.c ****     serving_default_keras_tensor_80_output_array.data_start = AI_PTR(g_network_activations_map[0] +
+ 221              		.loc 1 369 55 view .LVU71
+ 222 001a 114A     		ldr	r2, .L11+4
+ 223 001c 9160     		str	r1, [r2, #8]
+ 370:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 224              		.loc 1 370 5 is_stmt 1 view .LVU72
+ 370:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 225              		.loc 1 370 61 is_stmt 0 view .LVU73
+ 226 001e D160     		str	r1, [r2, #12]
+ 371:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 227              		.loc 1 371 5 is_stmt 1 view .LVU74
+ 371:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 228              		.loc 1 371 32 is_stmt 0 view .LVU75
+ 229 0020 03F18002 		add	r2, r3, #128
+ 371:X-CUBE-AI/App/network.c ****     gemm_0_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 230              		.loc 1 371 30 view .LVU76
+ 231 0024 0F49     		ldr	r1, .L11+8
+ 232 0026 8A60     		str	r2, [r1, #8]
+ 372:X-CUBE-AI/App/network.c ****     nl_0_nl_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 233              		.loc 1 372 5 is_stmt 1 view .LVU77
+ 372:X-CUBE-AI/App/network.c ****     nl_0_nl_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 234              		.loc 1 372 36 is_stmt 0 view .LVU78
+ 235 0028 CA60     		str	r2, [r1, #12]
+ 373:X-CUBE-AI/App/network.c ****     nl_0_nl_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 236              		.loc 1 373 5 is_stmt 1 view .LVU79
+ 373:X-CUBE-AI/App/network.c ****     nl_0_nl_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 237              		.loc 1 373 31 is_stmt 0 view .LVU80
+ 238 002a 0F49     		ldr	r1, .L11+12
+ 239 002c 8A60     		str	r2, [r1, #8]
+ 374:X-CUBE-AI/App/network.c ****     gemm_1_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+ARM GAS  /tmp/cc2pEp1Z.s 			page 13
+
+
+ 240              		.loc 1 374 5 is_stmt 1 view .LVU81
+ 374:X-CUBE-AI/App/network.c ****     gemm_1_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+ 241              		.loc 1 374 37 is_stmt 0 view .LVU82
+ 242 002e CA60     		str	r2, [r1, #12]
+ 375:X-CUBE-AI/App/network.c ****     gemm_1_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+ 243              		.loc 1 375 5 is_stmt 1 view .LVU83
+ 375:X-CUBE-AI/App/network.c ****     gemm_1_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+ 244              		.loc 1 375 30 is_stmt 0 view .LVU84
+ 245 0030 0E49     		ldr	r1, .L11+16
+ 246 0032 8B60     		str	r3, [r1, #8]
+ 376:X-CUBE-AI/App/network.c ****     nl_1_nl_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 247              		.loc 1 376 5 is_stmt 1 view .LVU85
+ 376:X-CUBE-AI/App/network.c ****     nl_1_nl_output_array.data = AI_PTR(g_network_activations_map[0] + 128);
+ 248              		.loc 1 376 36 is_stmt 0 view .LVU86
+ 249 0034 CB60     		str	r3, [r1, #12]
+ 377:X-CUBE-AI/App/network.c ****     nl_1_nl_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 250              		.loc 1 377 5 is_stmt 1 view .LVU87
+ 377:X-CUBE-AI/App/network.c ****     nl_1_nl_output_array.data_start = AI_PTR(g_network_activations_map[0] + 128);
+ 251              		.loc 1 377 31 is_stmt 0 view .LVU88
+ 252 0036 0E49     		ldr	r1, .L11+20
+ 253 0038 8A60     		str	r2, [r1, #8]
+ 378:X-CUBE-AI/App/network.c ****     gemm_2_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+ 254              		.loc 1 378 5 is_stmt 1 view .LVU89
+ 378:X-CUBE-AI/App/network.c ****     gemm_2_output_array.data = AI_PTR(g_network_activations_map[0] + 0);
+ 255              		.loc 1 378 37 is_stmt 0 view .LVU90
+ 256 003a CA60     		str	r2, [r1, #12]
+ 379:X-CUBE-AI/App/network.c ****     gemm_2_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+ 257              		.loc 1 379 5 is_stmt 1 view .LVU91
+ 379:X-CUBE-AI/App/network.c ****     gemm_2_output_array.data_start = AI_PTR(g_network_activations_map[0] + 0);
+ 258              		.loc 1 379 30 is_stmt 0 view .LVU92
+ 259 003c 0D4A     		ldr	r2, .L11+24
+ 260 003e 9360     		str	r3, [r2, #8]
+ 380:X-CUBE-AI/App/network.c ****     nl_3_output_array.data = AI_PTR(g_network_activations_map[0] + 4);
+ 261              		.loc 1 380 5 is_stmt 1 view .LVU93
+ 380:X-CUBE-AI/App/network.c ****     nl_3_output_array.data = AI_PTR(g_network_activations_map[0] + 4);
+ 262              		.loc 1 380 36 is_stmt 0 view .LVU94
+ 263 0040 D360     		str	r3, [r2, #12]
+ 381:X-CUBE-AI/App/network.c ****     nl_3_output_array.data_start = AI_PTR(g_network_activations_map[0] + 4);
+ 264              		.loc 1 381 5 is_stmt 1 view .LVU95
+ 381:X-CUBE-AI/App/network.c ****     nl_3_output_array.data_start = AI_PTR(g_network_activations_map[0] + 4);
+ 265              		.loc 1 381 30 is_stmt 0 view .LVU96
+ 266 0042 0433     		adds	r3, r3, #4
+ 381:X-CUBE-AI/App/network.c ****     nl_3_output_array.data_start = AI_PTR(g_network_activations_map[0] + 4);
+ 267              		.loc 1 381 28 view .LVU97
+ 268 0044 0C4A     		ldr	r2, .L11+28
+ 269 0046 9360     		str	r3, [r2, #8]
+ 382:X-CUBE-AI/App/network.c ****     return true;
+ 270              		.loc 1 382 5 is_stmt 1 view .LVU98
+ 382:X-CUBE-AI/App/network.c ****     return true;
+ 271              		.loc 1 382 34 is_stmt 0 view .LVU99
+ 272 0048 D360     		str	r3, [r2, #12]
+ 383:X-CUBE-AI/App/network.c ****   }
+ 273              		.loc 1 383 5 is_stmt 1 view .LVU100
+ 274              	.L9:
+ 387:X-CUBE-AI/App/network.c **** 
+ 275              		.loc 1 387 1 is_stmt 0 view .LVU101
+ 276 004a 2846     		mov	r0, r5
+ARM GAS  /tmp/cc2pEp1Z.s 			page 14
+
+
+ 277 004c 38BD     		pop	{r3, r4, r5, pc}
+ 278              	.LVL10:
+ 279              	.L8:
+ 385:X-CUBE-AI/App/network.c ****   return false;
+ 280              		.loc 1 385 3 is_stmt 1 view .LVU102
+ 281 004e 1322     		movs	r2, #19
+ 282 0050 3021     		movs	r1, #48
+ 283 0052 2046     		mov	r0, r4
+ 284 0054 FFF7FEFF 		bl	ai_platform_network_set_error
+ 285              	.LVL11:
+ 386:X-CUBE-AI/App/network.c **** }
+ 286              		.loc 1 386 3 view .LVU103
+ 386:X-CUBE-AI/App/network.c **** }
+ 287              		.loc 1 386 10 is_stmt 0 view .LVU104
+ 288 0058 F7E7     		b	.L9
+ 289              	.L12:
+ 290 005a 00BF     		.align	2
+ 291              	.L11:
+ 292 005c 00000000 		.word	g_network_activations_map
+ 293 0060 00000000 		.word	serving_default_keras_tensor_80_output_array
+ 294 0064 00000000 		.word	gemm_0_output_array
+ 295 0068 00000000 		.word	nl_0_nl_output_array
+ 296 006c 00000000 		.word	gemm_1_output_array
+ 297 0070 00000000 		.word	nl_1_nl_output_array
+ 298 0074 00000000 		.word	gemm_2_output_array
+ 299 0078 00000000 		.word	nl_3_output_array
+ 300              		.cfi_endproc
+ 301              	.LFE4:
+ 303              		.section	.rodata.ai_network_get_info.str1.4,"aMS",%progbits,1
+ 304              		.align	2
+ 305              	.LC0:
+ 306 0000 6E657477 		.ascii	"network\000"
+ 306      6F726B00 
+ 307              		.align	2
+ 308              	.LC1:
+ 309 0008 30783034 		.ascii	"0x044e8f0aefb9c9dc7aab19bb346d26d2\000"
+ 309      34653866 
+ 309      30616566 
+ 309      62396339 
+ 309      64633761 
+ 310 002b 00       		.align	2
+ 311              	.LC2:
+ 312 002c 32303236 		.ascii	"2026-04-18T16:09:02+0200\000"
+ 312      2D30342D 
+ 312      31385431 
+ 312      363A3039 
+ 312      3A30322B 
+ 313 0045 000000   		.align	2
+ 314              	.LC3:
+ 315 0048 41707220 		.ascii	"Apr 18 2026 16:18:11\000"
+ 315      31382032 
+ 315      30323620 
+ 315      31363A31 
+ 315      383A3131 
+ 316 005d 000000   		.align	2
+ 317              	.LC4:
+ 318 0060 00       		.ascii	"\000"
+ARM GAS  /tmp/cc2pEp1Z.s 			page 15
+
+
+ 319              		.section	.text.ai_network_get_info,"ax",%progbits
+ 320              		.align	1
+ 321              		.global	ai_network_get_info
+ 322              		.syntax unified
+ 323              		.thumb
+ 324              		.thumb_func
+ 326              	ai_network_get_info:
+ 327              	.LVL12:
+ 328              	.LFB6:
+ 425:X-CUBE-AI/App/network.c **** 
+ 426:X-CUBE-AI/App/network.c **** 
+ 427:X-CUBE-AI/App/network.c **** /**  PUBLIC APIs SECTION  *****************************************************/
+ 428:X-CUBE-AI/App/network.c **** 
+ 429:X-CUBE-AI/App/network.c **** 
+ 430:X-CUBE-AI/App/network.c **** 
+ 431:X-CUBE-AI/App/network.c **** AI_DEPRECATED
+ 432:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 433:X-CUBE-AI/App/network.c **** ai_bool ai_network_get_info(
+ 434:X-CUBE-AI/App/network.c ****   ai_handle network, ai_network_report* report)
+ 435:X-CUBE-AI/App/network.c **** {
+ 329              		.loc 1 435 1 is_stmt 1 view -0
+ 330              		.cfi_startproc
+ 331              		@ args = 0, pretend = 0, frame = 136
+ 332              		@ frame_needed = 0, uses_anonymous_args = 0
+ 333              		.loc 1 435 1 is_stmt 0 view .LVU106
+ 334 0000 30B5     		push	{r4, r5, lr}
+ 335              	.LCFI2:
+ 336              		.cfi_def_cfa_offset 12
+ 337              		.cfi_offset 4, -12
+ 338              		.cfi_offset 5, -8
+ 339              		.cfi_offset 14, -4
+ 340 0002 A3B0     		sub	sp, sp, #140
+ 341              	.LCFI3:
+ 342              		.cfi_def_cfa_offset 152
+ 343 0004 0546     		mov	r5, r0
+ 344 0006 0C46     		mov	r4, r1
+ 436:X-CUBE-AI/App/network.c ****   ai_network* net_ctx = AI_NETWORK_ACQUIRE_CTX(network);
+ 345              		.loc 1 436 3 is_stmt 1 view .LVU107
+ 346              		.loc 1 436 25 is_stmt 0 view .LVU108
+ 347 0008 FFF7FEFF 		bl	ai_platform_context_acquire
+ 348              	.LVL13:
+ 437:X-CUBE-AI/App/network.c **** 
+ 438:X-CUBE-AI/App/network.c ****   if (report && net_ctx)
+ 349              		.loc 1 438 3 is_stmt 1 view .LVU109
+ 350              		.loc 1 438 6 is_stmt 0 view .LVU110
+ 351 000c 002C     		cmp	r4, #0
+ 352 000e 34D0     		beq	.L16
+ 353              		.loc 1 438 14 discriminator 1 view .LVU111
+ 354 0010 0028     		cmp	r0, #0
+ 355 0012 34D0     		beq	.L17
+ 356              	.LBB2:
+ 439:X-CUBE-AI/App/network.c ****   {
+ 440:X-CUBE-AI/App/network.c ****     ai_network_report r = {
+ 357              		.loc 1 440 5 is_stmt 1 view .LVU112
+ 358              		.loc 1 440 23 is_stmt 0 view .LVU113
+ 359 0014 8822     		movs	r2, #136
+ 360 0016 0021     		movs	r1, #0
+ARM GAS  /tmp/cc2pEp1Z.s 			page 16
+
+
+ 361 0018 6846     		mov	r0, sp
+ 362              	.LVL14:
+ 363              		.loc 1 440 23 view .LVU114
+ 364 001a FFF7FEFF 		bl	memset
+ 365              	.LVL15:
+ 366 001e 1A4B     		ldr	r3, .L19
+ 367 0020 0093     		str	r3, [sp]
+ 368 0022 1A4B     		ldr	r3, .L19+4
+ 369 0024 0193     		str	r3, [sp, #4]
+ 370 0026 1A4B     		ldr	r3, .L19+8
+ 371 0028 0293     		str	r3, [sp, #8]
+ 372 002a 1A4B     		ldr	r3, .L19+12
+ 373 002c 0393     		str	r3, [sp, #12]
+ 441:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 442:X-CUBE-AI/App/network.c ****       .model_signature   = AI_NETWORK_MODEL_SIGNATURE,
+ 443:X-CUBE-AI/App/network.c ****       .model_datetime    = AI_TOOLS_DATE_TIME,
+ 444:X-CUBE-AI/App/network.c ****       
+ 445:X-CUBE-AI/App/network.c ****       .compile_datetime  = AI_TOOLS_COMPILE_TIME,
+ 446:X-CUBE-AI/App/network.c ****       
+ 447:X-CUBE-AI/App/network.c ****       .runtime_revision  = ai_platform_runtime_get_revision(),
+ 374              		.loc 1 447 28 view .LVU115
+ 375 002e FFF7FEFF 		bl	ai_platform_runtime_get_revision
+ 376              	.LVL16:
+ 440:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 377              		.loc 1 440 23 view .LVU116
+ 378 0032 0490     		str	r0, [sp, #16]
+ 448:X-CUBE-AI/App/network.c ****       .runtime_version   = ai_platform_runtime_get_version(),
+ 379              		.loc 1 448 28 view .LVU117
+ 380 0034 FFF7FEFF 		bl	ai_platform_runtime_get_version
+ 381              	.LVL17:
+ 382 0038 0590     		str	r0, [sp, #20]
+ 440:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 383              		.loc 1 440 23 view .LVU118
+ 384 003a 174B     		ldr	r3, .L19+16
+ 385 003c 0693     		str	r3, [sp, #24]
+ 386 003e 0223     		movs	r3, #2
+ 387 0040 8DF81C30 		strb	r3, [sp, #28]
+ 388 0044 8DF81D30 		strb	r3, [sp, #29]
+ 449:X-CUBE-AI/App/network.c **** 
+ 450:X-CUBE-AI/App/network.c ****       .tool_revision     = AI_TOOLS_REVISION_ID,
+ 451:X-CUBE-AI/App/network.c ****       .tool_version      = {AI_TOOLS_VERSION_MAJOR, AI_TOOLS_VERSION_MINOR,
+ 452:X-CUBE-AI/App/network.c ****                             AI_TOOLS_VERSION_MICRO, 0x0},
+ 453:X-CUBE-AI/App/network.c ****       .tool_api_version  = AI_STRUCT_INIT,
+ 454:X-CUBE-AI/App/network.c **** 
+ 455:X-CUBE-AI/App/network.c ****       .api_version            = ai_platform_api_get_version(),
+ 389              		.loc 1 455 33 view .LVU119
+ 390 0048 FFF7FEFF 		bl	ai_platform_api_get_version
+ 391              	.LVL18:
+ 392 004c 0990     		str	r0, [sp, #36]
+ 456:X-CUBE-AI/App/network.c ****       .interface_api_version  = ai_platform_interface_api_get_version(),
+ 393              		.loc 1 456 33 view .LVU120
+ 394 004e FFF7FEFF 		bl	ai_platform_interface_api_get_version
+ 395              	.LVL19:
+ 396 0052 0A90     		str	r0, [sp, #40]
+ 440:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 397              		.loc 1 440 23 view .LVU121
+ 398 0054 40F6AB12 		movw	r2, #2475
+ARM GAS  /tmp/cc2pEp1Z.s 			page 17
+
+
+ 399 0058 0023     		movs	r3, #0
+ 400 005a CDE90C23 		strd	r2, [sp, #48]
+ 401 005e 0F4B     		ldr	r3, .L19+20
+ 402 0060 2093     		str	r3, [sp, #128]
+ 457:X-CUBE-AI/App/network.c ****       
+ 458:X-CUBE-AI/App/network.c ****       .n_macc            = 2475,
+ 459:X-CUBE-AI/App/network.c ****       .n_inputs          = 0,
+ 460:X-CUBE-AI/App/network.c ****       .inputs            = NULL,
+ 461:X-CUBE-AI/App/network.c ****       .n_outputs         = 0,
+ 462:X-CUBE-AI/App/network.c ****       .outputs           = NULL,
+ 463:X-CUBE-AI/App/network.c ****       .params            = AI_STRUCT_INIT,
+ 464:X-CUBE-AI/App/network.c ****       .activations       = AI_STRUCT_INIT,
+ 465:X-CUBE-AI/App/network.c ****       .n_nodes           = 0,
+ 466:X-CUBE-AI/App/network.c ****       .signature         = 0xf3cafc0a,
+ 467:X-CUBE-AI/App/network.c ****     };
+ 468:X-CUBE-AI/App/network.c **** 
+ 469:X-CUBE-AI/App/network.c ****     if (!ai_platform_api_get_network_report(network, &r)) return false;
+ 403              		.loc 1 469 5 is_stmt 1 view .LVU122
+ 404              		.loc 1 469 10 is_stmt 0 view .LVU123
+ 405 0062 6946     		mov	r1, sp
+ 406 0064 2846     		mov	r0, r5
+ 407 0066 FFF7FEFF 		bl	ai_platform_api_get_network_report
+ 408              	.LVL20:
+ 409              		.loc 1 469 8 discriminator 1 view .LVU124
+ 410 006a 0546     		mov	r5, r0
+ 411              	.LVL21:
+ 412              		.loc 1 469 8 discriminator 1 view .LVU125
+ 413 006c 40B1     		cbz	r0, .L14
+ 470:X-CUBE-AI/App/network.c **** 
+ 471:X-CUBE-AI/App/network.c ****     *report = r;
+ 414              		.loc 1 471 5 is_stmt 1 view .LVU126
+ 415              		.loc 1 471 13 is_stmt 0 view .LVU127
+ 416 006e 8822     		movs	r2, #136
+ 417 0070 6946     		mov	r1, sp
+ 418 0072 2046     		mov	r0, r4
+ 419 0074 FFF7FEFF 		bl	memcpy
+ 420              	.LVL22:
+ 472:X-CUBE-AI/App/network.c ****     return true;
+ 421              		.loc 1 472 5 is_stmt 1 view .LVU128
+ 422              		.loc 1 472 12 is_stmt 0 view .LVU129
+ 423 0078 02E0     		b	.L14
+ 424              	.LVL23:
+ 425              	.L16:
+ 426              		.loc 1 472 12 view .LVU130
+ 427              	.LBE2:
+ 473:X-CUBE-AI/App/network.c ****   }
+ 474:X-CUBE-AI/App/network.c ****   return false;
+ 428              		.loc 1 474 10 view .LVU131
+ 429 007a 0025     		movs	r5, #0
+ 430              	.LVL24:
+ 431              		.loc 1 474 10 view .LVU132
+ 432 007c 00E0     		b	.L14
+ 433              	.LVL25:
+ 434              	.L17:
+ 435              		.loc 1 474 10 view .LVU133
+ 436 007e 0025     		movs	r5, #0
+ 437              	.LVL26:
+ARM GAS  /tmp/cc2pEp1Z.s 			page 18
+
+
+ 438              	.L14:
+ 475:X-CUBE-AI/App/network.c **** }
+ 439              		.loc 1 475 1 view .LVU134
+ 440 0080 2846     		mov	r0, r5
+ 441 0082 23B0     		add	sp, sp, #140
+ 442              	.LCFI4:
+ 443              		.cfi_def_cfa_offset 12
+ 444              		@ sp needed
+ 445 0084 30BD     		pop	{r4, r5, pc}
+ 446              	.LVL27:
+ 447              	.L20:
+ 448              		.loc 1 475 1 view .LVU135
+ 449 0086 00BF     		.align	2
+ 450              	.L19:
+ 451 0088 00000000 		.word	.LC0
+ 452 008c 08000000 		.word	.LC1
+ 453 0090 2C000000 		.word	.LC2
+ 454 0094 48000000 		.word	.LC3
+ 455 0098 60000000 		.word	.LC4
+ 456 009c 0AFCCAF3 		.word	-204801014
+ 457              		.cfi_endproc
+ 458              	.LFE6:
+ 460              		.section	.text.ai_network_get_report,"ax",%progbits
+ 461              		.align	1
+ 462              		.global	ai_network_get_report
+ 463              		.syntax unified
+ 464              		.thumb
+ 465              		.thumb_func
+ 467              	ai_network_get_report:
+ 468              	.LVL28:
+ 469              	.LFB7:
+ 476:X-CUBE-AI/App/network.c **** 
+ 477:X-CUBE-AI/App/network.c **** 
+ 478:X-CUBE-AI/App/network.c **** 
+ 479:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 480:X-CUBE-AI/App/network.c **** ai_bool ai_network_get_report(
+ 481:X-CUBE-AI/App/network.c ****   ai_handle network, ai_network_report* report)
+ 482:X-CUBE-AI/App/network.c **** {
+ 470              		.loc 1 482 1 is_stmt 1 view -0
+ 471              		.cfi_startproc
+ 472              		@ args = 0, pretend = 0, frame = 136
+ 473              		@ frame_needed = 0, uses_anonymous_args = 0
+ 474              		.loc 1 482 1 is_stmt 0 view .LVU137
+ 475 0000 30B5     		push	{r4, r5, lr}
+ 476              	.LCFI5:
+ 477              		.cfi_def_cfa_offset 12
+ 478              		.cfi_offset 4, -12
+ 479              		.cfi_offset 5, -8
+ 480              		.cfi_offset 14, -4
+ 481 0002 A3B0     		sub	sp, sp, #140
+ 482              	.LCFI6:
+ 483              		.cfi_def_cfa_offset 152
+ 484 0004 0546     		mov	r5, r0
+ 485 0006 0C46     		mov	r4, r1
+ 483:X-CUBE-AI/App/network.c ****   ai_network* net_ctx = AI_NETWORK_ACQUIRE_CTX(network);
+ 486              		.loc 1 483 3 is_stmt 1 view .LVU138
+ 487              		.loc 1 483 25 is_stmt 0 view .LVU139
+ARM GAS  /tmp/cc2pEp1Z.s 			page 19
+
+
+ 488 0008 FFF7FEFF 		bl	ai_platform_context_acquire
+ 489              	.LVL29:
+ 484:X-CUBE-AI/App/network.c **** 
+ 485:X-CUBE-AI/App/network.c ****   if (report && net_ctx)
+ 490              		.loc 1 485 3 is_stmt 1 view .LVU140
+ 491              		.loc 1 485 6 is_stmt 0 view .LVU141
+ 492 000c 002C     		cmp	r4, #0
+ 493 000e 36D0     		beq	.L24
+ 494              		.loc 1 485 14 discriminator 1 view .LVU142
+ 495 0010 0028     		cmp	r0, #0
+ 496 0012 36D0     		beq	.L25
+ 497              	.LBB3:
+ 486:X-CUBE-AI/App/network.c ****   {
+ 487:X-CUBE-AI/App/network.c ****     ai_network_report r = {
+ 498              		.loc 1 487 5 is_stmt 1 view .LVU143
+ 499              		.loc 1 487 23 is_stmt 0 view .LVU144
+ 500 0014 8822     		movs	r2, #136
+ 501 0016 0021     		movs	r1, #0
+ 502 0018 6846     		mov	r0, sp
+ 503              	.LVL30:
+ 504              		.loc 1 487 23 view .LVU145
+ 505 001a FFF7FEFF 		bl	memset
+ 506              	.LVL31:
+ 507 001e 1B4B     		ldr	r3, .L27
+ 508 0020 0093     		str	r3, [sp]
+ 509 0022 1B4B     		ldr	r3, .L27+4
+ 510 0024 0193     		str	r3, [sp, #4]
+ 511 0026 1B4B     		ldr	r3, .L27+8
+ 512 0028 0293     		str	r3, [sp, #8]
+ 513 002a 1B4B     		ldr	r3, .L27+12
+ 514 002c 0393     		str	r3, [sp, #12]
+ 488:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 489:X-CUBE-AI/App/network.c ****       .model_signature   = AI_NETWORK_MODEL_SIGNATURE,
+ 490:X-CUBE-AI/App/network.c ****       .model_datetime    = AI_TOOLS_DATE_TIME,
+ 491:X-CUBE-AI/App/network.c ****       
+ 492:X-CUBE-AI/App/network.c ****       .compile_datetime  = AI_TOOLS_COMPILE_TIME,
+ 493:X-CUBE-AI/App/network.c ****       
+ 494:X-CUBE-AI/App/network.c ****       .runtime_revision  = ai_platform_runtime_get_revision(),
+ 515              		.loc 1 494 28 view .LVU146
+ 516 002e FFF7FEFF 		bl	ai_platform_runtime_get_revision
+ 517              	.LVL32:
+ 487:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 518              		.loc 1 487 23 view .LVU147
+ 519 0032 0490     		str	r0, [sp, #16]
+ 495:X-CUBE-AI/App/network.c ****       .runtime_version   = ai_platform_runtime_get_version(),
+ 520              		.loc 1 495 28 view .LVU148
+ 521 0034 FFF7FEFF 		bl	ai_platform_runtime_get_version
+ 522              	.LVL33:
+ 523 0038 0590     		str	r0, [sp, #20]
+ 487:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 524              		.loc 1 487 23 view .LVU149
+ 525 003a 184B     		ldr	r3, .L27+16
+ 526 003c 0693     		str	r3, [sp, #24]
+ 527 003e 0223     		movs	r3, #2
+ 528 0040 8DF81C30 		strb	r3, [sp, #28]
+ 529 0044 8DF81D30 		strb	r3, [sp, #29]
+ 496:X-CUBE-AI/App/network.c **** 
+ARM GAS  /tmp/cc2pEp1Z.s 			page 20
+
+
+ 497:X-CUBE-AI/App/network.c ****       .tool_revision     = AI_TOOLS_REVISION_ID,
+ 498:X-CUBE-AI/App/network.c ****       .tool_version      = {AI_TOOLS_VERSION_MAJOR, AI_TOOLS_VERSION_MINOR,
+ 499:X-CUBE-AI/App/network.c ****                             AI_TOOLS_VERSION_MICRO, 0x0},
+ 500:X-CUBE-AI/App/network.c ****       .tool_api_version  = AI_STRUCT_INIT,
+ 501:X-CUBE-AI/App/network.c **** 
+ 502:X-CUBE-AI/App/network.c ****       .api_version            = ai_platform_api_get_version(),
+ 530              		.loc 1 502 33 view .LVU150
+ 531 0048 FFF7FEFF 		bl	ai_platform_api_get_version
+ 532              	.LVL34:
+ 533 004c 0990     		str	r0, [sp, #36]
+ 503:X-CUBE-AI/App/network.c ****       .interface_api_version  = ai_platform_interface_api_get_version(),
+ 534              		.loc 1 503 33 view .LVU151
+ 535 004e FFF7FEFF 		bl	ai_platform_interface_api_get_version
+ 536              	.LVL35:
+ 537 0052 0A90     		str	r0, [sp, #40]
+ 487:X-CUBE-AI/App/network.c ****       .model_name        = AI_NETWORK_MODEL_NAME,
+ 538              		.loc 1 487 23 view .LVU152
+ 539 0054 40F6AB12 		movw	r2, #2475
+ 540 0058 0023     		movs	r3, #0
+ 541 005a CDE90C23 		strd	r2, [sp, #48]
+ 542 005e 104B     		ldr	r3, .L27+20
+ 543 0060 1193     		str	r3, [sp, #68]
+ 544 0062 104B     		ldr	r3, .L27+24
+ 545 0064 2093     		str	r3, [sp, #128]
+ 504:X-CUBE-AI/App/network.c ****       
+ 505:X-CUBE-AI/App/network.c ****       .n_macc            = 2475,
+ 506:X-CUBE-AI/App/network.c ****       .n_inputs          = 0,
+ 507:X-CUBE-AI/App/network.c ****       .inputs            = NULL,
+ 508:X-CUBE-AI/App/network.c ****       .n_outputs         = 0,
+ 509:X-CUBE-AI/App/network.c ****       .outputs           = NULL,
+ 510:X-CUBE-AI/App/network.c ****       .map_signature     = AI_MAGIC_SIGNATURE,
+ 511:X-CUBE-AI/App/network.c ****       .map_weights       = AI_STRUCT_INIT,
+ 512:X-CUBE-AI/App/network.c ****       .map_activations   = AI_STRUCT_INIT,
+ 513:X-CUBE-AI/App/network.c ****       .n_nodes           = 0,
+ 514:X-CUBE-AI/App/network.c ****       .signature         = 0xf3cafc0a,
+ 515:X-CUBE-AI/App/network.c ****     };
+ 516:X-CUBE-AI/App/network.c **** 
+ 517:X-CUBE-AI/App/network.c ****     if (!ai_platform_api_get_network_report(network, &r)) return false;
+ 546              		.loc 1 517 5 is_stmt 1 view .LVU153
+ 547              		.loc 1 517 10 is_stmt 0 view .LVU154
+ 548 0066 6946     		mov	r1, sp
+ 549 0068 2846     		mov	r0, r5
+ 550 006a FFF7FEFF 		bl	ai_platform_api_get_network_report
+ 551              	.LVL36:
+ 552              		.loc 1 517 8 discriminator 1 view .LVU155
+ 553 006e 0546     		mov	r5, r0
+ 554              	.LVL37:
+ 555              		.loc 1 517 8 discriminator 1 view .LVU156
+ 556 0070 40B1     		cbz	r0, .L22
+ 518:X-CUBE-AI/App/network.c **** 
+ 519:X-CUBE-AI/App/network.c ****     *report = r;
+ 557              		.loc 1 519 5 is_stmt 1 view .LVU157
+ 558              		.loc 1 519 13 is_stmt 0 view .LVU158
+ 559 0072 8822     		movs	r2, #136
+ 560 0074 6946     		mov	r1, sp
+ 561 0076 2046     		mov	r0, r4
+ 562 0078 FFF7FEFF 		bl	memcpy
+ARM GAS  /tmp/cc2pEp1Z.s 			page 21
+
+
+ 563              	.LVL38:
+ 520:X-CUBE-AI/App/network.c ****     return true;
+ 564              		.loc 1 520 5 is_stmt 1 view .LVU159
+ 565              		.loc 1 520 12 is_stmt 0 view .LVU160
+ 566 007c 02E0     		b	.L22
+ 567              	.LVL39:
+ 568              	.L24:
+ 569              		.loc 1 520 12 view .LVU161
+ 570              	.LBE3:
+ 521:X-CUBE-AI/App/network.c ****   }
+ 522:X-CUBE-AI/App/network.c ****   return false;
+ 571              		.loc 1 522 10 view .LVU162
+ 572 007e 0025     		movs	r5, #0
+ 573              	.LVL40:
+ 574              		.loc 1 522 10 view .LVU163
+ 575 0080 00E0     		b	.L22
+ 576              	.LVL41:
+ 577              	.L25:
+ 578              		.loc 1 522 10 view .LVU164
+ 579 0082 0025     		movs	r5, #0
+ 580              	.LVL42:
+ 581              	.L22:
+ 523:X-CUBE-AI/App/network.c **** }
+ 582              		.loc 1 523 1 view .LVU165
+ 583 0084 2846     		mov	r0, r5
+ 584 0086 23B0     		add	sp, sp, #140
+ 585              	.LCFI7:
+ 586              		.cfi_def_cfa_offset 12
+ 587              		@ sp needed
+ 588 0088 30BD     		pop	{r4, r5, pc}
+ 589              	.LVL43:
+ 590              	.L28:
+ 591              		.loc 1 523 1 view .LVU166
+ 592 008a 00BF     		.align	2
+ 593              	.L27:
+ 594 008c 00000000 		.word	.LC0
+ 595 0090 08000000 		.word	.LC1
+ 596 0094 2C000000 		.word	.LC2
+ 597 0098 48000000 		.word	.LC3
+ 598 009c 60000000 		.word	.LC4
+ 599 00a0 DECAFAA1 		.word	-1577399586
+ 600 00a4 0AFCCAF3 		.word	-204801014
+ 601              		.cfi_endproc
+ 602              	.LFE7:
+ 604              		.section	.text.ai_network_get_error,"ax",%progbits
+ 605              		.align	1
+ 606              		.global	ai_network_get_error
+ 607              		.syntax unified
+ 608              		.thumb
+ 609              		.thumb_func
+ 611              	ai_network_get_error:
+ 612              	.LVL44:
+ 613              	.LFB8:
+ 524:X-CUBE-AI/App/network.c **** 
+ 525:X-CUBE-AI/App/network.c **** 
+ 526:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 527:X-CUBE-AI/App/network.c **** ai_error ai_network_get_error(ai_handle network)
+ARM GAS  /tmp/cc2pEp1Z.s 			page 22
+
+
+ 528:X-CUBE-AI/App/network.c **** {
+ 614              		.loc 1 528 1 is_stmt 1 view -0
+ 615              		.cfi_startproc
+ 616              		@ args = 0, pretend = 0, frame = 0
+ 617              		@ frame_needed = 0, uses_anonymous_args = 0
+ 618              		.loc 1 528 1 is_stmt 0 view .LVU168
+ 619 0000 08B5     		push	{r3, lr}
+ 620              	.LCFI8:
+ 621              		.cfi_def_cfa_offset 8
+ 622              		.cfi_offset 3, -8
+ 623              		.cfi_offset 14, -4
+ 529:X-CUBE-AI/App/network.c ****   return ai_platform_network_get_error(network);
+ 624              		.loc 1 529 3 is_stmt 1 view .LVU169
+ 625              		.loc 1 529 10 is_stmt 0 view .LVU170
+ 626 0002 FFF7FEFF 		bl	ai_platform_network_get_error
+ 627              	.LVL45:
+ 530:X-CUBE-AI/App/network.c **** }
+ 628              		.loc 1 530 1 view .LVU171
+ 629 0006 08BD     		pop	{r3, pc}
+ 630              		.cfi_endproc
+ 631              	.LFE8:
+ 633              		.section	.text.ai_network_create,"ax",%progbits
+ 634              		.align	1
+ 635              		.global	ai_network_create
+ 636              		.syntax unified
+ 637              		.thumb
+ 638              		.thumb_func
+ 640              	ai_network_create:
+ 641              	.LVL46:
+ 642              	.LFB9:
+ 531:X-CUBE-AI/App/network.c **** 
+ 532:X-CUBE-AI/App/network.c **** 
+ 533:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 534:X-CUBE-AI/App/network.c **** ai_error ai_network_create(
+ 535:X-CUBE-AI/App/network.c ****   ai_handle* network, const ai_buffer* network_config)
+ 536:X-CUBE-AI/App/network.c **** {
+ 643              		.loc 1 536 1 is_stmt 1 view -0
+ 644              		.cfi_startproc
+ 645              		@ args = 0, pretend = 0, frame = 0
+ 646              		@ frame_needed = 0, uses_anonymous_args = 0
+ 647              		.loc 1 536 1 is_stmt 0 view .LVU173
+ 648 0000 00B5     		push	{lr}
+ 649              	.LCFI9:
+ 650              		.cfi_def_cfa_offset 4
+ 651              		.cfi_offset 14, -4
+ 652 0002 83B0     		sub	sp, sp, #12
+ 653              	.LCFI10:
+ 654              		.cfi_def_cfa_offset 16
+ 537:X-CUBE-AI/App/network.c ****   return ai_platform_network_create(
+ 655              		.loc 1 537 3 is_stmt 1 view .LVU174
+ 656              		.loc 1 537 10 is_stmt 0 view .LVU175
+ 657 0004 0023     		movs	r3, #0
+ 658 0006 0193     		str	r3, [sp, #4]
+ 659 0008 0523     		movs	r3, #5
+ 660 000a 0093     		str	r3, [sp]
+ 661 000c 0123     		movs	r3, #1
+ 662 000e 034A     		ldr	r2, .L33
+ARM GAS  /tmp/cc2pEp1Z.s 			page 23
+
+
+ 663 0010 FFF7FEFF 		bl	ai_platform_network_create
+ 664              	.LVL47:
+ 538:X-CUBE-AI/App/network.c ****     network, network_config, 
+ 539:X-CUBE-AI/App/network.c ****     AI_CONTEXT_OBJ(&AI_NET_OBJ_INSTANCE),
+ 540:X-CUBE-AI/App/network.c ****     AI_TOOLS_API_VERSION_MAJOR, AI_TOOLS_API_VERSION_MINOR, AI_TOOLS_API_VERSION_MICRO);
+ 541:X-CUBE-AI/App/network.c **** }
+ 665              		.loc 1 541 1 view .LVU176
+ 666 0014 03B0     		add	sp, sp, #12
+ 667              	.LCFI11:
+ 668              		.cfi_def_cfa_offset 4
+ 669              		@ sp needed
+ 670 0016 5DF804FB 		ldr	pc, [sp], #4
+ 671              	.L34:
+ 672 001a 00BF     		.align	2
+ 673              	.L33:
+ 674 001c 00000000 		.word	g_network
+ 675              		.cfi_endproc
+ 676              	.LFE9:
+ 678              		.section	.text.ai_network_inputs_get,"ax",%progbits
+ 679              		.align	1
+ 680              		.global	ai_network_inputs_get
+ 681              		.syntax unified
+ 682              		.thumb
+ 683              		.thumb_func
+ 685              	ai_network_inputs_get:
+ 686              	.LVL48:
+ 687              	.LFB11:
+ 542:X-CUBE-AI/App/network.c **** 
+ 543:X-CUBE-AI/App/network.c **** 
+ 544:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 545:X-CUBE-AI/App/network.c **** ai_error ai_network_create_and_init(
+ 546:X-CUBE-AI/App/network.c ****   ai_handle* network, const ai_handle activations[], const ai_handle weights[])
+ 547:X-CUBE-AI/App/network.c **** {
+ 548:X-CUBE-AI/App/network.c ****   ai_error err;
+ 549:X-CUBE-AI/App/network.c ****   ai_network_params params;
+ 550:X-CUBE-AI/App/network.c **** 
+ 551:X-CUBE-AI/App/network.c ****   err = ai_network_create(network, AI_NETWORK_DATA_CONFIG);
+ 552:X-CUBE-AI/App/network.c ****   if (err.type != AI_ERROR_NONE) {
+ 553:X-CUBE-AI/App/network.c ****     return err;
+ 554:X-CUBE-AI/App/network.c ****   }
+ 555:X-CUBE-AI/App/network.c ****   
+ 556:X-CUBE-AI/App/network.c ****   if (ai_network_data_params_get(&params) != true) {
+ 557:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 558:X-CUBE-AI/App/network.c ****     return err;
+ 559:X-CUBE-AI/App/network.c ****   }
+ 560:X-CUBE-AI/App/network.c **** #if defined(AI_NETWORK_DATA_ACTIVATIONS_COUNT)
+ 561:X-CUBE-AI/App/network.c ****   /* set the addresses of the activations buffers */
+ 562:X-CUBE-AI/App/network.c ****   for (ai_u16 idx=0; activations && idx<params.map_activations.size; idx++) {
+ 563:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 564:X-CUBE-AI/App/network.c ****   }
+ 565:X-CUBE-AI/App/network.c **** #endif
+ 566:X-CUBE-AI/App/network.c **** #if defined(AI_NETWORK_DATA_WEIGHTS_COUNT)
+ 567:X-CUBE-AI/App/network.c ****   /* set the addresses of the weight buffers */
+ 568:X-CUBE-AI/App/network.c ****   for (ai_u16 idx=0; weights && idx<params.map_weights.size; idx++) {
+ 569:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+ 570:X-CUBE-AI/App/network.c ****   }
+ 571:X-CUBE-AI/App/network.c **** #endif
+ARM GAS  /tmp/cc2pEp1Z.s 			page 24
+
+
+ 572:X-CUBE-AI/App/network.c ****   if (ai_network_init(*network, &params) != true) {
+ 573:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 574:X-CUBE-AI/App/network.c ****   }
+ 575:X-CUBE-AI/App/network.c ****   return err;
+ 576:X-CUBE-AI/App/network.c **** }
+ 577:X-CUBE-AI/App/network.c **** 
+ 578:X-CUBE-AI/App/network.c **** 
+ 579:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 580:X-CUBE-AI/App/network.c **** ai_buffer* ai_network_inputs_get(ai_handle network, ai_u16 *n_buffer)
+ 581:X-CUBE-AI/App/network.c **** {
+ 688              		.loc 1 581 1 is_stmt 1 view -0
+ 689              		.cfi_startproc
+ 690              		@ args = 0, pretend = 0, frame = 0
+ 691              		@ frame_needed = 0, uses_anonymous_args = 0
+ 692              		.loc 1 581 1 is_stmt 0 view .LVU178
+ 693 0000 08B5     		push	{r3, lr}
+ 694              	.LCFI12:
+ 695              		.cfi_def_cfa_offset 8
+ 696              		.cfi_offset 3, -8
+ 697              		.cfi_offset 14, -4
+ 582:X-CUBE-AI/App/network.c ****   if (network == AI_HANDLE_NULL) {
+ 698              		.loc 1 582 3 is_stmt 1 view .LVU179
+ 699              		.loc 1 582 6 is_stmt 0 view .LVU180
+ 700 0002 10B1     		cbz	r0, .L38
+ 701              	.LVL49:
+ 702              	.L36:
+ 583:X-CUBE-AI/App/network.c ****     network = (ai_handle)&AI_NET_OBJ_INSTANCE;
+ 584:X-CUBE-AI/App/network.c ****     AI_NETWORK_OBJ(network)->magic = AI_MAGIC_CONTEXT_TOKEN;
+ 585:X-CUBE-AI/App/network.c ****   }
+ 586:X-CUBE-AI/App/network.c ****   return ai_platform_inputs_get(network, n_buffer);
+ 703              		.loc 1 586 3 is_stmt 1 view .LVU181
+ 704              		.loc 1 586 10 is_stmt 0 view .LVU182
+ 705 0004 FFF7FEFF 		bl	ai_platform_inputs_get
+ 706              	.LVL50:
+ 587:X-CUBE-AI/App/network.c **** }
+ 707              		.loc 1 587 1 view .LVU183
+ 708 0008 08BD     		pop	{r3, pc}
+ 709              	.LVL51:
+ 710              	.L38:
+ 583:X-CUBE-AI/App/network.c ****     network = (ai_handle)&AI_NET_OBJ_INSTANCE;
+ 711              		.loc 1 583 5 is_stmt 1 view .LVU184
+ 584:X-CUBE-AI/App/network.c ****   }
+ 712              		.loc 1 584 5 view .LVU185
+ 584:X-CUBE-AI/App/network.c ****   }
+ 713              		.loc 1 584 36 is_stmt 0 view .LVU186
+ 714 000a 0248     		ldr	r0, .L39
+ 715 000c 024B     		ldr	r3, .L39+4
+ 716 000e 0360     		str	r3, [r0]
+ 717 0010 F8E7     		b	.L36
+ 718              	.L40:
+ 719 0012 00BF     		.align	2
+ 720              	.L39:
+ 721 0014 00000000 		.word	g_network
+ 722 0018 0001C0A1 		.word	-1581252352
+ 723              		.cfi_endproc
+ 724              	.LFE11:
+ 726              		.section	.text.ai_network_outputs_get,"ax",%progbits
+ARM GAS  /tmp/cc2pEp1Z.s 			page 25
+
+
+ 727              		.align	1
+ 728              		.global	ai_network_outputs_get
+ 729              		.syntax unified
+ 730              		.thumb
+ 731              		.thumb_func
+ 733              	ai_network_outputs_get:
+ 734              	.LVL52:
+ 735              	.LFB12:
+ 588:X-CUBE-AI/App/network.c **** 
+ 589:X-CUBE-AI/App/network.c **** 
+ 590:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 591:X-CUBE-AI/App/network.c **** ai_buffer* ai_network_outputs_get(ai_handle network, ai_u16 *n_buffer)
+ 592:X-CUBE-AI/App/network.c **** {
+ 736              		.loc 1 592 1 is_stmt 1 view -0
+ 737              		.cfi_startproc
+ 738              		@ args = 0, pretend = 0, frame = 0
+ 739              		@ frame_needed = 0, uses_anonymous_args = 0
+ 740              		.loc 1 592 1 is_stmt 0 view .LVU188
+ 741 0000 08B5     		push	{r3, lr}
+ 742              	.LCFI13:
+ 743              		.cfi_def_cfa_offset 8
+ 744              		.cfi_offset 3, -8
+ 745              		.cfi_offset 14, -4
+ 593:X-CUBE-AI/App/network.c ****   if (network == AI_HANDLE_NULL) {
+ 746              		.loc 1 593 3 is_stmt 1 view .LVU189
+ 747              		.loc 1 593 6 is_stmt 0 view .LVU190
+ 748 0002 10B1     		cbz	r0, .L44
+ 749              	.LVL53:
+ 750              	.L42:
+ 594:X-CUBE-AI/App/network.c ****     network = (ai_handle)&AI_NET_OBJ_INSTANCE;
+ 595:X-CUBE-AI/App/network.c ****     AI_NETWORK_OBJ(network)->magic = AI_MAGIC_CONTEXT_TOKEN;
+ 596:X-CUBE-AI/App/network.c ****   }
+ 597:X-CUBE-AI/App/network.c ****   return ai_platform_outputs_get(network, n_buffer);
+ 751              		.loc 1 597 3 is_stmt 1 view .LVU191
+ 752              		.loc 1 597 10 is_stmt 0 view .LVU192
+ 753 0004 FFF7FEFF 		bl	ai_platform_outputs_get
+ 754              	.LVL54:
+ 598:X-CUBE-AI/App/network.c **** }
+ 755              		.loc 1 598 1 view .LVU193
+ 756 0008 08BD     		pop	{r3, pc}
+ 757              	.LVL55:
+ 758              	.L44:
+ 594:X-CUBE-AI/App/network.c ****     network = (ai_handle)&AI_NET_OBJ_INSTANCE;
+ 759              		.loc 1 594 5 is_stmt 1 view .LVU194
+ 595:X-CUBE-AI/App/network.c ****   }
+ 760              		.loc 1 595 5 view .LVU195
+ 595:X-CUBE-AI/App/network.c ****   }
+ 761              		.loc 1 595 36 is_stmt 0 view .LVU196
+ 762 000a 0248     		ldr	r0, .L45
+ 763 000c 024B     		ldr	r3, .L45+4
+ 764 000e 0360     		str	r3, [r0]
+ 765 0010 F8E7     		b	.L42
+ 766              	.L46:
+ 767 0012 00BF     		.align	2
+ 768              	.L45:
+ 769 0014 00000000 		.word	g_network
+ 770 0018 0001C0A1 		.word	-1581252352
+ARM GAS  /tmp/cc2pEp1Z.s 			page 26
+
+
+ 771              		.cfi_endproc
+ 772              	.LFE12:
+ 774              		.section	.text.ai_network_destroy,"ax",%progbits
+ 775              		.align	1
+ 776              		.global	ai_network_destroy
+ 777              		.syntax unified
+ 778              		.thumb
+ 779              		.thumb_func
+ 781              	ai_network_destroy:
+ 782              	.LVL56:
+ 783              	.LFB13:
+ 599:X-CUBE-AI/App/network.c **** 
+ 600:X-CUBE-AI/App/network.c **** 
+ 601:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 602:X-CUBE-AI/App/network.c **** ai_handle ai_network_destroy(ai_handle network)
+ 603:X-CUBE-AI/App/network.c **** {
+ 784              		.loc 1 603 1 is_stmt 1 view -0
+ 785              		.cfi_startproc
+ 786              		@ args = 0, pretend = 0, frame = 0
+ 787              		@ frame_needed = 0, uses_anonymous_args = 0
+ 788              		.loc 1 603 1 is_stmt 0 view .LVU198
+ 789 0000 08B5     		push	{r3, lr}
+ 790              	.LCFI14:
+ 791              		.cfi_def_cfa_offset 8
+ 792              		.cfi_offset 3, -8
+ 793              		.cfi_offset 14, -4
+ 604:X-CUBE-AI/App/network.c ****   return ai_platform_network_destroy(network);
+ 794              		.loc 1 604 3 is_stmt 1 view .LVU199
+ 795              		.loc 1 604 10 is_stmt 0 view .LVU200
+ 796 0002 FFF7FEFF 		bl	ai_platform_network_destroy
+ 797              	.LVL57:
+ 605:X-CUBE-AI/App/network.c **** }
+ 798              		.loc 1 605 1 view .LVU201
+ 799 0006 08BD     		pop	{r3, pc}
+ 800              		.cfi_endproc
+ 801              	.LFE13:
+ 803              		.section	.text.ai_network_init,"ax",%progbits
+ 804              		.align	1
+ 805              		.global	ai_network_init
+ 806              		.syntax unified
+ 807              		.thumb
+ 808              		.thumb_func
+ 810              	ai_network_init:
+ 811              	.LVL58:
+ 812              	.LFB14:
+ 606:X-CUBE-AI/App/network.c **** 
+ 607:X-CUBE-AI/App/network.c **** 
+ 608:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 609:X-CUBE-AI/App/network.c **** ai_bool ai_network_init(
+ 610:X-CUBE-AI/App/network.c ****   ai_handle network, const ai_network_params* params)
+ 611:X-CUBE-AI/App/network.c **** {
+ 813              		.loc 1 611 1 is_stmt 1 view -0
+ 814              		.cfi_startproc
+ 815              		@ args = 0, pretend = 0, frame = 0
+ 816              		@ frame_needed = 0, uses_anonymous_args = 0
+ 817              		.loc 1 611 1 is_stmt 0 view .LVU203
+ 818 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ARM GAS  /tmp/cc2pEp1Z.s 			page 27
+
+
+ 819              	.LCFI15:
+ 820              		.cfi_def_cfa_offset 24
+ 821              		.cfi_offset 3, -24
+ 822              		.cfi_offset 4, -20
+ 823              		.cfi_offset 5, -16
+ 824              		.cfi_offset 6, -12
+ 825              		.cfi_offset 7, -8
+ 826              		.cfi_offset 14, -4
+ 827 0002 0646     		mov	r6, r0
+ 828 0004 0D46     		mov	r5, r1
+ 612:X-CUBE-AI/App/network.c ****   ai_network* net_ctx = AI_NETWORK_OBJ(ai_platform_network_init(network, params));
+ 829              		.loc 1 612 3 is_stmt 1 view .LVU204
+ 830              		.loc 1 612 25 is_stmt 0 view .LVU205
+ 831 0006 FFF7FEFF 		bl	ai_platform_network_init
+ 832              	.LVL59:
+ 613:X-CUBE-AI/App/network.c ****   ai_bool ok = true;
+ 833              		.loc 1 613 3 is_stmt 1 view .LVU206
+ 614:X-CUBE-AI/App/network.c **** 
+ 615:X-CUBE-AI/App/network.c ****   if (!net_ctx) return false;
+ 834              		.loc 1 615 3 view .LVU207
+ 835              		.loc 1 615 6 is_stmt 0 view .LVU208
+ 836 000a 78B1     		cbz	r0, .L51
+ 837 000c 0746     		mov	r7, r0
+ 616:X-CUBE-AI/App/network.c ****   ok &= network_configure_weights(net_ctx, params);
+ 838              		.loc 1 616 3 is_stmt 1 view .LVU209
+ 839              		.loc 1 616 9 is_stmt 0 view .LVU210
+ 840 000e 2946     		mov	r1, r5
+ 841 0010 FFF7FEFF 		bl	network_configure_weights
+ 842              	.LVL60:
+ 843              		.loc 1 616 9 view .LVU211
+ 844 0014 0446     		mov	r4, r0
+ 845              	.LVL61:
+ 617:X-CUBE-AI/App/network.c ****   ok &= network_configure_activations(net_ctx, params);
+ 846              		.loc 1 617 3 is_stmt 1 view .LVU212
+ 847              		.loc 1 617 9 is_stmt 0 view .LVU213
+ 848 0016 2946     		mov	r1, r5
+ 849 0018 3846     		mov	r0, r7
+ 850 001a FFF7FEFF 		bl	network_configure_activations
+ 851              	.LVL62:
+ 852 001e 0440     		ands	r4, r4, r0
+ 853              	.LVL63:
+ 854              		.loc 1 617 9 view .LVU214
+ 855 0020 E4B2     		uxtb	r4, r4
+ 856              	.LVL64:
+ 618:X-CUBE-AI/App/network.c **** 
+ 619:X-CUBE-AI/App/network.c ****   ok &= ai_platform_network_post_init(network);
+ 857              		.loc 1 619 3 is_stmt 1 view .LVU215
+ 858              		.loc 1 619 9 is_stmt 0 view .LVU216
+ 859 0022 3046     		mov	r0, r6
+ 860 0024 FFF7FEFF 		bl	ai_platform_network_post_init
+ 861              	.LVL65:
+ 862 0028 2040     		ands	r0, r0, r4
+ 863              	.LVL66:
+ 620:X-CUBE-AI/App/network.c **** 
+ 621:X-CUBE-AI/App/network.c ****   return ok;
+ 864              		.loc 1 621 3 is_stmt 1 view .LVU217
+ 865              	.L50:
+ARM GAS  /tmp/cc2pEp1Z.s 			page 28
+
+
+ 622:X-CUBE-AI/App/network.c **** }
+ 866              		.loc 1 622 1 is_stmt 0 view .LVU218
+ 867 002a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 868              	.LVL67:
+ 869              	.L51:
+ 615:X-CUBE-AI/App/network.c ****   ok &= network_configure_weights(net_ctx, params);
+ 870              		.loc 1 615 24 discriminator 1 view .LVU219
+ 871 002c 0020     		movs	r0, #0
+ 872              	.LVL68:
+ 615:X-CUBE-AI/App/network.c ****   ok &= network_configure_weights(net_ctx, params);
+ 873              		.loc 1 615 24 discriminator 1 view .LVU220
+ 874 002e FCE7     		b	.L50
+ 875              		.cfi_endproc
+ 876              	.LFE14:
+ 878              		.section	.text.ai_network_create_and_init,"ax",%progbits
+ 879              		.align	1
+ 880              		.global	ai_network_create_and_init
+ 881              		.syntax unified
+ 882              		.thumb
+ 883              		.thumb_func
+ 885              	ai_network_create_and_init:
+ 886              	.LVL69:
+ 887              	.LFB10:
+ 547:X-CUBE-AI/App/network.c ****   ai_error err;
+ 888              		.loc 1 547 1 is_stmt 1 view -0
+ 889              		.cfi_startproc
+ 890              		@ args = 0, pretend = 0, frame = 56
+ 891              		@ frame_needed = 0, uses_anonymous_args = 0
+ 547:X-CUBE-AI/App/network.c ****   ai_error err;
+ 892              		.loc 1 547 1 is_stmt 0 view .LVU222
+ 893 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 894              	.LCFI16:
+ 895              		.cfi_def_cfa_offset 24
+ 896              		.cfi_offset 4, -24
+ 897              		.cfi_offset 5, -20
+ 898              		.cfi_offset 6, -16
+ 899              		.cfi_offset 7, -12
+ 900              		.cfi_offset 8, -8
+ 901              		.cfi_offset 14, -4
+ 902 0004 8EB0     		sub	sp, sp, #56
+ 903              	.LCFI17:
+ 904              		.cfi_def_cfa_offset 80
+ 905 0006 8046     		mov	r8, r0
+ 906 0008 0E46     		mov	r6, r1
+ 907 000a 1546     		mov	r5, r2
+ 548:X-CUBE-AI/App/network.c ****   ai_network_params params;
+ 908              		.loc 1 548 3 is_stmt 1 view .LVU223
+ 549:X-CUBE-AI/App/network.c **** 
+ 909              		.loc 1 549 3 view .LVU224
+ 551:X-CUBE-AI/App/network.c ****   if (err.type != AI_ERROR_NONE) {
+ 910              		.loc 1 551 3 view .LVU225
+ 551:X-CUBE-AI/App/network.c ****   if (err.type != AI_ERROR_NONE) {
+ 911              		.loc 1 551 9 is_stmt 0 view .LVU226
+ 912 000c 0021     		movs	r1, #0
+ 913              	.LVL70:
+ 551:X-CUBE-AI/App/network.c ****   if (err.type != AI_ERROR_NONE) {
+ 914              		.loc 1 551 9 view .LVU227
+ARM GAS  /tmp/cc2pEp1Z.s 			page 29
+
+
+ 915 000e FFF7FEFF 		bl	ai_network_create
+ 916              	.LVL71:
+ 551:X-CUBE-AI/App/network.c ****   if (err.type != AI_ERROR_NONE) {
+ 917              		.loc 1 551 9 view .LVU228
+ 918 0012 0746     		mov	r7, r0
+ 919              	.LVL72:
+ 552:X-CUBE-AI/App/network.c ****     return err;
+ 920              		.loc 1 552 3 is_stmt 1 view .LVU229
+ 552:X-CUBE-AI/App/network.c ****     return err;
+ 921              		.loc 1 552 6 is_stmt 0 view .LVU230
+ 922 0014 10F0FF0F 		tst	r0, #255
+ 923 0018 02D0     		beq	.L54
+ 924              	.LVL73:
+ 925              	.L55:
+ 576:X-CUBE-AI/App/network.c **** 
+ 926              		.loc 1 576 1 view .LVU231
+ 927 001a 0EB0     		add	sp, sp, #56
+ 928              	.LCFI18:
+ 929              		.cfi_remember_state
+ 930              		.cfi_def_cfa_offset 24
+ 931              		@ sp needed
+ 932 001c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 933              	.LVL74:
+ 934              	.L54:
+ 935              	.LCFI19:
+ 936              		.cfi_restore_state
+ 556:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 937              		.loc 1 556 3 is_stmt 1 view .LVU232
+ 556:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 938              		.loc 1 556 7 is_stmt 0 view .LVU233
+ 939 0020 6846     		mov	r0, sp
+ 940              	.LVL75:
+ 556:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 941              		.loc 1 556 7 view .LVU234
+ 942 0022 FFF7FEFF 		bl	ai_network_data_params_get
+ 943              	.LVL76:
+ 556:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 944              		.loc 1 556 6 discriminator 1 view .LVU235
+ 945 0026 08B1     		cbz	r0, .L66
+ 946              	.LBB4:
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 947              		.loc 1 562 15 view .LVU236
+ 948 0028 0024     		movs	r4, #0
+ 949 002a 0CE0     		b	.L56
+ 950              	.L66:
+ 951              	.LBE4:
+ 557:X-CUBE-AI/App/network.c ****     return err;
+ 952              		.loc 1 557 5 is_stmt 1 view .LVU237
+ 557:X-CUBE-AI/App/network.c ****     return err;
+ 953              		.loc 1 557 11 is_stmt 0 view .LVU238
+ 954 002c D8F80000 		ldr	r0, [r8]
+ 955 0030 FFF7FEFF 		bl	ai_network_get_error
+ 956              	.LVL77:
+ 558:X-CUBE-AI/App/network.c ****   }
+ 957              		.loc 1 558 5 is_stmt 1 view .LVU239
+ 558:X-CUBE-AI/App/network.c ****   }
+ 958              		.loc 1 558 12 is_stmt 0 view .LVU240
+ARM GAS  /tmp/cc2pEp1Z.s 			page 30
+
+
+ 959 0034 F1E7     		b	.L55
+ 960              	.LVL78:
+ 961              	.L58:
+ 962              	.LBB5:
+ 563:X-CUBE-AI/App/network.c ****   }
+ 963              		.loc 1 563 5 is_stmt 1 view .LVU241
+ 964 0036 56F82420 		ldr	r2, [r6, r4, lsl #2]
+ 965 003a 2146     		mov	r1, r4
+ 966 003c 03A8     		add	r0, sp, #12
+ 967 003e FFF7FEFF 		bl	ai_buffer_array_item_set_address
+ 968              	.LVL79:
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 969              		.loc 1 562 73 discriminator 4 view .LVU242
+ 970 0042 0134     		adds	r4, r4, #1
+ 971              	.LVL80:
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 972              		.loc 1 562 73 is_stmt 0 discriminator 4 view .LVU243
+ 973 0044 A4B2     		uxth	r4, r4
+ 974              	.LVL81:
+ 975              	.L56:
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 976              		.loc 1 562 34 is_stmt 1 discriminator 1 view .LVU244
+ 977 0046 D6B1     		cbz	r6, .L64
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 978              		.loc 1 562 63 is_stmt 0 discriminator 3 view .LVU245
+ 979 0048 BDF80E30 		ldrh	r3, [sp, #14]
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 980              		.loc 1 562 34 discriminator 3 view .LVU246
+ 981 004c A342     		cmp	r3, r4
+ 982 004e F2D8     		bhi	.L58
+ 983 0050 0024     		movs	r4, #0
+ 984              	.LVL82:
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 985              		.loc 1 562 34 discriminator 3 view .LVU247
+ 986 0052 07E0     		b	.L59
+ 987              	.LVL83:
+ 988              	.L61:
+ 562:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+ 989              		.loc 1 562 34 discriminator 3 view .LVU248
+ 990              	.LBE5:
+ 991              	.LBB6:
+ 569:X-CUBE-AI/App/network.c ****   }
+ 992              		.loc 1 569 5 is_stmt 1 view .LVU249
+ 993 0054 55F82420 		ldr	r2, [r5, r4, lsl #2]
+ 994 0058 2146     		mov	r1, r4
+ 995 005a 01A8     		add	r0, sp, #4
+ 996 005c FFF7FEFF 		bl	ai_buffer_array_item_set_address
+ 997              	.LVL84:
+ 568:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+ 998              		.loc 1 568 65 discriminator 4 view .LVU250
+ 999 0060 0134     		adds	r4, r4, #1
+ 1000              	.LVL85:
+ 568:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+ 1001              		.loc 1 568 65 is_stmt 0 discriminator 4 view .LVU251
+ 1002 0062 A4B2     		uxth	r4, r4
+ 1003              	.LVL86:
+ 1004              	.L59:
+ARM GAS  /tmp/cc2pEp1Z.s 			page 31
+
+
+ 568:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+ 1005              		.loc 1 568 30 is_stmt 1 discriminator 1 view .LVU252
+ 1006 0064 1DB1     		cbz	r5, .L60
+ 568:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+ 1007              		.loc 1 568 55 is_stmt 0 discriminator 3 view .LVU253
+ 1008 0066 BDF80630 		ldrh	r3, [sp, #6]
+ 568:X-CUBE-AI/App/network.c ****     AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+ 1009              		.loc 1 568 30 discriminator 3 view .LVU254
+ 1010 006a A342     		cmp	r3, r4
+ 1011 006c F2D8     		bhi	.L61
+ 1012              	.L60:
+ 1013              	.LBE6:
+ 572:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 1014              		.loc 1 572 3 is_stmt 1 view .LVU255
+ 572:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 1015              		.loc 1 572 7 is_stmt 0 view .LVU256
+ 1016 006e 6946     		mov	r1, sp
+ 1017 0070 D8F80000 		ldr	r0, [r8]
+ 1018 0074 FFF7FEFF 		bl	ai_network_init
+ 1019              	.LVL87:
+ 572:X-CUBE-AI/App/network.c ****     err = ai_network_get_error(*network);
+ 1020              		.loc 1 572 6 discriminator 1 view .LVU257
+ 1021 0078 18B1     		cbz	r0, .L67
+ 1022              	.L62:
+ 575:X-CUBE-AI/App/network.c **** }
+ 1023              		.loc 1 575 3 is_stmt 1 view .LVU258
+ 1024              	.LVL88:
+ 575:X-CUBE-AI/App/network.c **** }
+ 1025              		.loc 1 575 10 is_stmt 0 view .LVU259
+ 1026 007a 3846     		mov	r0, r7
+ 1027 007c CDE7     		b	.L55
+ 1028              	.LVL89:
+ 1029              	.L64:
+ 1030              	.LBB7:
+ 575:X-CUBE-AI/App/network.c **** }
+ 1031              		.loc 1 575 10 view .LVU260
+ 1032 007e 0024     		movs	r4, #0
+ 1033              	.LVL90:
+ 575:X-CUBE-AI/App/network.c **** }
+ 1034              		.loc 1 575 10 view .LVU261
+ 1035 0080 F0E7     		b	.L59
+ 1036              	.LVL91:
+ 1037              	.L67:
+ 575:X-CUBE-AI/App/network.c **** }
+ 1038              		.loc 1 575 10 view .LVU262
+ 1039              	.LBE7:
+ 573:X-CUBE-AI/App/network.c ****   }
+ 1040              		.loc 1 573 5 is_stmt 1 view .LVU263
+ 573:X-CUBE-AI/App/network.c ****   }
+ 1041              		.loc 1 573 11 is_stmt 0 view .LVU264
+ 1042 0082 D8F80000 		ldr	r0, [r8]
+ 1043 0086 FFF7FEFF 		bl	ai_network_get_error
+ 1044              	.LVL92:
+ 1045 008a 0746     		mov	r7, r0
+ 573:X-CUBE-AI/App/network.c ****   }
+ 1046              		.loc 1 573 11 view .LVU265
+ 1047 008c F5E7     		b	.L62
+ARM GAS  /tmp/cc2pEp1Z.s 			page 32
+
+
+ 1048              		.cfi_endproc
+ 1049              	.LFE10:
+ 1051              		.section	.text.ai_network_run,"ax",%progbits
+ 1052              		.align	1
+ 1053              		.global	ai_network_run
+ 1054              		.syntax unified
+ 1055              		.thumb
+ 1056              		.thumb_func
+ 1058              	ai_network_run:
+ 1059              	.LVL93:
+ 1060              	.LFB15:
+ 623:X-CUBE-AI/App/network.c **** 
+ 624:X-CUBE-AI/App/network.c **** 
+ 625:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 626:X-CUBE-AI/App/network.c **** ai_i32 ai_network_run(
+ 627:X-CUBE-AI/App/network.c ****   ai_handle network, const ai_buffer* input, ai_buffer* output)
+ 628:X-CUBE-AI/App/network.c **** {
+ 1061              		.loc 1 628 1 is_stmt 1 view -0
+ 1062              		.cfi_startproc
+ 1063              		@ args = 0, pretend = 0, frame = 0
+ 1064              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1065              		.loc 1 628 1 is_stmt 0 view .LVU267
+ 1066 0000 08B5     		push	{r3, lr}
+ 1067              	.LCFI20:
+ 1068              		.cfi_def_cfa_offset 8
+ 1069              		.cfi_offset 3, -8
+ 1070              		.cfi_offset 14, -4
+ 629:X-CUBE-AI/App/network.c ****   return ai_platform_network_process(network, input, output);
+ 1071              		.loc 1 629 3 is_stmt 1 view .LVU268
+ 1072              		.loc 1 629 10 is_stmt 0 view .LVU269
+ 1073 0002 FFF7FEFF 		bl	ai_platform_network_process
+ 1074              	.LVL94:
+ 630:X-CUBE-AI/App/network.c **** }
+ 1075              		.loc 1 630 1 view .LVU270
+ 1076 0006 08BD     		pop	{r3, pc}
+ 1077              		.cfi_endproc
+ 1078              	.LFE15:
+ 1080              		.section	.text.ai_network_forward,"ax",%progbits
+ 1081              		.align	1
+ 1082              		.global	ai_network_forward
+ 1083              		.syntax unified
+ 1084              		.thumb
+ 1085              		.thumb_func
+ 1087              	ai_network_forward:
+ 1088              	.LVL95:
+ 1089              	.LFB16:
+ 631:X-CUBE-AI/App/network.c **** 
+ 632:X-CUBE-AI/App/network.c **** 
+ 633:X-CUBE-AI/App/network.c **** AI_API_ENTRY
+ 634:X-CUBE-AI/App/network.c **** ai_i32 ai_network_forward(ai_handle network, const ai_buffer* input)
+ 635:X-CUBE-AI/App/network.c **** {
+ 1090              		.loc 1 635 1 is_stmt 1 view -0
+ 1091              		.cfi_startproc
+ 1092              		@ args = 0, pretend = 0, frame = 0
+ 1093              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1094              		.loc 1 635 1 is_stmt 0 view .LVU272
+ 1095 0000 08B5     		push	{r3, lr}
+ARM GAS  /tmp/cc2pEp1Z.s 			page 33
+
+
+ 1096              	.LCFI21:
+ 1097              		.cfi_def_cfa_offset 8
+ 1098              		.cfi_offset 3, -8
+ 1099              		.cfi_offset 14, -4
+ 636:X-CUBE-AI/App/network.c ****   return ai_platform_network_process(network, input, NULL);
+ 1100              		.loc 1 636 3 is_stmt 1 view .LVU273
+ 1101              		.loc 1 636 10 is_stmt 0 view .LVU274
+ 1102 0002 0022     		movs	r2, #0
+ 1103 0004 FFF7FEFF 		bl	ai_platform_network_process
+ 1104              	.LVL96:
+ 637:X-CUBE-AI/App/network.c **** }
+ 1105              		.loc 1 637 1 view .LVU275
+ 1106 0008 08BD     		pop	{r3, pc}
+ 1107              		.cfi_endproc
+ 1108              	.LFE16:
+ 1110              		.section	.data.g_network,"aw"
+ 1111              		.align	2
+ 1114              	g_network:
+ 1115 0000 0001C0A1 		.word	-1581252352
+ 1116 0004 0AFCCAF3 		.word	-204801014
+ 1117 0008 00000000 		.word	0
+ 1118 000c 00       		.byte	0
+ 1119 000d 00       		.byte	0
+ 1120 000e 00       		.byte	0
+ 1121 000f 00       		.byte	0
+ 1122 0010 00000000 		.word	0
+ 1123 0014 00000000 		.word	0
+ 1124 0018 0000     		.short	0
+ 1125 001a 0000     		.short	0
+ 1126 001c DECAFAA1 		.word	-1577399586
+ 1127 0020 0000     		.short	0
+ 1128 0022 0100     		.short	1
+ 1129 0024 00000000 		.word	__compound_literal.57
+ 1130 0028 0000     		.short	0
+ 1131 002a 0100     		.short	1
+ 1132 002c 00000000 		.word	__compound_literal.59
+ 1133 0030 0200     		.short	2
+ 1134 0032 0000     		.short	0
+ 1135 0034 00000000 		.word	__compound_literal.70
+ 1136 0038 00000000 		.word	gemm_0_layer
+ 1137 003c 00000000 		.word	0
+ 1138 0040 00000000 		.word	0
+ 1139 0044 00000000 		.word	0
+ 1140 0048 00000000 		.word	0
+ 1141              		.section	.data.__compound_literal.70,"aw"
+ 1142              		.align	2
+ 1145              	__compound_literal.70:
+ 1146 0000 0100     		.short	1
+ 1147 0002 0000     		.short	0
+ 1148 0004 00000000 		.word	__compound_literal.60
+ 1149 0008 00000000 		.word	__compound_literal.64
+ 1150 000c 0100     		.short	1
+ 1151 000e 0000     		.short	0
+ 1152 0010 00000000 		.word	__compound_literal.65
+ 1153 0014 00000000 		.word	__compound_literal.69
+ 1154              		.section	.data.__compound_literal.69,"aw"
+ 1155              		.align	2
+ARM GAS  /tmp/cc2pEp1Z.s 			page 34
+
+
+ 1158              	__compound_literal.69:
+ 1159 0000 00000000 		.word	__compound_literal.67
+ 1160 0004 00000000 		.word	__compound_literal.66
+ 1161 0008 00000000 		.word	__compound_literal.68
+ 1162              		.section	.bss.__compound_literal.68,"aw",%nobits
+ 1163              		.align	2
+ 1166              	__compound_literal.68:
+ 1167 0000 00000000 		.space	8
+ 1167      00000000 
+ 1168              		.section	.bss.__compound_literal.67,"aw",%nobits
+ 1169              		.align	2
+ 1172              	__compound_literal.67:
+ 1173 0000 00000000 		.space	16
+ 1173      00000000 
+ 1173      00000000 
+ 1173      00000000 
+ 1174              		.section	.bss.__compound_literal.66,"aw",%nobits
+ 1175              		.align	2
+ 1178              	__compound_literal.66:
+ 1179 0000 00000000 		.space	28
+ 1179      00000000 
+ 1179      00000000 
+ 1179      00000000 
+ 1179      00000000 
+ 1180              		.section	.data.__compound_literal.65,"aw"
+ 1181              		.align	2
+ 1184              	__compound_literal.65:
+ 1185 0000 00000000 		.word	nl_3_output
+ 1186              		.section	.data.__compound_literal.64,"aw"
+ 1187              		.align	2
+ 1190              	__compound_literal.64:
+ 1191 0000 00000000 		.word	__compound_literal.62
+ 1192 0004 00000000 		.word	__compound_literal.61
+ 1193 0008 00000000 		.word	__compound_literal.63
+ 1194              		.section	.bss.__compound_literal.63,"aw",%nobits
+ 1195              		.align	2
+ 1198              	__compound_literal.63:
+ 1199 0000 00000000 		.space	8
+ 1199      00000000 
+ 1200              		.section	.bss.__compound_literal.62,"aw",%nobits
+ 1201              		.align	2
+ 1204              	__compound_literal.62:
+ 1205 0000 00000000 		.space	16
+ 1205      00000000 
+ 1205      00000000 
+ 1205      00000000 
+ 1206              		.section	.bss.__compound_literal.61,"aw",%nobits
+ 1207              		.align	2
+ 1210              	__compound_literal.61:
+ 1211 0000 00000000 		.space	28
+ 1211      00000000 
+ 1211      00000000 
+ 1211      00000000 
+ 1211      00000000 
+ 1212              		.section	.data.__compound_literal.60,"aw"
+ 1213              		.align	2
+ 1216              	__compound_literal.60:
+ARM GAS  /tmp/cc2pEp1Z.s 			page 35
+
+
+ 1217 0000 00000000 		.word	serving_default_keras_tensor_80_output
+ 1218              		.section	.data.__compound_literal.59,"aw"
+ 1219              		.align	2
+ 1222              	__compound_literal.59:
+ 1223 0000 40040400 		.word	263232
+ 1224 0004 00000000 		.word	0
+ 1225 0008 00000000 		.word	0
+ 1226 000c 00000000 		.word	0
+ 1227 0010 80010000 		.word	384
+ 1228 0014 01       		.byte	1
+ 1229 0015 04       		.byte	4
+ 1230 0016 00       		.byte	0
+ 1231 0017 00       		.byte	0
+ 1232 0018 00000000 		.word	__compound_literal.58
+ 1233              		.section	.data.__compound_literal.58,"aw"
+ 1234              		.align	2
+ 1237              	__compound_literal.58:
+ 1238 0000 01000000 		.word	1
+ 1239 0004 80010000 		.word	384
+ 1240 0008 01000000 		.word	1
+ 1241 000c 01000000 		.word	1
+ 1242              		.section	.data.__compound_literal.57,"aw"
+ 1243              		.align	2
+ 1246              	__compound_literal.57:
+ 1247 0000 40040400 		.word	263232
+ 1248 0004 00000000 		.word	0
+ 1249 0008 00000000 		.word	0
+ 1250 000c 00000000 		.word	0
+ 1251 0010 04250000 		.word	9476
+ 1252 0014 01       		.byte	1
+ 1253 0015 04       		.byte	4
+ 1254 0016 00       		.byte	0
+ 1255 0017 00       		.byte	0
+ 1256 0018 00000000 		.word	__compound_literal.56
+ 1257              		.section	.data.__compound_literal.56,"aw"
+ 1258              		.align	2
+ 1261              	__compound_literal.56:
+ 1262 0000 01000000 		.word	1
+ 1263 0004 04250000 		.word	9476
+ 1264 0008 01000000 		.word	1
+ 1265 000c 01000000 		.word	1
+ 1266              		.section	.data.gemm_0_layer,"aw"
+ 1267              		.align	2
+ 1270              	gemm_0_layer:
+ 1271 0000 0401     		.short	260
+ 1272 0002 0000     		.short	0
+ 1273 0004 00000000 		.word	0
+ 1274 0008 00000000 		.word	0
+ 1275 000c 00000000 		.word	0
+ 1276 0010 00000000 		.word	nl_0_nl_layer
+ 1277 0014 00000000 		.word	forward_dense
+ 1278 0018 00000000 		.word	gemm_0_chain
+ 1279              		.section	.rodata.gemm_0_chain,"a"
+ 1280              		.align	2
+ 1283              	gemm_0_chain:
+ 1284 0000 0400     		.short	4
+ 1285 0002 0000     		.short	0
+ARM GAS  /tmp/cc2pEp1Z.s 			page 36
+
+
+ 1286 0004 00000000 		.word	__compound_literal.55
+ 1287              		.section	.data.__compound_literal.55,"aw"
+ 1288              		.align	2
+ 1291              	__compound_literal.55:
+ 1292 0000 0100     		.short	1
+ 1293 0002 0000     		.short	0
+ 1294 0004 00000000 		.word	__compound_literal.51
+ 1295 0008 00000000 		.word	0
+ 1296 000c 0100     		.short	1
+ 1297 000e 0000     		.short	0
+ 1298 0010 00000000 		.word	__compound_literal.52
+ 1299 0014 00000000 		.word	0
+ 1300 0018 0200     		.short	2
+ 1301 001a 0000     		.short	0
+ 1302 001c 00000000 		.word	__compound_literal.53
+ 1303 0020 00000000 		.word	0
+ 1304 0024 0000     		.short	0
+ 1305 0026 0000     		.short	0
+ 1306 0028 00000000 		.word	__compound_literal.54
+ 1307 002c 00000000 		.word	0
+ 1308              		.section	.bss.__compound_literal.54,"aw",%nobits
+ 1309              		.align	2
+ 1312              	__compound_literal.54:
+ 1313 0000 00000000 		.space	4
+ 1314              		.section	.data.__compound_literal.53,"aw"
+ 1315              		.align	2
+ 1318              	__compound_literal.53:
+ 1319 0000 00000000 		.word	gemm_0_weights
+ 1320 0004 00000000 		.word	gemm_0_bias
+ 1321              		.section	.data.__compound_literal.52,"aw"
+ 1322              		.align	2
+ 1325              	__compound_literal.52:
+ 1326 0000 00000000 		.word	gemm_0_output
+ 1327              		.section	.data.__compound_literal.51,"aw"
+ 1328              		.align	2
+ 1331              	__compound_literal.51:
+ 1332 0000 00000000 		.word	serving_default_keras_tensor_80_output
+ 1333              		.section	.data.nl_0_nl_layer,"aw"
+ 1334              		.align	2
+ 1337              	nl_0_nl_layer:
+ 1338 0000 0701     		.short	263
+ 1339 0002 0000     		.short	0
+ 1340 0004 00000000 		.word	0
+ 1341 0008 00000000 		.word	0
+ 1342 000c 00000000 		.word	0
+ 1343 0010 00000000 		.word	gemm_1_layer
+ 1344 0014 00000000 		.word	forward_relu
+ 1345 0018 00000000 		.word	nl_0_nl_chain
+ 1346 001c 00000000 		.word	0
+ 1347              		.section	.rodata.nl_0_nl_chain,"a"
+ 1348              		.align	2
+ 1351              	nl_0_nl_chain:
+ 1352 0000 0400     		.short	4
+ 1353 0002 0000     		.short	0
+ 1354 0004 00000000 		.word	__compound_literal.50
+ 1355              		.section	.data.__compound_literal.50,"aw"
+ 1356              		.align	2
+ARM GAS  /tmp/cc2pEp1Z.s 			page 37
+
+
+ 1359              	__compound_literal.50:
+ 1360 0000 0100     		.short	1
+ 1361 0002 0000     		.short	0
+ 1362 0004 00000000 		.word	__compound_literal.46
+ 1363 0008 00000000 		.word	0
+ 1364 000c 0100     		.short	1
+ 1365 000e 0000     		.short	0
+ 1366 0010 00000000 		.word	__compound_literal.47
+ 1367 0014 00000000 		.word	0
+ 1368 0018 0000     		.short	0
+ 1369 001a 0000     		.short	0
+ 1370 001c 00000000 		.word	__compound_literal.48
+ 1371 0020 00000000 		.word	0
+ 1372 0024 0000     		.short	0
+ 1373 0026 0000     		.short	0
+ 1374 0028 00000000 		.word	__compound_literal.49
+ 1375 002c 00000000 		.word	0
+ 1376              		.section	.bss.__compound_literal.49,"aw",%nobits
+ 1377              		.align	2
+ 1380              	__compound_literal.49:
+ 1381 0000 00000000 		.space	4
+ 1382              		.section	.bss.__compound_literal.48,"aw",%nobits
+ 1383              		.align	2
+ 1386              	__compound_literal.48:
+ 1387 0000 00000000 		.space	4
+ 1388              		.section	.data.__compound_literal.47,"aw"
+ 1389              		.align	2
+ 1392              	__compound_literal.47:
+ 1393 0000 00000000 		.word	nl_0_nl_output
+ 1394              		.section	.data.__compound_literal.46,"aw"
+ 1395              		.align	2
+ 1398              	__compound_literal.46:
+ 1399 0000 00000000 		.word	gemm_0_output
+ 1400              		.section	.data.gemm_1_layer,"aw"
+ 1401              		.align	2
+ 1404              	gemm_1_layer:
+ 1405 0000 0401     		.short	260
+ 1406 0002 0100     		.short	1
+ 1407 0004 00000000 		.word	0
+ 1408 0008 00000000 		.word	0
+ 1409 000c 00000000 		.word	0
+ 1410 0010 00000000 		.word	nl_1_nl_layer
+ 1411 0014 00000000 		.word	forward_dense
+ 1412 0018 00000000 		.word	gemm_1_chain
+ 1413              		.section	.rodata.gemm_1_chain,"a"
+ 1414              		.align	2
+ 1417              	gemm_1_chain:
+ 1418 0000 0400     		.short	4
+ 1419 0002 0000     		.short	0
+ 1420 0004 00000000 		.word	__compound_literal.45
+ 1421              		.section	.data.__compound_literal.45,"aw"
+ 1422              		.align	2
+ 1425              	__compound_literal.45:
+ 1426 0000 0100     		.short	1
+ 1427 0002 0000     		.short	0
+ 1428 0004 00000000 		.word	__compound_literal.41
+ 1429 0008 00000000 		.word	0
+ARM GAS  /tmp/cc2pEp1Z.s 			page 38
+
+
+ 1430 000c 0100     		.short	1
+ 1431 000e 0000     		.short	0
+ 1432 0010 00000000 		.word	__compound_literal.42
+ 1433 0014 00000000 		.word	0
+ 1434 0018 0200     		.short	2
+ 1435 001a 0000     		.short	0
+ 1436 001c 00000000 		.word	__compound_literal.43
+ 1437 0020 00000000 		.word	0
+ 1438 0024 0000     		.short	0
+ 1439 0026 0000     		.short	0
+ 1440 0028 00000000 		.word	__compound_literal.44
+ 1441 002c 00000000 		.word	0
+ 1442              		.section	.bss.__compound_literal.44,"aw",%nobits
+ 1443              		.align	2
+ 1446              	__compound_literal.44:
+ 1447 0000 00000000 		.space	4
+ 1448              		.section	.data.__compound_literal.43,"aw"
+ 1449              		.align	2
+ 1452              	__compound_literal.43:
+ 1453 0000 00000000 		.word	gemm_1_weights
+ 1454 0004 00000000 		.word	gemm_1_bias
+ 1455              		.section	.data.__compound_literal.42,"aw"
+ 1456              		.align	2
+ 1459              	__compound_literal.42:
+ 1460 0000 00000000 		.word	gemm_1_output
+ 1461              		.section	.data.__compound_literal.41,"aw"
+ 1462              		.align	2
+ 1465              	__compound_literal.41:
+ 1466 0000 00000000 		.word	nl_0_nl_output
+ 1467              		.section	.data.nl_1_nl_layer,"aw"
+ 1468              		.align	2
+ 1471              	nl_1_nl_layer:
+ 1472 0000 0701     		.short	263
+ 1473 0002 0100     		.short	1
+ 1474 0004 00000000 		.word	0
+ 1475 0008 00000000 		.word	0
+ 1476 000c 00000000 		.word	0
+ 1477 0010 00000000 		.word	gemm_2_layer
+ 1478 0014 00000000 		.word	forward_relu
+ 1479 0018 00000000 		.word	nl_1_nl_chain
+ 1480 001c 00000000 		.word	0
+ 1481              		.section	.rodata.nl_1_nl_chain,"a"
+ 1482              		.align	2
+ 1485              	nl_1_nl_chain:
+ 1486 0000 0400     		.short	4
+ 1487 0002 0000     		.short	0
+ 1488 0004 00000000 		.word	__compound_literal.40
+ 1489              		.section	.data.__compound_literal.40,"aw"
+ 1490              		.align	2
+ 1493              	__compound_literal.40:
+ 1494 0000 0100     		.short	1
+ 1495 0002 0000     		.short	0
+ 1496 0004 00000000 		.word	__compound_literal.36
+ 1497 0008 00000000 		.word	0
+ 1498 000c 0100     		.short	1
+ 1499 000e 0000     		.short	0
+ 1500 0010 00000000 		.word	__compound_literal.37
+ARM GAS  /tmp/cc2pEp1Z.s 			page 39
+
+
+ 1501 0014 00000000 		.word	0
+ 1502 0018 0000     		.short	0
+ 1503 001a 0000     		.short	0
+ 1504 001c 00000000 		.word	__compound_literal.38
+ 1505 0020 00000000 		.word	0
+ 1506 0024 0000     		.short	0
+ 1507 0026 0000     		.short	0
+ 1508 0028 00000000 		.word	__compound_literal.39
+ 1509 002c 00000000 		.word	0
+ 1510              		.section	.bss.__compound_literal.39,"aw",%nobits
+ 1511              		.align	2
+ 1514              	__compound_literal.39:
+ 1515 0000 00000000 		.space	4
+ 1516              		.section	.bss.__compound_literal.38,"aw",%nobits
+ 1517              		.align	2
+ 1520              	__compound_literal.38:
+ 1521 0000 00000000 		.space	4
+ 1522              		.section	.data.__compound_literal.37,"aw"
+ 1523              		.align	2
+ 1526              	__compound_literal.37:
+ 1527 0000 00000000 		.word	nl_1_nl_output
+ 1528              		.section	.data.__compound_literal.36,"aw"
+ 1529              		.align	2
+ 1532              	__compound_literal.36:
+ 1533 0000 00000000 		.word	gemm_1_output
+ 1534              		.section	.data.gemm_2_layer,"aw"
+ 1535              		.align	2
+ 1538              	gemm_2_layer:
+ 1539 0000 0401     		.short	260
+ 1540 0002 0200     		.short	2
+ 1541 0004 00000000 		.word	0
+ 1542 0008 00000000 		.word	0
+ 1543 000c 00000000 		.word	0
+ 1544 0010 00000000 		.word	nl_3_layer
+ 1545 0014 00000000 		.word	forward_dense
+ 1546 0018 00000000 		.word	gemm_2_chain
+ 1547              		.section	.rodata.gemm_2_chain,"a"
+ 1548              		.align	2
+ 1551              	gemm_2_chain:
+ 1552 0000 0400     		.short	4
+ 1553 0002 0000     		.short	0
+ 1554 0004 00000000 		.word	__compound_literal.35
+ 1555              		.section	.data.__compound_literal.35,"aw"
+ 1556              		.align	2
+ 1559              	__compound_literal.35:
+ 1560 0000 0100     		.short	1
+ 1561 0002 0000     		.short	0
+ 1562 0004 00000000 		.word	__compound_literal.31
+ 1563 0008 00000000 		.word	0
+ 1564 000c 0100     		.short	1
+ 1565 000e 0000     		.short	0
+ 1566 0010 00000000 		.word	__compound_literal.32
+ 1567 0014 00000000 		.word	0
+ 1568 0018 0200     		.short	2
+ 1569 001a 0000     		.short	0
+ 1570 001c 00000000 		.word	__compound_literal.33
+ 1571 0020 00000000 		.word	0
+ARM GAS  /tmp/cc2pEp1Z.s 			page 40
+
+
+ 1572 0024 0000     		.short	0
+ 1573 0026 0000     		.short	0
+ 1574 0028 00000000 		.word	__compound_literal.34
+ 1575 002c 00000000 		.word	0
+ 1576              		.section	.bss.__compound_literal.34,"aw",%nobits
+ 1577              		.align	2
+ 1580              	__compound_literal.34:
+ 1581 0000 00000000 		.space	4
+ 1582              		.section	.data.__compound_literal.33,"aw"
+ 1583              		.align	2
+ 1586              	__compound_literal.33:
+ 1587 0000 00000000 		.word	gemm_2_weights
+ 1588 0004 00000000 		.word	gemm_2_bias
+ 1589              		.section	.data.__compound_literal.32,"aw"
+ 1590              		.align	2
+ 1593              	__compound_literal.32:
+ 1594 0000 00000000 		.word	gemm_2_output
+ 1595              		.section	.data.__compound_literal.31,"aw"
+ 1596              		.align	2
+ 1599              	__compound_literal.31:
+ 1600 0000 00000000 		.word	nl_1_nl_output
+ 1601              		.section	.data.nl_3_layer,"aw"
+ 1602              		.align	2
+ 1605              	nl_3_layer:
+ 1606 0000 0701     		.short	263
+ 1607 0002 0300     		.short	3
+ 1608 0004 00000000 		.word	0
+ 1609 0008 00000000 		.word	0
+ 1610 000c 00000000 		.word	0
+ 1611 0010 00000000 		.word	nl_3_layer
+ 1612 0014 00000000 		.word	forward_sigmoid
+ 1613 0018 00000000 		.word	nl_3_chain
+ 1614 001c 00000000 		.word	0
+ 1615              		.section	.rodata.nl_3_chain,"a"
+ 1616              		.align	2
+ 1619              	nl_3_chain:
+ 1620 0000 0400     		.short	4
+ 1621 0002 0000     		.short	0
+ 1622 0004 00000000 		.word	__compound_literal.30
+ 1623              		.section	.data.__compound_literal.30,"aw"
+ 1624              		.align	2
+ 1627              	__compound_literal.30:
+ 1628 0000 0100     		.short	1
+ 1629 0002 0000     		.short	0
+ 1630 0004 00000000 		.word	__compound_literal.26
+ 1631 0008 00000000 		.word	0
+ 1632 000c 0100     		.short	1
+ 1633 000e 0000     		.short	0
+ 1634 0010 00000000 		.word	__compound_literal.27
+ 1635 0014 00000000 		.word	0
+ 1636 0018 0000     		.short	0
+ 1637 001a 0000     		.short	0
+ 1638 001c 00000000 		.word	__compound_literal.28
+ 1639 0020 00000000 		.word	0
+ 1640 0024 0000     		.short	0
+ 1641 0026 0000     		.short	0
+ 1642 0028 00000000 		.word	__compound_literal.29
+ARM GAS  /tmp/cc2pEp1Z.s 			page 41
+
+
+ 1643 002c 00000000 		.word	0
+ 1644              		.section	.bss.__compound_literal.29,"aw",%nobits
+ 1645              		.align	2
+ 1648              	__compound_literal.29:
+ 1649 0000 00000000 		.space	4
+ 1650              		.section	.bss.__compound_literal.28,"aw",%nobits
+ 1651              		.align	2
+ 1654              	__compound_literal.28:
+ 1655 0000 00000000 		.space	4
+ 1656              		.section	.data.__compound_literal.27,"aw"
+ 1657              		.align	2
+ 1660              	__compound_literal.27:
+ 1661 0000 00000000 		.word	nl_3_output
+ 1662              		.section	.data.__compound_literal.26,"aw"
+ 1663              		.align	2
+ 1666              	__compound_literal.26:
+ 1667 0000 00000000 		.word	gemm_2_output
+ 1668              		.section	.data.serving_default_keras_tensor_80_output,"aw"
+ 1669              		.align	2
+ 1672              	serving_default_keras_tensor_80_output:
+ 1673 0000 00000000 		.word	0
+ 1674 0004 0C00     		.short	12
+ 1675 0006 00       		.byte	0
+ 1676 0007 01       		.byte	1
+ 1677 0008 01       		.byte	1
+ 1678 0009 04       		.byte	4
+ 1679 000a 00       		.byte	0
+ 1680 000b 00       		.byte	0
+ 1681 000c 00000000 		.word	__compound_literal.24
+ 1682 0010 02       		.byte	2
+ 1683 0011 04       		.byte	4
+ 1684 0012 00       		.byte	0
+ 1685 0013 00       		.byte	0
+ 1686 0014 00000000 		.word	__compound_literal.25
+ 1687 0018 00000000 		.word	serving_default_keras_tensor_80_output_array
+ 1688              		.section	.data.__compound_literal.25,"aw"
+ 1689              		.align	2
+ 1692              	__compound_literal.25:
+ 1693 0000 04000000 		.word	4
+ 1694 0004 04000000 		.word	4
+ 1695 0008 0C000000 		.word	12
+ 1696 000c 0C000000 		.word	12
+ 1697              		.section	.data.__compound_literal.24,"aw"
+ 1698              		.align	2
+ 1701              	__compound_literal.24:
+ 1702 0000 01000000 		.word	1
+ 1703 0004 03000000 		.word	3
+ 1704 0008 01000000 		.word	1
+ 1705 000c 01000000 		.word	1
+ 1706              		.section	.data.nl_3_output,"aw"
+ 1707              		.align	2
+ 1710              	nl_3_output:
+ 1711 0000 00000000 		.word	0
+ 1712 0004 0B00     		.short	11
+ 1713 0006 00       		.byte	0
+ 1714 0007 01       		.byte	1
+ 1715 0008 01       		.byte	1
+ARM GAS  /tmp/cc2pEp1Z.s 			page 42
+
+
+ 1716 0009 04       		.byte	4
+ 1717 000a 00       		.byte	0
+ 1718 000b 00       		.byte	0
+ 1719 000c 00000000 		.word	__compound_literal.22
+ 1720 0010 02       		.byte	2
+ 1721 0011 04       		.byte	4
+ 1722 0012 00       		.byte	0
+ 1723 0013 00       		.byte	0
+ 1724 0014 00000000 		.word	__compound_literal.23
+ 1725 0018 00000000 		.word	nl_3_output_array
+ 1726              		.section	.data.__compound_literal.23,"aw"
+ 1727              		.align	2
+ 1730              	__compound_literal.23:
+ 1731 0000 04000000 		.word	4
+ 1732 0004 04000000 		.word	4
+ 1733 0008 04000000 		.word	4
+ 1734 000c 04000000 		.word	4
+ 1735              		.section	.data.__compound_literal.22,"aw"
+ 1736              		.align	2
+ 1739              	__compound_literal.22:
+ 1740 0000 01000000 		.word	1
+ 1741 0004 01000000 		.word	1
+ 1742 0008 01000000 		.word	1
+ 1743 000c 01000000 		.word	1
+ 1744              		.section	.data.nl_1_nl_output,"aw"
+ 1745              		.align	2
+ 1748              	nl_1_nl_output:
+ 1749 0000 00000000 		.word	0
+ 1750 0004 0A00     		.short	10
+ 1751 0006 00       		.byte	0
+ 1752 0007 01       		.byte	1
+ 1753 0008 01       		.byte	1
+ 1754 0009 04       		.byte	4
+ 1755 000a 00       		.byte	0
+ 1756 000b 00       		.byte	0
+ 1757 000c 00000000 		.word	__compound_literal.20
+ 1758 0010 02       		.byte	2
+ 1759 0011 04       		.byte	4
+ 1760 0012 00       		.byte	0
+ 1761 0013 00       		.byte	0
+ 1762 0014 00000000 		.word	__compound_literal.21
+ 1763 0018 00000000 		.word	nl_1_nl_output_array
+ 1764              		.section	.data.__compound_literal.21,"aw"
+ 1765              		.align	2
+ 1768              	__compound_literal.21:
+ 1769 0000 04000000 		.word	4
+ 1770 0004 04000000 		.word	4
+ 1771 0008 80000000 		.word	128
+ 1772 000c 80000000 		.word	128
+ 1773              		.section	.data.__compound_literal.20,"aw"
+ 1774              		.align	2
+ 1777              	__compound_literal.20:
+ 1778 0000 01000000 		.word	1
+ 1779 0004 20000000 		.word	32
+ 1780 0008 01000000 		.word	1
+ 1781 000c 01000000 		.word	1
+ 1782              		.section	.data.nl_0_nl_output,"aw"
+ARM GAS  /tmp/cc2pEp1Z.s 			page 43
+
+
+ 1783              		.align	2
+ 1786              	nl_0_nl_output:
+ 1787 0000 00000000 		.word	0
+ 1788 0004 0900     		.short	9
+ 1789 0006 00       		.byte	0
+ 1790 0007 01       		.byte	1
+ 1791 0008 01       		.byte	1
+ 1792 0009 04       		.byte	4
+ 1793 000a 00       		.byte	0
+ 1794 000b 00       		.byte	0
+ 1795 000c 00000000 		.word	__compound_literal.18
+ 1796 0010 02       		.byte	2
+ 1797 0011 04       		.byte	4
+ 1798 0012 00       		.byte	0
+ 1799 0013 00       		.byte	0
+ 1800 0014 00000000 		.word	__compound_literal.19
+ 1801 0018 00000000 		.word	nl_0_nl_output_array
+ 1802              		.section	.data.__compound_literal.19,"aw"
+ 1803              		.align	2
+ 1806              	__compound_literal.19:
+ 1807 0000 04000000 		.word	4
+ 1808 0004 04000000 		.word	4
+ 1809 0008 00010000 		.word	256
+ 1810 000c 00010000 		.word	256
+ 1811              		.section	.data.__compound_literal.18,"aw"
+ 1812              		.align	2
+ 1815              	__compound_literal.18:
+ 1816 0000 01000000 		.word	1
+ 1817 0004 40000000 		.word	64
+ 1818 0008 01000000 		.word	1
+ 1819 000c 01000000 		.word	1
+ 1820              		.section	.data.gemm_2_weights,"aw"
+ 1821              		.align	2
+ 1824              	gemm_2_weights:
+ 1825 0000 00000000 		.word	0
+ 1826 0004 0800     		.short	8
+ 1827 0006 00       		.byte	0
+ 1828 0007 01       		.byte	1
+ 1829 0008 01       		.byte	1
+ 1830 0009 04       		.byte	4
+ 1831 000a 00       		.byte	0
+ 1832 000b 00       		.byte	0
+ 1833 000c 00000000 		.word	__compound_literal.16
+ 1834 0010 02       		.byte	2
+ 1835 0011 04       		.byte	4
+ 1836 0012 00       		.byte	0
+ 1837 0013 00       		.byte	0
+ 1838 0014 00000000 		.word	__compound_literal.17
+ 1839 0018 00000000 		.word	gemm_2_weights_array
+ 1840              		.section	.data.__compound_literal.17,"aw"
+ 1841              		.align	2
+ 1844              	__compound_literal.17:
+ 1845 0000 04000000 		.word	4
+ 1846 0004 80000000 		.word	128
+ 1847 0008 80000000 		.word	128
+ 1848 000c 80000000 		.word	128
+ 1849              		.section	.data.__compound_literal.16,"aw"
+ARM GAS  /tmp/cc2pEp1Z.s 			page 44
+
+
+ 1850              		.align	2
+ 1853              	__compound_literal.16:
+ 1854 0000 20000000 		.word	32
+ 1855 0004 01000000 		.word	1
+ 1856 0008 01000000 		.word	1
+ 1857 000c 01000000 		.word	1
+ 1858              		.section	.data.gemm_2_output,"aw"
+ 1859              		.align	2
+ 1862              	gemm_2_output:
+ 1863 0000 00000000 		.word	0
+ 1864 0004 0700     		.short	7
+ 1865 0006 00       		.byte	0
+ 1866 0007 01       		.byte	1
+ 1867 0008 01       		.byte	1
+ 1868 0009 04       		.byte	4
+ 1869 000a 00       		.byte	0
+ 1870 000b 00       		.byte	0
+ 1871 000c 00000000 		.word	__compound_literal.14
+ 1872 0010 02       		.byte	2
+ 1873 0011 04       		.byte	4
+ 1874 0012 00       		.byte	0
+ 1875 0013 00       		.byte	0
+ 1876 0014 00000000 		.word	__compound_literal.15
+ 1877 0018 00000000 		.word	gemm_2_output_array
+ 1878              		.section	.data.__compound_literal.15,"aw"
+ 1879              		.align	2
+ 1882              	__compound_literal.15:
+ 1883 0000 04000000 		.word	4
+ 1884 0004 04000000 		.word	4
+ 1885 0008 04000000 		.word	4
+ 1886 000c 04000000 		.word	4
+ 1887              		.section	.data.__compound_literal.14,"aw"
+ 1888              		.align	2
+ 1891              	__compound_literal.14:
+ 1892 0000 01000000 		.word	1
+ 1893 0004 01000000 		.word	1
+ 1894 0008 01000000 		.word	1
+ 1895 000c 01000000 		.word	1
+ 1896              		.section	.data.gemm_2_bias,"aw"
+ 1897              		.align	2
+ 1900              	gemm_2_bias:
+ 1901 0000 00000000 		.word	0
+ 1902 0004 0600     		.short	6
+ 1903 0006 00       		.byte	0
+ 1904 0007 01       		.byte	1
+ 1905 0008 01       		.byte	1
+ 1906 0009 04       		.byte	4
+ 1907 000a 00       		.byte	0
+ 1908 000b 00       		.byte	0
+ 1909 000c 00000000 		.word	__compound_literal.12
+ 1910 0010 02       		.byte	2
+ 1911 0011 04       		.byte	4
+ 1912 0012 00       		.byte	0
+ 1913 0013 00       		.byte	0
+ 1914 0014 00000000 		.word	__compound_literal.13
+ 1915 0018 00000000 		.word	gemm_2_bias_array
+ 1916              		.section	.data.__compound_literal.13,"aw"
+ARM GAS  /tmp/cc2pEp1Z.s 			page 45
+
+
+ 1917              		.align	2
+ 1920              	__compound_literal.13:
+ 1921 0000 04000000 		.word	4
+ 1922 0004 04000000 		.word	4
+ 1923 0008 04000000 		.word	4
+ 1924 000c 04000000 		.word	4
+ 1925              		.section	.data.__compound_literal.12,"aw"
+ 1926              		.align	2
+ 1929              	__compound_literal.12:
+ 1930 0000 01000000 		.word	1
+ 1931 0004 01000000 		.word	1
+ 1932 0008 01000000 		.word	1
+ 1933 000c 01000000 		.word	1
+ 1934              		.section	.data.gemm_1_weights,"aw"
+ 1935              		.align	2
+ 1938              	gemm_1_weights:
+ 1939 0000 00000000 		.word	0
+ 1940 0004 0500     		.short	5
+ 1941 0006 00       		.byte	0
+ 1942 0007 01       		.byte	1
+ 1943 0008 01       		.byte	1
+ 1944 0009 04       		.byte	4
+ 1945 000a 00       		.byte	0
+ 1946 000b 00       		.byte	0
+ 1947 000c 00000000 		.word	__compound_literal.10
+ 1948 0010 02       		.byte	2
+ 1949 0011 04       		.byte	4
+ 1950 0012 00       		.byte	0
+ 1951 0013 00       		.byte	0
+ 1952 0014 00000000 		.word	__compound_literal.11
+ 1953 0018 00000000 		.word	gemm_1_weights_array
+ 1954              		.section	.data.__compound_literal.11,"aw"
+ 1955              		.align	2
+ 1958              	__compound_literal.11:
+ 1959 0000 04000000 		.word	4
+ 1960 0004 00010000 		.word	256
+ 1961 0008 00200000 		.word	8192
+ 1962 000c 00200000 		.word	8192
+ 1963              		.section	.data.__compound_literal.10,"aw"
+ 1964              		.align	2
+ 1967              	__compound_literal.10:
+ 1968 0000 40000000 		.word	64
+ 1969 0004 20000000 		.word	32
+ 1970 0008 01000000 		.word	1
+ 1971 000c 01000000 		.word	1
+ 1972              		.section	.data.gemm_1_output,"aw"
+ 1973              		.align	2
+ 1976              	gemm_1_output:
+ 1977 0000 00000000 		.word	0
+ 1978 0004 0400     		.short	4
+ 1979 0006 00       		.byte	0
+ 1980 0007 01       		.byte	1
+ 1981 0008 01       		.byte	1
+ 1982 0009 04       		.byte	4
+ 1983 000a 00       		.byte	0
+ 1984 000b 00       		.byte	0
+ 1985 000c 00000000 		.word	__compound_literal.8
+ARM GAS  /tmp/cc2pEp1Z.s 			page 46
+
+
+ 1986 0010 02       		.byte	2
+ 1987 0011 04       		.byte	4
+ 1988 0012 00       		.byte	0
+ 1989 0013 00       		.byte	0
+ 1990 0014 00000000 		.word	__compound_literal.9
+ 1991 0018 00000000 		.word	gemm_1_output_array
+ 1992              		.section	.data.__compound_literal.9,"aw"
+ 1993              		.align	2
+ 1996              	__compound_literal.9:
+ 1997 0000 04000000 		.word	4
+ 1998 0004 04000000 		.word	4
+ 1999 0008 80000000 		.word	128
+ 2000 000c 80000000 		.word	128
+ 2001              		.section	.data.__compound_literal.8,"aw"
+ 2002              		.align	2
+ 2005              	__compound_literal.8:
+ 2006 0000 01000000 		.word	1
+ 2007 0004 20000000 		.word	32
+ 2008 0008 01000000 		.word	1
+ 2009 000c 01000000 		.word	1
+ 2010              		.section	.data.gemm_1_bias,"aw"
+ 2011              		.align	2
+ 2014              	gemm_1_bias:
+ 2015 0000 00000000 		.word	0
+ 2016 0004 0300     		.short	3
+ 2017 0006 00       		.byte	0
+ 2018 0007 01       		.byte	1
+ 2019 0008 01       		.byte	1
+ 2020 0009 04       		.byte	4
+ 2021 000a 00       		.byte	0
+ 2022 000b 00       		.byte	0
+ 2023 000c 00000000 		.word	__compound_literal.6
+ 2024 0010 02       		.byte	2
+ 2025 0011 04       		.byte	4
+ 2026 0012 00       		.byte	0
+ 2027 0013 00       		.byte	0
+ 2028 0014 00000000 		.word	__compound_literal.7
+ 2029 0018 00000000 		.word	gemm_1_bias_array
+ 2030              		.section	.data.__compound_literal.7,"aw"
+ 2031              		.align	2
+ 2034              	__compound_literal.7:
+ 2035 0000 04000000 		.word	4
+ 2036 0004 04000000 		.word	4
+ 2037 0008 80000000 		.word	128
+ 2038 000c 80000000 		.word	128
+ 2039              		.section	.data.__compound_literal.6,"aw"
+ 2040              		.align	2
+ 2043              	__compound_literal.6:
+ 2044 0000 01000000 		.word	1
+ 2045 0004 20000000 		.word	32
+ 2046 0008 01000000 		.word	1
+ 2047 000c 01000000 		.word	1
+ 2048              		.section	.data.gemm_0_weights,"aw"
+ 2049              		.align	2
+ 2052              	gemm_0_weights:
+ 2053 0000 00000000 		.word	0
+ 2054 0004 0200     		.short	2
+ARM GAS  /tmp/cc2pEp1Z.s 			page 47
+
+
+ 2055 0006 00       		.byte	0
+ 2056 0007 01       		.byte	1
+ 2057 0008 01       		.byte	1
+ 2058 0009 04       		.byte	4
+ 2059 000a 00       		.byte	0
+ 2060 000b 00       		.byte	0
+ 2061 000c 00000000 		.word	__compound_literal.4
+ 2062 0010 02       		.byte	2
+ 2063 0011 04       		.byte	4
+ 2064 0012 00       		.byte	0
+ 2065 0013 00       		.byte	0
+ 2066 0014 00000000 		.word	__compound_literal.5
+ 2067 0018 00000000 		.word	gemm_0_weights_array
+ 2068              		.section	.data.__compound_literal.5,"aw"
+ 2069              		.align	2
+ 2072              	__compound_literal.5:
+ 2073 0000 04000000 		.word	4
+ 2074 0004 0C000000 		.word	12
+ 2075 0008 00030000 		.word	768
+ 2076 000c 00030000 		.word	768
+ 2077              		.section	.data.__compound_literal.4,"aw"
+ 2078              		.align	2
+ 2081              	__compound_literal.4:
+ 2082 0000 03000000 		.word	3
+ 2083 0004 40000000 		.word	64
+ 2084 0008 01000000 		.word	1
+ 2085 000c 01000000 		.word	1
+ 2086              		.section	.data.gemm_0_output,"aw"
+ 2087              		.align	2
+ 2090              	gemm_0_output:
+ 2091 0000 00000000 		.word	0
+ 2092 0004 0100     		.short	1
+ 2093 0006 00       		.byte	0
+ 2094 0007 01       		.byte	1
+ 2095 0008 01       		.byte	1
+ 2096 0009 04       		.byte	4
+ 2097 000a 00       		.byte	0
+ 2098 000b 00       		.byte	0
+ 2099 000c 00000000 		.word	__compound_literal.2
+ 2100 0010 02       		.byte	2
+ 2101 0011 04       		.byte	4
+ 2102 0012 00       		.byte	0
+ 2103 0013 00       		.byte	0
+ 2104 0014 00000000 		.word	__compound_literal.3
+ 2105 0018 00000000 		.word	gemm_0_output_array
+ 2106              		.section	.data.__compound_literal.3,"aw"
+ 2107              		.align	2
+ 2110              	__compound_literal.3:
+ 2111 0000 04000000 		.word	4
+ 2112 0004 04000000 		.word	4
+ 2113 0008 00010000 		.word	256
+ 2114 000c 00010000 		.word	256
+ 2115              		.section	.data.__compound_literal.2,"aw"
+ 2116              		.align	2
+ 2119              	__compound_literal.2:
+ 2120 0000 01000000 		.word	1
+ 2121 0004 40000000 		.word	64
+ARM GAS  /tmp/cc2pEp1Z.s 			page 48
+
+
+ 2122 0008 01000000 		.word	1
+ 2123 000c 01000000 		.word	1
+ 2124              		.section	.data.gemm_0_bias,"aw"
+ 2125              		.align	2
+ 2128              	gemm_0_bias:
+ 2129 0000 00000000 		.word	0
+ 2130 0004 0000     		.short	0
+ 2131 0006 00       		.byte	0
+ 2132 0007 01       		.byte	1
+ 2133 0008 01       		.byte	1
+ 2134 0009 04       		.byte	4
+ 2135 000a 00       		.byte	0
+ 2136 000b 00       		.byte	0
+ 2137 000c 00000000 		.word	__compound_literal.0
+ 2138 0010 02       		.byte	2
+ 2139 0011 04       		.byte	4
+ 2140 0012 00       		.byte	0
+ 2141 0013 00       		.byte	0
+ 2142 0014 00000000 		.word	__compound_literal.1
+ 2143 0018 00000000 		.word	gemm_0_bias_array
+ 2144              		.section	.data.__compound_literal.1,"aw"
+ 2145              		.align	2
+ 2148              	__compound_literal.1:
+ 2149 0000 04000000 		.word	4
+ 2150 0004 04000000 		.word	4
+ 2151 0008 00010000 		.word	256
+ 2152 000c 00010000 		.word	256
+ 2153              		.section	.data.__compound_literal.0,"aw"
+ 2154              		.align	2
+ 2157              	__compound_literal.0:
+ 2158 0000 01000000 		.word	1
+ 2159 0004 40000000 		.word	64
+ 2160 0008 01000000 		.word	1
+ 2161 000c 01000000 		.word	1
+ 2162              		.section	.data.gemm_2_bias_array,"aw"
+ 2163              		.align	2
+ 2166              	gemm_2_bias_array:
+ 2167 0000 40108200 		.word	8523840
+ 2168 0004 01000000 		.word	1
+ 2169 0008 00000000 		.word	0
+ 2170 000c 00000000 		.word	0
+ 2171              		.section	.data.gemm_2_weights_array,"aw"
+ 2172              		.align	2
+ 2175              	gemm_2_weights_array:
+ 2176 0000 40108200 		.word	8523840
+ 2177 0004 20000000 		.word	32
+ 2178 0008 00000000 		.word	0
+ 2179 000c 00000000 		.word	0
+ 2180              		.section	.data.gemm_1_bias_array,"aw"
+ 2181              		.align	2
+ 2184              	gemm_1_bias_array:
+ 2185 0000 40108200 		.word	8523840
+ 2186 0004 20000000 		.word	32
+ 2187 0008 00000000 		.word	0
+ 2188 000c 00000000 		.word	0
+ 2189              		.section	.data.gemm_1_weights_array,"aw"
+ 2190              		.align	2
+ARM GAS  /tmp/cc2pEp1Z.s 			page 49
+
+
+ 2193              	gemm_1_weights_array:
+ 2194 0000 40108200 		.word	8523840
+ 2195 0004 00080000 		.word	2048
+ 2196 0008 00000000 		.word	0
+ 2197 000c 00000000 		.word	0
+ 2198              		.section	.data.gemm_0_bias_array,"aw"
+ 2199              		.align	2
+ 2202              	gemm_0_bias_array:
+ 2203 0000 40108200 		.word	8523840
+ 2204 0004 40000000 		.word	64
+ 2205 0008 00000000 		.word	0
+ 2206 000c 00000000 		.word	0
+ 2207              		.section	.data.gemm_0_weights_array,"aw"
+ 2208              		.align	2
+ 2211              	gemm_0_weights_array:
+ 2212 0000 40108200 		.word	8523840
+ 2213 0004 C0000000 		.word	192
+ 2214 0008 00000000 		.word	0
+ 2215 000c 00000000 		.word	0
+ 2216              		.section	.data.nl_3_output_array,"aw"
+ 2217              		.align	2
+ 2220              	nl_3_output_array:
+ 2221 0000 40108208 		.word	142741568
+ 2222 0004 01000000 		.word	1
+ 2223 0008 00000000 		.word	0
+ 2224 000c 00000000 		.word	0
+ 2225              		.section	.data.gemm_2_output_array,"aw"
+ 2226              		.align	2
+ 2229              	gemm_2_output_array:
+ 2230 0000 40108200 		.word	8523840
+ 2231 0004 01000000 		.word	1
+ 2232 0008 00000000 		.word	0
+ 2233 000c 00000000 		.word	0
+ 2234              		.section	.data.nl_1_nl_output_array,"aw"
+ 2235              		.align	2
+ 2238              	nl_1_nl_output_array:
+ 2239 0000 40108200 		.word	8523840
+ 2240 0004 20000000 		.word	32
+ 2241 0008 00000000 		.word	0
+ 2242 000c 00000000 		.word	0
+ 2243              		.section	.data.gemm_1_output_array,"aw"
+ 2244              		.align	2
+ 2247              	gemm_1_output_array:
+ 2248 0000 40108200 		.word	8523840
+ 2249 0004 20000000 		.word	32
+ 2250 0008 00000000 		.word	0
+ 2251 000c 00000000 		.word	0
+ 2252              		.section	.data.nl_0_nl_output_array,"aw"
+ 2253              		.align	2
+ 2256              	nl_0_nl_output_array:
+ 2257 0000 40108200 		.word	8523840
+ 2258 0004 40000000 		.word	64
+ 2259 0008 00000000 		.word	0
+ 2260 000c 00000000 		.word	0
+ 2261              		.section	.data.gemm_0_output_array,"aw"
+ 2262              		.align	2
+ 2265              	gemm_0_output_array:
+ARM GAS  /tmp/cc2pEp1Z.s 			page 50
+
+
+ 2266 0000 40108200 		.word	8523840
+ 2267 0004 40000000 		.word	64
+ 2268 0008 00000000 		.word	0
+ 2269 000c 00000000 		.word	0
+ 2270              		.section	.data.serving_default_keras_tensor_80_output_array,"aw"
+ 2271              		.align	2
+ 2274              	serving_default_keras_tensor_80_output_array:
+ 2275 0000 40108208 		.word	142741568
+ 2276 0004 03000000 		.word	3
+ 2277 0008 00000000 		.word	0
+ 2278 000c 00000000 		.word	0
+ 2279              		.section	.bss.g_network_weights_map,"aw",%nobits
+ 2280              		.align	2
+ 2283              	g_network_weights_map:
+ 2284 0000 00000000 		.space	4
+ 2285              		.section	.bss.g_network_activations_map,"aw",%nobits
+ 2286              		.align	2
+ 2289              	g_network_activations_map:
+ 2290 0000 00000000 		.space	4
+ 2291              		.text
+ 2292              	.Letext0:
+ 2293              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 2294              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 2295              		.file 4 "Middlewares/ST/AI/Inc/ai_platform.h"
+ 2296              		.file 5 "Middlewares/ST/AI/Inc/datatypes_network.h"
+ 2297              		.file 6 "Middlewares/ST/AI/Inc/ai_datatypes_format.h"
+ 2298              		.file 7 "Middlewares/ST/AI/Inc/ai_platform_interface.h"
+ 2299              		.file 8 "Middlewares/ST/AI/Inc/core_common.h"
+ 2300              		.file 9 "Middlewares/ST/AI/Inc/core_datatypes.h"
+ 2301              		.file 10 "Middlewares/ST/AI/Inc/layers_common.h"
+ 2302              		.file 11 "Middlewares/ST/AI/Inc/layers_nl.h"
+ 2303              		.file 12 "Middlewares/ST/AI/Inc/layers_conv2d.h"
+ 2304              		.file 13 "X-CUBE-AI/App/network_data.h"
+ 2305              		.file 14 "<built-in>"
+ARM GAS  /tmp/cc2pEp1Z.s 			page 51
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 network.c
+     /tmp/cc2pEp1Z.s:22     .text.network_configure_weights:00000000 $t
+     /tmp/cc2pEp1Z.s:27     .text.network_configure_weights:00000000 network_configure_weights
+     /tmp/cc2pEp1Z.s:169    .text.network_configure_weights:00000090 $d
+     /tmp/cc2pEp1Z.s:2283   .bss.g_network_weights_map:00000000 g_network_weights_map
+     /tmp/cc2pEp1Z.s:2211   .data.gemm_0_weights_array:00000000 gemm_0_weights_array
+     /tmp/cc2pEp1Z.s:2202   .data.gemm_0_bias_array:00000000 gemm_0_bias_array
+     /tmp/cc2pEp1Z.s:2193   .data.gemm_1_weights_array:00000000 gemm_1_weights_array
+     /tmp/cc2pEp1Z.s:2184   .data.gemm_1_bias_array:00000000 gemm_1_bias_array
+     /tmp/cc2pEp1Z.s:2175   .data.gemm_2_weights_array:00000000 gemm_2_weights_array
+     /tmp/cc2pEp1Z.s:2166   .data.gemm_2_bias_array:00000000 gemm_2_bias_array
+     /tmp/cc2pEp1Z.s:180    .text.network_configure_activations:00000000 $t
+     /tmp/cc2pEp1Z.s:185    .text.network_configure_activations:00000000 network_configure_activations
+     /tmp/cc2pEp1Z.s:292    .text.network_configure_activations:0000005c $d
+     /tmp/cc2pEp1Z.s:2289   .bss.g_network_activations_map:00000000 g_network_activations_map
+     /tmp/cc2pEp1Z.s:2274   .data.serving_default_keras_tensor_80_output_array:00000000 serving_default_keras_tensor_80_output_array
+     /tmp/cc2pEp1Z.s:2265   .data.gemm_0_output_array:00000000 gemm_0_output_array
+     /tmp/cc2pEp1Z.s:2256   .data.nl_0_nl_output_array:00000000 nl_0_nl_output_array
+     /tmp/cc2pEp1Z.s:2247   .data.gemm_1_output_array:00000000 gemm_1_output_array
+     /tmp/cc2pEp1Z.s:2238   .data.nl_1_nl_output_array:00000000 nl_1_nl_output_array
+     /tmp/cc2pEp1Z.s:2229   .data.gemm_2_output_array:00000000 gemm_2_output_array
+     /tmp/cc2pEp1Z.s:2220   .data.nl_3_output_array:00000000 nl_3_output_array
+     /tmp/cc2pEp1Z.s:304    .rodata.ai_network_get_info.str1.4:00000000 $d
+     /tmp/cc2pEp1Z.s:320    .text.ai_network_get_info:00000000 $t
+     /tmp/cc2pEp1Z.s:326    .text.ai_network_get_info:00000000 ai_network_get_info
+     /tmp/cc2pEp1Z.s:451    .text.ai_network_get_info:00000088 $d
+     /tmp/cc2pEp1Z.s:461    .text.ai_network_get_report:00000000 $t
+     /tmp/cc2pEp1Z.s:467    .text.ai_network_get_report:00000000 ai_network_get_report
+     /tmp/cc2pEp1Z.s:594    .text.ai_network_get_report:0000008c $d
+     /tmp/cc2pEp1Z.s:605    .text.ai_network_get_error:00000000 $t
+     /tmp/cc2pEp1Z.s:611    .text.ai_network_get_error:00000000 ai_network_get_error
+     /tmp/cc2pEp1Z.s:634    .text.ai_network_create:00000000 $t
+     /tmp/cc2pEp1Z.s:640    .text.ai_network_create:00000000 ai_network_create
+     /tmp/cc2pEp1Z.s:674    .text.ai_network_create:0000001c $d
+     /tmp/cc2pEp1Z.s:1114   .data.g_network:00000000 g_network
+     /tmp/cc2pEp1Z.s:679    .text.ai_network_inputs_get:00000000 $t
+     /tmp/cc2pEp1Z.s:685    .text.ai_network_inputs_get:00000000 ai_network_inputs_get
+     /tmp/cc2pEp1Z.s:721    .text.ai_network_inputs_get:00000014 $d
+     /tmp/cc2pEp1Z.s:727    .text.ai_network_outputs_get:00000000 $t
+     /tmp/cc2pEp1Z.s:733    .text.ai_network_outputs_get:00000000 ai_network_outputs_get
+     /tmp/cc2pEp1Z.s:769    .text.ai_network_outputs_get:00000014 $d
+     /tmp/cc2pEp1Z.s:775    .text.ai_network_destroy:00000000 $t
+     /tmp/cc2pEp1Z.s:781    .text.ai_network_destroy:00000000 ai_network_destroy
+     /tmp/cc2pEp1Z.s:804    .text.ai_network_init:00000000 $t
+     /tmp/cc2pEp1Z.s:810    .text.ai_network_init:00000000 ai_network_init
+     /tmp/cc2pEp1Z.s:879    .text.ai_network_create_and_init:00000000 $t
+     /tmp/cc2pEp1Z.s:885    .text.ai_network_create_and_init:00000000 ai_network_create_and_init
+     /tmp/cc2pEp1Z.s:1052   .text.ai_network_run:00000000 $t
+     /tmp/cc2pEp1Z.s:1058   .text.ai_network_run:00000000 ai_network_run
+     /tmp/cc2pEp1Z.s:1081   .text.ai_network_forward:00000000 $t
+     /tmp/cc2pEp1Z.s:1087   .text.ai_network_forward:00000000 ai_network_forward
+     /tmp/cc2pEp1Z.s:1111   .data.g_network:00000000 $d
+     /tmp/cc2pEp1Z.s:1246   .data.__compound_literal.57:00000000 __compound_literal.57
+     /tmp/cc2pEp1Z.s:1222   .data.__compound_literal.59:00000000 __compound_literal.59
+     /tmp/cc2pEp1Z.s:1145   .data.__compound_literal.70:00000000 __compound_literal.70
+     /tmp/cc2pEp1Z.s:1270   .data.gemm_0_layer:00000000 gemm_0_layer
+ARM GAS  /tmp/cc2pEp1Z.s 			page 52
+
+
+     /tmp/cc2pEp1Z.s:1142   .data.__compound_literal.70:00000000 $d
+     /tmp/cc2pEp1Z.s:1216   .data.__compound_literal.60:00000000 __compound_literal.60
+     /tmp/cc2pEp1Z.s:1190   .data.__compound_literal.64:00000000 __compound_literal.64
+     /tmp/cc2pEp1Z.s:1184   .data.__compound_literal.65:00000000 __compound_literal.65
+     /tmp/cc2pEp1Z.s:1158   .data.__compound_literal.69:00000000 __compound_literal.69
+     /tmp/cc2pEp1Z.s:1155   .data.__compound_literal.69:00000000 $d
+     /tmp/cc2pEp1Z.s:1172   .bss.__compound_literal.67:00000000 __compound_literal.67
+     /tmp/cc2pEp1Z.s:1178   .bss.__compound_literal.66:00000000 __compound_literal.66
+     /tmp/cc2pEp1Z.s:1166   .bss.__compound_literal.68:00000000 __compound_literal.68
+     /tmp/cc2pEp1Z.s:1163   .bss.__compound_literal.68:00000000 $d
+     /tmp/cc2pEp1Z.s:1169   .bss.__compound_literal.67:00000000 $d
+     /tmp/cc2pEp1Z.s:1175   .bss.__compound_literal.66:00000000 $d
+     /tmp/cc2pEp1Z.s:1181   .data.__compound_literal.65:00000000 $d
+     /tmp/cc2pEp1Z.s:1710   .data.nl_3_output:00000000 nl_3_output
+     /tmp/cc2pEp1Z.s:1187   .data.__compound_literal.64:00000000 $d
+     /tmp/cc2pEp1Z.s:1204   .bss.__compound_literal.62:00000000 __compound_literal.62
+     /tmp/cc2pEp1Z.s:1210   .bss.__compound_literal.61:00000000 __compound_literal.61
+     /tmp/cc2pEp1Z.s:1198   .bss.__compound_literal.63:00000000 __compound_literal.63
+     /tmp/cc2pEp1Z.s:1195   .bss.__compound_literal.63:00000000 $d
+     /tmp/cc2pEp1Z.s:1201   .bss.__compound_literal.62:00000000 $d
+     /tmp/cc2pEp1Z.s:1207   .bss.__compound_literal.61:00000000 $d
+     /tmp/cc2pEp1Z.s:1213   .data.__compound_literal.60:00000000 $d
+     /tmp/cc2pEp1Z.s:1672   .data.serving_default_keras_tensor_80_output:00000000 serving_default_keras_tensor_80_output
+     /tmp/cc2pEp1Z.s:1219   .data.__compound_literal.59:00000000 $d
+     /tmp/cc2pEp1Z.s:1237   .data.__compound_literal.58:00000000 __compound_literal.58
+     /tmp/cc2pEp1Z.s:1234   .data.__compound_literal.58:00000000 $d
+     /tmp/cc2pEp1Z.s:1243   .data.__compound_literal.57:00000000 $d
+     /tmp/cc2pEp1Z.s:1261   .data.__compound_literal.56:00000000 __compound_literal.56
+     /tmp/cc2pEp1Z.s:1258   .data.__compound_literal.56:00000000 $d
+     /tmp/cc2pEp1Z.s:1267   .data.gemm_0_layer:00000000 $d
+     /tmp/cc2pEp1Z.s:1337   .data.nl_0_nl_layer:00000000 nl_0_nl_layer
+     /tmp/cc2pEp1Z.s:1283   .rodata.gemm_0_chain:00000000 gemm_0_chain
+     /tmp/cc2pEp1Z.s:1280   .rodata.gemm_0_chain:00000000 $d
+     /tmp/cc2pEp1Z.s:1291   .data.__compound_literal.55:00000000 __compound_literal.55
+     /tmp/cc2pEp1Z.s:1288   .data.__compound_literal.55:00000000 $d
+     /tmp/cc2pEp1Z.s:1331   .data.__compound_literal.51:00000000 __compound_literal.51
+     /tmp/cc2pEp1Z.s:1325   .data.__compound_literal.52:00000000 __compound_literal.52
+     /tmp/cc2pEp1Z.s:1318   .data.__compound_literal.53:00000000 __compound_literal.53
+     /tmp/cc2pEp1Z.s:1312   .bss.__compound_literal.54:00000000 __compound_literal.54
+     /tmp/cc2pEp1Z.s:1309   .bss.__compound_literal.54:00000000 $d
+     /tmp/cc2pEp1Z.s:1315   .data.__compound_literal.53:00000000 $d
+     /tmp/cc2pEp1Z.s:2052   .data.gemm_0_weights:00000000 gemm_0_weights
+     /tmp/cc2pEp1Z.s:2128   .data.gemm_0_bias:00000000 gemm_0_bias
+     /tmp/cc2pEp1Z.s:1322   .data.__compound_literal.52:00000000 $d
+     /tmp/cc2pEp1Z.s:2090   .data.gemm_0_output:00000000 gemm_0_output
+     /tmp/cc2pEp1Z.s:1328   .data.__compound_literal.51:00000000 $d
+     /tmp/cc2pEp1Z.s:1334   .data.nl_0_nl_layer:00000000 $d
+     /tmp/cc2pEp1Z.s:1404   .data.gemm_1_layer:00000000 gemm_1_layer
+     /tmp/cc2pEp1Z.s:1351   .rodata.nl_0_nl_chain:00000000 nl_0_nl_chain
+     /tmp/cc2pEp1Z.s:1348   .rodata.nl_0_nl_chain:00000000 $d
+     /tmp/cc2pEp1Z.s:1359   .data.__compound_literal.50:00000000 __compound_literal.50
+     /tmp/cc2pEp1Z.s:1356   .data.__compound_literal.50:00000000 $d
+     /tmp/cc2pEp1Z.s:1398   .data.__compound_literal.46:00000000 __compound_literal.46
+     /tmp/cc2pEp1Z.s:1392   .data.__compound_literal.47:00000000 __compound_literal.47
+     /tmp/cc2pEp1Z.s:1386   .bss.__compound_literal.48:00000000 __compound_literal.48
+     /tmp/cc2pEp1Z.s:1380   .bss.__compound_literal.49:00000000 __compound_literal.49
+     /tmp/cc2pEp1Z.s:1377   .bss.__compound_literal.49:00000000 $d
+ARM GAS  /tmp/cc2pEp1Z.s 			page 53
+
+
+     /tmp/cc2pEp1Z.s:1383   .bss.__compound_literal.48:00000000 $d
+     /tmp/cc2pEp1Z.s:1389   .data.__compound_literal.47:00000000 $d
+     /tmp/cc2pEp1Z.s:1786   .data.nl_0_nl_output:00000000 nl_0_nl_output
+     /tmp/cc2pEp1Z.s:1395   .data.__compound_literal.46:00000000 $d
+     /tmp/cc2pEp1Z.s:1401   .data.gemm_1_layer:00000000 $d
+     /tmp/cc2pEp1Z.s:1471   .data.nl_1_nl_layer:00000000 nl_1_nl_layer
+     /tmp/cc2pEp1Z.s:1417   .rodata.gemm_1_chain:00000000 gemm_1_chain
+     /tmp/cc2pEp1Z.s:1414   .rodata.gemm_1_chain:00000000 $d
+     /tmp/cc2pEp1Z.s:1425   .data.__compound_literal.45:00000000 __compound_literal.45
+     /tmp/cc2pEp1Z.s:1422   .data.__compound_literal.45:00000000 $d
+     /tmp/cc2pEp1Z.s:1465   .data.__compound_literal.41:00000000 __compound_literal.41
+     /tmp/cc2pEp1Z.s:1459   .data.__compound_literal.42:00000000 __compound_literal.42
+     /tmp/cc2pEp1Z.s:1452   .data.__compound_literal.43:00000000 __compound_literal.43
+     /tmp/cc2pEp1Z.s:1446   .bss.__compound_literal.44:00000000 __compound_literal.44
+     /tmp/cc2pEp1Z.s:1443   .bss.__compound_literal.44:00000000 $d
+     /tmp/cc2pEp1Z.s:1449   .data.__compound_literal.43:00000000 $d
+     /tmp/cc2pEp1Z.s:1938   .data.gemm_1_weights:00000000 gemm_1_weights
+     /tmp/cc2pEp1Z.s:2014   .data.gemm_1_bias:00000000 gemm_1_bias
+     /tmp/cc2pEp1Z.s:1456   .data.__compound_literal.42:00000000 $d
+     /tmp/cc2pEp1Z.s:1976   .data.gemm_1_output:00000000 gemm_1_output
+     /tmp/cc2pEp1Z.s:1462   .data.__compound_literal.41:00000000 $d
+     /tmp/cc2pEp1Z.s:1468   .data.nl_1_nl_layer:00000000 $d
+     /tmp/cc2pEp1Z.s:1538   .data.gemm_2_layer:00000000 gemm_2_layer
+     /tmp/cc2pEp1Z.s:1485   .rodata.nl_1_nl_chain:00000000 nl_1_nl_chain
+     /tmp/cc2pEp1Z.s:1482   .rodata.nl_1_nl_chain:00000000 $d
+     /tmp/cc2pEp1Z.s:1493   .data.__compound_literal.40:00000000 __compound_literal.40
+     /tmp/cc2pEp1Z.s:1490   .data.__compound_literal.40:00000000 $d
+     /tmp/cc2pEp1Z.s:1532   .data.__compound_literal.36:00000000 __compound_literal.36
+     /tmp/cc2pEp1Z.s:1526   .data.__compound_literal.37:00000000 __compound_literal.37
+     /tmp/cc2pEp1Z.s:1520   .bss.__compound_literal.38:00000000 __compound_literal.38
+     /tmp/cc2pEp1Z.s:1514   .bss.__compound_literal.39:00000000 __compound_literal.39
+     /tmp/cc2pEp1Z.s:1511   .bss.__compound_literal.39:00000000 $d
+     /tmp/cc2pEp1Z.s:1517   .bss.__compound_literal.38:00000000 $d
+     /tmp/cc2pEp1Z.s:1523   .data.__compound_literal.37:00000000 $d
+     /tmp/cc2pEp1Z.s:1748   .data.nl_1_nl_output:00000000 nl_1_nl_output
+     /tmp/cc2pEp1Z.s:1529   .data.__compound_literal.36:00000000 $d
+     /tmp/cc2pEp1Z.s:1535   .data.gemm_2_layer:00000000 $d
+     /tmp/cc2pEp1Z.s:1605   .data.nl_3_layer:00000000 nl_3_layer
+     /tmp/cc2pEp1Z.s:1551   .rodata.gemm_2_chain:00000000 gemm_2_chain
+     /tmp/cc2pEp1Z.s:1548   .rodata.gemm_2_chain:00000000 $d
+     /tmp/cc2pEp1Z.s:1559   .data.__compound_literal.35:00000000 __compound_literal.35
+     /tmp/cc2pEp1Z.s:1556   .data.__compound_literal.35:00000000 $d
+     /tmp/cc2pEp1Z.s:1599   .data.__compound_literal.31:00000000 __compound_literal.31
+     /tmp/cc2pEp1Z.s:1593   .data.__compound_literal.32:00000000 __compound_literal.32
+     /tmp/cc2pEp1Z.s:1586   .data.__compound_literal.33:00000000 __compound_literal.33
+     /tmp/cc2pEp1Z.s:1580   .bss.__compound_literal.34:00000000 __compound_literal.34
+     /tmp/cc2pEp1Z.s:1577   .bss.__compound_literal.34:00000000 $d
+     /tmp/cc2pEp1Z.s:1583   .data.__compound_literal.33:00000000 $d
+     /tmp/cc2pEp1Z.s:1824   .data.gemm_2_weights:00000000 gemm_2_weights
+     /tmp/cc2pEp1Z.s:1900   .data.gemm_2_bias:00000000 gemm_2_bias
+     /tmp/cc2pEp1Z.s:1590   .data.__compound_literal.32:00000000 $d
+     /tmp/cc2pEp1Z.s:1862   .data.gemm_2_output:00000000 gemm_2_output
+     /tmp/cc2pEp1Z.s:1596   .data.__compound_literal.31:00000000 $d
+     /tmp/cc2pEp1Z.s:1602   .data.nl_3_layer:00000000 $d
+     /tmp/cc2pEp1Z.s:1619   .rodata.nl_3_chain:00000000 nl_3_chain
+     /tmp/cc2pEp1Z.s:1616   .rodata.nl_3_chain:00000000 $d
+     /tmp/cc2pEp1Z.s:1627   .data.__compound_literal.30:00000000 __compound_literal.30
+ARM GAS  /tmp/cc2pEp1Z.s 			page 54
+
+
+     /tmp/cc2pEp1Z.s:1624   .data.__compound_literal.30:00000000 $d
+     /tmp/cc2pEp1Z.s:1666   .data.__compound_literal.26:00000000 __compound_literal.26
+     /tmp/cc2pEp1Z.s:1660   .data.__compound_literal.27:00000000 __compound_literal.27
+     /tmp/cc2pEp1Z.s:1654   .bss.__compound_literal.28:00000000 __compound_literal.28
+     /tmp/cc2pEp1Z.s:1648   .bss.__compound_literal.29:00000000 __compound_literal.29
+     /tmp/cc2pEp1Z.s:1645   .bss.__compound_literal.29:00000000 $d
+     /tmp/cc2pEp1Z.s:1651   .bss.__compound_literal.28:00000000 $d
+     /tmp/cc2pEp1Z.s:1657   .data.__compound_literal.27:00000000 $d
+     /tmp/cc2pEp1Z.s:1663   .data.__compound_literal.26:00000000 $d
+     /tmp/cc2pEp1Z.s:1669   .data.serving_default_keras_tensor_80_output:00000000 $d
+     /tmp/cc2pEp1Z.s:1701   .data.__compound_literal.24:00000000 __compound_literal.24
+     /tmp/cc2pEp1Z.s:1692   .data.__compound_literal.25:00000000 __compound_literal.25
+     /tmp/cc2pEp1Z.s:1689   .data.__compound_literal.25:00000000 $d
+     /tmp/cc2pEp1Z.s:1698   .data.__compound_literal.24:00000000 $d
+     /tmp/cc2pEp1Z.s:1707   .data.nl_3_output:00000000 $d
+     /tmp/cc2pEp1Z.s:1739   .data.__compound_literal.22:00000000 __compound_literal.22
+     /tmp/cc2pEp1Z.s:1730   .data.__compound_literal.23:00000000 __compound_literal.23
+     /tmp/cc2pEp1Z.s:1727   .data.__compound_literal.23:00000000 $d
+     /tmp/cc2pEp1Z.s:1736   .data.__compound_literal.22:00000000 $d
+     /tmp/cc2pEp1Z.s:1745   .data.nl_1_nl_output:00000000 $d
+     /tmp/cc2pEp1Z.s:1777   .data.__compound_literal.20:00000000 __compound_literal.20
+     /tmp/cc2pEp1Z.s:1768   .data.__compound_literal.21:00000000 __compound_literal.21
+     /tmp/cc2pEp1Z.s:1765   .data.__compound_literal.21:00000000 $d
+     /tmp/cc2pEp1Z.s:1774   .data.__compound_literal.20:00000000 $d
+     /tmp/cc2pEp1Z.s:1783   .data.nl_0_nl_output:00000000 $d
+     /tmp/cc2pEp1Z.s:1815   .data.__compound_literal.18:00000000 __compound_literal.18
+     /tmp/cc2pEp1Z.s:1806   .data.__compound_literal.19:00000000 __compound_literal.19
+     /tmp/cc2pEp1Z.s:1803   .data.__compound_literal.19:00000000 $d
+     /tmp/cc2pEp1Z.s:1812   .data.__compound_literal.18:00000000 $d
+     /tmp/cc2pEp1Z.s:1821   .data.gemm_2_weights:00000000 $d
+     /tmp/cc2pEp1Z.s:1853   .data.__compound_literal.16:00000000 __compound_literal.16
+     /tmp/cc2pEp1Z.s:1844   .data.__compound_literal.17:00000000 __compound_literal.17
+     /tmp/cc2pEp1Z.s:1841   .data.__compound_literal.17:00000000 $d
+     /tmp/cc2pEp1Z.s:1850   .data.__compound_literal.16:00000000 $d
+     /tmp/cc2pEp1Z.s:1859   .data.gemm_2_output:00000000 $d
+     /tmp/cc2pEp1Z.s:1891   .data.__compound_literal.14:00000000 __compound_literal.14
+     /tmp/cc2pEp1Z.s:1882   .data.__compound_literal.15:00000000 __compound_literal.15
+     /tmp/cc2pEp1Z.s:1879   .data.__compound_literal.15:00000000 $d
+     /tmp/cc2pEp1Z.s:1888   .data.__compound_literal.14:00000000 $d
+     /tmp/cc2pEp1Z.s:1897   .data.gemm_2_bias:00000000 $d
+     /tmp/cc2pEp1Z.s:1929   .data.__compound_literal.12:00000000 __compound_literal.12
+     /tmp/cc2pEp1Z.s:1920   .data.__compound_literal.13:00000000 __compound_literal.13
+     /tmp/cc2pEp1Z.s:1917   .data.__compound_literal.13:00000000 $d
+     /tmp/cc2pEp1Z.s:1926   .data.__compound_literal.12:00000000 $d
+     /tmp/cc2pEp1Z.s:1935   .data.gemm_1_weights:00000000 $d
+     /tmp/cc2pEp1Z.s:1967   .data.__compound_literal.10:00000000 __compound_literal.10
+     /tmp/cc2pEp1Z.s:1958   .data.__compound_literal.11:00000000 __compound_literal.11
+     /tmp/cc2pEp1Z.s:1955   .data.__compound_literal.11:00000000 $d
+     /tmp/cc2pEp1Z.s:1964   .data.__compound_literal.10:00000000 $d
+     /tmp/cc2pEp1Z.s:1973   .data.gemm_1_output:00000000 $d
+     /tmp/cc2pEp1Z.s:2005   .data.__compound_literal.8:00000000 __compound_literal.8
+     /tmp/cc2pEp1Z.s:1996   .data.__compound_literal.9:00000000 __compound_literal.9
+     /tmp/cc2pEp1Z.s:1993   .data.__compound_literal.9:00000000 $d
+     /tmp/cc2pEp1Z.s:2002   .data.__compound_literal.8:00000000 $d
+     /tmp/cc2pEp1Z.s:2011   .data.gemm_1_bias:00000000 $d
+     /tmp/cc2pEp1Z.s:2043   .data.__compound_literal.6:00000000 __compound_literal.6
+     /tmp/cc2pEp1Z.s:2034   .data.__compound_literal.7:00000000 __compound_literal.7
+ARM GAS  /tmp/cc2pEp1Z.s 			page 55
+
+
+     /tmp/cc2pEp1Z.s:2031   .data.__compound_literal.7:00000000 $d
+     /tmp/cc2pEp1Z.s:2040   .data.__compound_literal.6:00000000 $d
+     /tmp/cc2pEp1Z.s:2049   .data.gemm_0_weights:00000000 $d
+     /tmp/cc2pEp1Z.s:2081   .data.__compound_literal.4:00000000 __compound_literal.4
+     /tmp/cc2pEp1Z.s:2072   .data.__compound_literal.5:00000000 __compound_literal.5
+     /tmp/cc2pEp1Z.s:2069   .data.__compound_literal.5:00000000 $d
+     /tmp/cc2pEp1Z.s:2078   .data.__compound_literal.4:00000000 $d
+     /tmp/cc2pEp1Z.s:2087   .data.gemm_0_output:00000000 $d
+     /tmp/cc2pEp1Z.s:2119   .data.__compound_literal.2:00000000 __compound_literal.2
+     /tmp/cc2pEp1Z.s:2110   .data.__compound_literal.3:00000000 __compound_literal.3
+     /tmp/cc2pEp1Z.s:2107   .data.__compound_literal.3:00000000 $d
+     /tmp/cc2pEp1Z.s:2116   .data.__compound_literal.2:00000000 $d
+     /tmp/cc2pEp1Z.s:2125   .data.gemm_0_bias:00000000 $d
+     /tmp/cc2pEp1Z.s:2157   .data.__compound_literal.0:00000000 __compound_literal.0
+     /tmp/cc2pEp1Z.s:2148   .data.__compound_literal.1:00000000 __compound_literal.1
+     /tmp/cc2pEp1Z.s:2145   .data.__compound_literal.1:00000000 $d
+     /tmp/cc2pEp1Z.s:2154   .data.__compound_literal.0:00000000 $d
+     /tmp/cc2pEp1Z.s:2163   .data.gemm_2_bias_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2172   .data.gemm_2_weights_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2181   .data.gemm_1_bias_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2190   .data.gemm_1_weights_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2199   .data.gemm_0_bias_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2208   .data.gemm_0_weights_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2217   .data.nl_3_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2226   .data.gemm_2_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2235   .data.nl_1_nl_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2244   .data.gemm_1_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2253   .data.nl_0_nl_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2262   .data.gemm_0_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2271   .data.serving_default_keras_tensor_80_output_array:00000000 $d
+     /tmp/cc2pEp1Z.s:2280   .bss.g_network_weights_map:00000000 $d
+     /tmp/cc2pEp1Z.s:2286   .bss.g_network_activations_map:00000000 $d
+
+UNDEFINED SYMBOLS
+ai_platform_get_weights_map
+ai_platform_network_set_error
+ai_platform_get_activations_map
+ai_platform_context_acquire
+memset
+ai_platform_runtime_get_revision
+ai_platform_runtime_get_version
+ai_platform_api_get_version
+ai_platform_interface_api_get_version
+ai_platform_api_get_network_report
+memcpy
+ai_platform_network_get_error
+ai_platform_network_create
+ai_platform_inputs_get
+ai_platform_outputs_get
+ai_platform_network_destroy
+ai_platform_network_init
+ai_platform_network_post_init
+ai_network_data_params_get
+ai_buffer_array_item_set_address
+ai_platform_network_process
+forward_dense
+forward_relu
+ARM GAS  /tmp/cc2pEp1Z.s 			page 56
+
+
+forward_sigmoid

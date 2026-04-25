@@ -1,0 +1,1367 @@
+ARM GAS  /tmp/cc3KUCYO.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"app_x-cube-ai.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "X-CUBE-AI/App/app_x-cube-ai.c"
+  21              		.section	.text.normalize_float,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	normalize_float:
+  28              	.LVL0:
+  29              	.LFB161:
+   1:X-CUBE-AI/App/app_x-cube-ai.c **** 
+   2:X-CUBE-AI/App/app_x-cube-ai.c **** /**
+   3:X-CUBE-AI/App/app_x-cube-ai.c ****   ******************************************************************************
+   4:X-CUBE-AI/App/app_x-cube-ai.c ****   * @file    app_x-cube-ai.c
+   5:X-CUBE-AI/App/app_x-cube-ai.c ****   * @author  X-CUBE-AI C code generator
+   6:X-CUBE-AI/App/app_x-cube-ai.c ****   * @brief   AI program body
+   7:X-CUBE-AI/App/app_x-cube-ai.c ****   ******************************************************************************
+   8:X-CUBE-AI/App/app_x-cube-ai.c ****   * @attention
+   9:X-CUBE-AI/App/app_x-cube-ai.c ****   *
+  10:X-CUBE-AI/App/app_x-cube-ai.c ****   * Copyright (c) 2026 STMicroelectronics.
+  11:X-CUBE-AI/App/app_x-cube-ai.c ****   * All rights reserved.
+  12:X-CUBE-AI/App/app_x-cube-ai.c ****   *
+  13:X-CUBE-AI/App/app_x-cube-ai.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:X-CUBE-AI/App/app_x-cube-ai.c ****   * in the root directory of this software component.
+  15:X-CUBE-AI/App/app_x-cube-ai.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:X-CUBE-AI/App/app_x-cube-ai.c ****   *
+  17:X-CUBE-AI/App/app_x-cube-ai.c ****   ******************************************************************************
+  18:X-CUBE-AI/App/app_x-cube-ai.c ****   */
+  19:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  20:X-CUBE-AI/App/app_x-cube-ai.c ****  /*
+  21:X-CUBE-AI/App/app_x-cube-ai.c ****   * Description
+  22:X-CUBE-AI/App/app_x-cube-ai.c ****   *   v1.0 - Minimum template to show how to use the Embedded Client API
+  23:X-CUBE-AI/App/app_x-cube-ai.c ****   *          model. Only one input and one output is supported. All
+  24:X-CUBE-AI/App/app_x-cube-ai.c ****   *          memory resources are allocated statically (AI_NETWORK_XX, defines
+  25:X-CUBE-AI/App/app_x-cube-ai.c ****   *          are used).
+  26:X-CUBE-AI/App/app_x-cube-ai.c ****   *          Re-target of the printf function is out-of-scope.
+  27:X-CUBE-AI/App/app_x-cube-ai.c ****   *   v2.0 - add multiple IO and/or multiple heap support
+  28:X-CUBE-AI/App/app_x-cube-ai.c ****   *
+  29:X-CUBE-AI/App/app_x-cube-ai.c ****   *   For more information, see the embeded documentation:
+ARM GAS  /tmp/cc3KUCYO.s 			page 2
+
+
+  30:X-CUBE-AI/App/app_x-cube-ai.c ****   *
+  31:X-CUBE-AI/App/app_x-cube-ai.c ****   *       [1] %X_CUBE_AI_DIR%/Documentation/index.html
+  32:X-CUBE-AI/App/app_x-cube-ai.c ****   *
+  33:X-CUBE-AI/App/app_x-cube-ai.c ****   *   X_CUBE_AI_DIR indicates the location where the X-CUBE-AI pack is installed
+  34:X-CUBE-AI/App/app_x-cube-ai.c ****   *   typical : C:\Users\[user_name]\STM32Cube\Repository\STMicroelectronics\X-CUBE-AI\7.1.0
+  35:X-CUBE-AI/App/app_x-cube-ai.c ****   */
+  36:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  37:X-CUBE-AI/App/app_x-cube-ai.c **** #ifdef __cplusplus
+  38:X-CUBE-AI/App/app_x-cube-ai.c ****  extern "C" {
+  39:X-CUBE-AI/App/app_x-cube-ai.c **** #endif
+  40:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  41:X-CUBE-AI/App/app_x-cube-ai.c **** /* Includes ------------------------------------------------------------------*/
+  42:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  43:X-CUBE-AI/App/app_x-cube-ai.c **** #if defined ( __ICCARM__ )
+  44:X-CUBE-AI/App/app_x-cube-ai.c **** #elif defined ( __CC_ARM ) || ( __GNUC__ )
+  45:X-CUBE-AI/App/app_x-cube-ai.c **** #endif
+  46:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  47:X-CUBE-AI/App/app_x-cube-ai.c **** /* System headers */
+  48:X-CUBE-AI/App/app_x-cube-ai.c **** #include <stdint.h>
+  49:X-CUBE-AI/App/app_x-cube-ai.c **** #include <stdlib.h>
+  50:X-CUBE-AI/App/app_x-cube-ai.c **** #include <stdio.h>
+  51:X-CUBE-AI/App/app_x-cube-ai.c **** #include <inttypes.h>
+  52:X-CUBE-AI/App/app_x-cube-ai.c **** #include <string.h>
+  53:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  54:X-CUBE-AI/App/app_x-cube-ai.c **** #include "app_x-cube-ai.h"
+  55:X-CUBE-AI/App/app_x-cube-ai.c **** #include "main.h"
+  56:X-CUBE-AI/App/app_x-cube-ai.c **** #include "ai_datatypes_defines.h"
+  57:X-CUBE-AI/App/app_x-cube-ai.c **** #include "network.h"
+  58:X-CUBE-AI/App/app_x-cube-ai.c **** #include "network_data.h"
+  59:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  60:X-CUBE-AI/App/app_x-cube-ai.c **** /* USER CODE BEGIN includes */
+  61:X-CUBE-AI/App/app_x-cube-ai.c **** /* USER CODE END includes */
+  62:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  63:X-CUBE-AI/App/app_x-cube-ai.c **** /* IO buffers ----------------------------------------------------------------*/
+  64:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  65:X-CUBE-AI/App/app_x-cube-ai.c **** #if !defined(AI_NETWORK_INPUTS_IN_ACTIVATIONS)
+  66:X-CUBE-AI/App/app_x-cube-ai.c **** AI_ALIGNED(4) ai_i8 data_in_1[AI_NETWORK_IN_1_SIZE_BYTES];
+  67:X-CUBE-AI/App/app_x-cube-ai.c **** ai_i8* data_ins[AI_NETWORK_IN_NUM] = {
+  68:X-CUBE-AI/App/app_x-cube-ai.c **** data_in_1
+  69:X-CUBE-AI/App/app_x-cube-ai.c **** };
+  70:X-CUBE-AI/App/app_x-cube-ai.c **** #else
+  71:X-CUBE-AI/App/app_x-cube-ai.c **** ai_i8* data_ins[AI_NETWORK_IN_NUM] = {
+  72:X-CUBE-AI/App/app_x-cube-ai.c **** NULL
+  73:X-CUBE-AI/App/app_x-cube-ai.c **** };
+  74:X-CUBE-AI/App/app_x-cube-ai.c **** #endif
+  75:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  76:X-CUBE-AI/App/app_x-cube-ai.c **** #if !defined(AI_NETWORK_OUTPUTS_IN_ACTIVATIONS)
+  77:X-CUBE-AI/App/app_x-cube-ai.c **** AI_ALIGNED(4) ai_i8 data_out_1[AI_NETWORK_OUT_1_SIZE_BYTES];
+  78:X-CUBE-AI/App/app_x-cube-ai.c **** ai_i8* data_outs[AI_NETWORK_OUT_NUM] = {
+  79:X-CUBE-AI/App/app_x-cube-ai.c **** data_out_1
+  80:X-CUBE-AI/App/app_x-cube-ai.c **** };
+  81:X-CUBE-AI/App/app_x-cube-ai.c **** #else
+  82:X-CUBE-AI/App/app_x-cube-ai.c **** ai_i8* data_outs[AI_NETWORK_OUT_NUM] = {
+  83:X-CUBE-AI/App/app_x-cube-ai.c **** NULL
+  84:X-CUBE-AI/App/app_x-cube-ai.c **** };
+  85:X-CUBE-AI/App/app_x-cube-ai.c **** #endif
+  86:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ARM GAS  /tmp/cc3KUCYO.s 			page 3
+
+
+  87:X-CUBE-AI/App/app_x-cube-ai.c **** /* Activations buffers -------------------------------------------------------*/
+  88:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  89:X-CUBE-AI/App/app_x-cube-ai.c **** AI_ALIGNED(32)
+  90:X-CUBE-AI/App/app_x-cube-ai.c **** static uint8_t pool0[AI_NETWORK_DATA_ACTIVATION_1_SIZE];
+  91:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  92:X-CUBE-AI/App/app_x-cube-ai.c **** ai_handle data_activations0[] = {pool0};
+  93:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  94:X-CUBE-AI/App/app_x-cube-ai.c **** /* AI objects ----------------------------------------------------------------*/
+  95:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  96:X-CUBE-AI/App/app_x-cube-ai.c **** static ai_handle network = AI_HANDLE_NULL;
+  97:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  98:X-CUBE-AI/App/app_x-cube-ai.c **** static ai_buffer* ai_input;
+  99:X-CUBE-AI/App/app_x-cube-ai.c **** static ai_buffer* ai_output;
+ 100:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 101:X-CUBE-AI/App/app_x-cube-ai.c **** static const float PRESSURE_MIN = 980.0f;
+ 102:X-CUBE-AI/App/app_x-cube-ai.c **** static const float PRESSURE_MAX = 1040.0f;
+ 103:X-CUBE-AI/App/app_x-cube-ai.c **** static const float TEMPERATURE_MIN = 0.0f;
+ 104:X-CUBE-AI/App/app_x-cube-ai.c **** static const float TEMPERATURE_MAX = 40.0f;
+ 105:X-CUBE-AI/App/app_x-cube-ai.c **** static const float HUMIDITY_MIN = 20.0f;
+ 106:X-CUBE-AI/App/app_x-cube-ai.c **** static const float HUMIDITY_MAX = 100.0f;
+ 107:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 108:X-CUBE-AI/App/app_x-cube-ai.c **** static float random_float_range(float min, float max)
+ 109:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 110:X-CUBE-AI/App/app_x-cube-ai.c ****   return min + ((float)rand() / (float)RAND_MAX) * (max - min);
+ 111:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 112:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 113:X-CUBE-AI/App/app_x-cube-ai.c **** static float normalize_float(float value, float min, float max)
+ 114:X-CUBE-AI/App/app_x-cube-ai.c **** {
+  30              		.loc 1 114 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+ 115:X-CUBE-AI/App/app_x-cube-ai.c ****   return (value - min) / (max - min);
+  35              		.loc 1 115 3 view .LVU1
+  36              		.loc 1 115 17 is_stmt 0 view .LVU2
+  37 0000 30EE600A 		vsub.f32	s0, s0, s1
+  38              	.LVL1:
+  39              		.loc 1 115 31 view .LVU3
+  40 0004 31EE601A 		vsub.f32	s2, s2, s1
+  41              	.LVL2:
+ 116:X-CUBE-AI/App/app_x-cube-ai.c **** }
+  42              		.loc 1 116 1 view .LVU4
+  43 0008 80EE010A 		vdiv.f32	s0, s0, s2
+  44 000c 7047     		bx	lr
+  45              		.cfi_endproc
+  46              	.LFE161:
+  48              		.section	.rodata.ai_log_err.str1.4,"aMS",%progbits,1
+  49              		.align	2
+  50              	.LC0:
+  51 0000 54454D50 		.ascii	"TEMPLATE - Error (%s) - type=0x%02x code=0x%02x\015"
+  51      4C415445 
+  51      202D2045 
+  51      72726F72 
+  51      20282573 
+  52 0030 0A00     		.ascii	"\012\000"
+  53 0032 0000     		.align	2
+ARM GAS  /tmp/cc3KUCYO.s 			page 4
+
+
+  54              	.LC1:
+  55 0034 54454D50 		.ascii	"TEMPLATE - Error - type=0x%02x code=0x%02x\015\012\000"
+  55      4C415445 
+  55      202D2045 
+  55      72726F72 
+  55      202D2074 
+  56              		.section	.text.ai_log_err,"ax",%progbits
+  57              		.align	1
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	ai_log_err:
+  63              	.LVL3:
+  64              	.LFB162:
+ 117:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 118:X-CUBE-AI/App/app_x-cube-ai.c **** static void ai_log_err(const ai_error err, const char *fct)
+ 119:X-CUBE-AI/App/app_x-cube-ai.c **** {
+  65              		.loc 1 119 1 is_stmt 1 view -0
+  66              		.cfi_startproc
+  67              		@ Volatile: function does not return.
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		.loc 1 119 1 is_stmt 0 view .LVU6
+  71 0000 08B5     		push	{r3, lr}
+  72              	.LCFI0:
+  73              		.cfi_def_cfa_offset 8
+  74              		.cfi_offset 3, -8
+  75              		.cfi_offset 14, -4
+ 120:X-CUBE-AI/App/app_x-cube-ai.c ****   /* USER CODE BEGIN log */
+ 121:X-CUBE-AI/App/app_x-cube-ai.c ****   if (fct)
+  76              		.loc 1 121 3 is_stmt 1 view .LVU7
+  77              		.loc 1 121 6 is_stmt 0 view .LVU8
+  78 0002 29B1     		cbz	r1, .L3
+ 122:X-CUBE-AI/App/app_x-cube-ai.c ****     printf("TEMPLATE - Error (%s) - type=0x%02x code=0x%02x\r\n", fct,
+  79              		.loc 1 122 5 is_stmt 1 view .LVU9
+  80 0004 030A     		lsrs	r3, r0, #8
+  81 0006 C2B2     		uxtb	r2, r0
+  82 0008 0448     		ldr	r0, .L6
+  83              	.LVL4:
+  84              		.loc 1 122 5 is_stmt 0 view .LVU10
+  85 000a FFF7FEFF 		bl	printf
+  86              	.LVL5:
+  87              	.L4:
+ 123:X-CUBE-AI/App/app_x-cube-ai.c ****         err.type, err.code);
+ 124:X-CUBE-AI/App/app_x-cube-ai.c ****   else
+ 125:X-CUBE-AI/App/app_x-cube-ai.c ****     printf("TEMPLATE - Error - type=0x%02x code=0x%02x\r\n", err.type, err.code);
+ 126:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 127:X-CUBE-AI/App/app_x-cube-ai.c ****   do {} while (1);
+  88              		.loc 1 127 3 is_stmt 1 view .LVU11
+  89              		.loc 1 127 7 view .LVU12
+  90              		.loc 1 127 6 view .LVU13
+  91 000e FEE7     		b	.L4
+  92              	.LVL6:
+  93              	.L3:
+ 125:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  94              		.loc 1 125 5 view .LVU14
+  95 0010 020A     		lsrs	r2, r0, #8
+ARM GAS  /tmp/cc3KUCYO.s 			page 5
+
+
+  96 0012 C1B2     		uxtb	r1, r0
+  97              	.LVL7:
+ 125:X-CUBE-AI/App/app_x-cube-ai.c **** 
+  98              		.loc 1 125 5 is_stmt 0 view .LVU15
+  99 0014 0248     		ldr	r0, .L6+4
+ 100              	.LVL8:
+ 125:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 101              		.loc 1 125 5 view .LVU16
+ 102 0016 FFF7FEFF 		bl	printf
+ 103              	.LVL9:
+ 104 001a F8E7     		b	.L4
+ 105              	.L7:
+ 106              		.align	2
+ 107              	.L6:
+ 108 001c 00000000 		.word	.LC0
+ 109 0020 34000000 		.word	.LC1
+ 110              		.cfi_endproc
+ 111              	.LFE162:
+ 113              		.section	.text.random_float_range,"ax",%progbits
+ 114              		.align	1
+ 115              		.syntax unified
+ 116              		.thumb
+ 117              		.thumb_func
+ 119              	random_float_range:
+ 120              	.LVL10:
+ 121              	.LFB160:
+ 109:X-CUBE-AI/App/app_x-cube-ai.c ****   return min + ((float)rand() / (float)RAND_MAX) * (max - min);
+ 122              		.loc 1 109 1 is_stmt 1 view -0
+ 123              		.cfi_startproc
+ 124              		@ args = 0, pretend = 0, frame = 0
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109:X-CUBE-AI/App/app_x-cube-ai.c ****   return min + ((float)rand() / (float)RAND_MAX) * (max - min);
+ 126              		.loc 1 109 1 is_stmt 0 view .LVU18
+ 127 0000 08B5     		push	{r3, lr}
+ 128              	.LCFI1:
+ 129              		.cfi_def_cfa_offset 8
+ 130              		.cfi_offset 3, -8
+ 131              		.cfi_offset 14, -4
+ 132 0002 2DED028B 		vpush.64	{d8}
+ 133              	.LCFI2:
+ 134              		.cfi_def_cfa_offset 16
+ 135              		.cfi_offset 80, -16
+ 136              		.cfi_offset 81, -12
+ 137 0006 F0EE408A 		vmov.f32	s17, s0
+ 138 000a B0EE608A 		vmov.f32	s16, s1
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 139              		.loc 1 110 3 is_stmt 1 view .LVU19
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 140              		.loc 1 110 24 is_stmt 0 view .LVU20
+ 141 000e FFF7FEFF 		bl	rand
+ 142              	.LVL11:
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 143              		.loc 1 110 24 view .LVU21
+ 144 0012 07EE900A 		vmov	s15, r0	@ int
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 145              		.loc 1 110 17 discriminator 1 view .LVU22
+ 146 0016 F8EEE77A 		vcvt.f32.s32	s15, s15
+ARM GAS  /tmp/cc3KUCYO.s 			page 6
+
+
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 147              		.loc 1 110 31 discriminator 1 view .LVU23
+ 148 001a 9FED067A 		vldr.32	s14, .L10
+ 149 001e 67EE877A 		vmul.f32	s15, s15, s14
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 150              		.loc 1 110 57 discriminator 1 view .LVU24
+ 151 0022 38EE688A 		vsub.f32	s16, s16, s17
+ 152              	.LVL12:
+ 110:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 153              		.loc 1 110 50 discriminator 1 view .LVU25
+ 154 0026 67EE887A 		vmul.f32	s15, s15, s16
+ 111:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 155              		.loc 1 111 1 view .LVU26
+ 156 002a 37EEA80A 		vadd.f32	s0, s15, s17
+ 157 002e BDEC028B 		vldm	sp!, {d8}
+ 158              	.LCFI3:
+ 159              		.cfi_restore 80
+ 160              		.cfi_restore 81
+ 161              		.cfi_def_cfa_offset 8
+ 162 0032 08BD     		pop	{r3, pc}
+ 163              	.L11:
+ 164              		.align	2
+ 165              	.L10:
+ 166 0034 00000030 		.word	805306368
+ 167              		.cfi_endproc
+ 168              	.LFE160:
+ 170              		.section	.rodata.ai_boostrap.str1.4,"aMS",%progbits,1
+ 171              		.align	2
+ 172              	.LC2:
+ 173 0000 61695F6E 		.ascii	"ai_network_create_and_init\000"
+ 173      6574776F 
+ 173      726B5F63 
+ 173      72656174 
+ 173      655F616E 
+ 174              		.section	.text.ai_boostrap,"ax",%progbits
+ 175              		.align	1
+ 176              		.syntax unified
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	ai_boostrap:
+ 181              	.LVL13:
+ 182              	.LFB163:
+ 128:X-CUBE-AI/App/app_x-cube-ai.c ****   /* USER CODE END log */
+ 129:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 130:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 131:X-CUBE-AI/App/app_x-cube-ai.c **** static int ai_boostrap(ai_handle *act_addr)
+ 132:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 183              		.loc 1 132 1 is_stmt 1 view -0
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 0
+ 186              		@ frame_needed = 0, uses_anonymous_args = 0
+ 187              		.loc 1 132 1 is_stmt 0 view .LVU28
+ 188 0000 10B5     		push	{r4, lr}
+ 189              	.LCFI4:
+ 190              		.cfi_def_cfa_offset 8
+ 191              		.cfi_offset 4, -8
+ 192              		.cfi_offset 14, -4
+ARM GAS  /tmp/cc3KUCYO.s 			page 7
+
+
+ 193 0002 0146     		mov	r1, r0
+ 133:X-CUBE-AI/App/app_x-cube-ai.c ****   ai_error err;
+ 194              		.loc 1 133 3 is_stmt 1 view .LVU29
+ 134:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 135:X-CUBE-AI/App/app_x-cube-ai.c ****   /* Create and initialize an instance of the model */
+ 136:X-CUBE-AI/App/app_x-cube-ai.c ****   err = ai_network_create_and_init(&network, act_addr, NULL);
+ 195              		.loc 1 136 3 view .LVU30
+ 196              		.loc 1 136 9 is_stmt 0 view .LVU31
+ 197 0004 0022     		movs	r2, #0
+ 198 0006 1A48     		ldr	r0, .L20
+ 199              	.LVL14:
+ 200              		.loc 1 136 9 view .LVU32
+ 201 0008 FFF7FEFF 		bl	ai_network_create_and_init
+ 202              	.LVL15:
+ 137:X-CUBE-AI/App/app_x-cube-ai.c ****   if (err.type != AI_ERROR_NONE) {
+ 203              		.loc 1 137 3 is_stmt 1 view .LVU33
+ 204              		.loc 1 137 6 is_stmt 0 view .LVU34
+ 205 000c 10F0FF0F 		tst	r0, #255
+ 206 0010 0ED1     		bne	.L19
+ 138:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(err, "ai_network_create_and_init");
+ 139:X-CUBE-AI/App/app_x-cube-ai.c ****     return -1;
+ 140:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 141:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 142:X-CUBE-AI/App/app_x-cube-ai.c ****   ai_input = ai_network_inputs_get(network, NULL);
+ 207              		.loc 1 142 3 is_stmt 1 view .LVU35
+ 208              		.loc 1 142 14 is_stmt 0 view .LVU36
+ 209 0012 174C     		ldr	r4, .L20
+ 210 0014 0021     		movs	r1, #0
+ 211 0016 2068     		ldr	r0, [r4]
+ 212              	.LVL16:
+ 213              		.loc 1 142 14 view .LVU37
+ 214 0018 FFF7FEFF 		bl	ai_network_inputs_get
+ 215              	.LVL17:
+ 216              		.loc 1 142 12 discriminator 1 view .LVU38
+ 217 001c 154B     		ldr	r3, .L20+4
+ 218 001e 1860     		str	r0, [r3]
+ 143:X-CUBE-AI/App/app_x-cube-ai.c ****   ai_output = ai_network_outputs_get(network, NULL);
+ 219              		.loc 1 143 3 is_stmt 1 view .LVU39
+ 220              		.loc 1 143 15 is_stmt 0 view .LVU40
+ 221 0020 0021     		movs	r1, #0
+ 222 0022 2068     		ldr	r0, [r4]
+ 223 0024 FFF7FEFF 		bl	ai_network_outputs_get
+ 224              	.LVL18:
+ 225              		.loc 1 143 13 discriminator 1 view .LVU41
+ 226 0028 134B     		ldr	r3, .L20+8
+ 227 002a 1860     		str	r0, [r3]
+ 144:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 145:X-CUBE-AI/App/app_x-cube-ai.c **** #if defined(AI_NETWORK_INPUTS_IN_ACTIVATIONS)
+ 146:X-CUBE-AI/App/app_x-cube-ai.c ****   /*  In the case where "--allocate-inputs" option is used, memory buffer can be
+ 147:X-CUBE-AI/App/app_x-cube-ai.c ****    *  used from the activations buffer. This is not mandatory.
+ 148:X-CUBE-AI/App/app_x-cube-ai.c ****    */
+ 149:X-CUBE-AI/App/app_x-cube-ai.c ****   for (int idx=0; idx < AI_NETWORK_IN_NUM; idx++) {
+ 228              		.loc 1 149 3 is_stmt 1 view .LVU42
+ 229              	.LBB2:
+ 230              		.loc 1 149 8 view .LVU43
+ 231              	.LVL19:
+ 232              		.loc 1 149 12 is_stmt 0 view .LVU44
+ARM GAS  /tmp/cc3KUCYO.s 			page 8
+
+
+ 233 002c 0023     		movs	r3, #0
+ 234              		.loc 1 149 3 view .LVU45
+ 235 002e 0DE0     		b	.L14
+ 236              	.LVL20:
+ 237              	.L19:
+ 238              		.loc 1 149 3 view .LVU46
+ 239              	.LBE2:
+ 138:X-CUBE-AI/App/app_x-cube-ai.c ****     return -1;
+ 240              		.loc 1 138 5 is_stmt 1 view .LVU47
+ 241 0030 1249     		ldr	r1, .L20+12
+ 242 0032 FFF7FEFF 		bl	ai_log_err
+ 243              	.LVL21:
+ 244              	.L15:
+ 245              	.LBB3:
+ 150:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_ins[idx] = ai_input[idx].data;
+ 246              		.loc 1 150 2 view .LVU48
+ 247              		.loc 1 150 26 is_stmt 0 view .LVU49
+ 248 0036 C3EBC301 		rsb	r1, r3, r3, lsl #3
+ 249 003a 0E4A     		ldr	r2, .L20+4
+ 250 003c 1268     		ldr	r2, [r2]
+ 251 003e 02EB8102 		add	r2, r2, r1, lsl #2
+ 252              		.loc 1 150 31 view .LVU50
+ 253 0042 5168     		ldr	r1, [r2, #4]
+ 254              		.loc 1 150 16 view .LVU51
+ 255 0044 0E4A     		ldr	r2, .L20+16
+ 256 0046 42F82310 		str	r1, [r2, r3, lsl #2]
+ 149:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_ins[idx] = ai_input[idx].data;
+ 257              		.loc 1 149 47 is_stmt 1 discriminator 3 view .LVU52
+ 258 004a 0133     		adds	r3, r3, #1
+ 259              	.LVL22:
+ 260              	.L14:
+ 149:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_ins[idx] = ai_input[idx].data;
+ 261              		.loc 1 149 23 discriminator 1 view .LVU53
+ 262 004c 002B     		cmp	r3, #0
+ 263 004e F2DD     		ble	.L15
+ 264              	.LBE3:
+ 265              	.LBB4:
+ 151:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 152:X-CUBE-AI/App/app_x-cube-ai.c **** #else
+ 153:X-CUBE-AI/App/app_x-cube-ai.c ****   for (int idx=0; idx < AI_NETWORK_IN_NUM; idx++) {
+ 154:X-CUBE-AI/App/app_x-cube-ai.c **** 	  ai_input[idx].data = data_ins[idx];
+ 155:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 156:X-CUBE-AI/App/app_x-cube-ai.c **** #endif
+ 157:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 158:X-CUBE-AI/App/app_x-cube-ai.c **** #if defined(AI_NETWORK_OUTPUTS_IN_ACTIVATIONS)
+ 159:X-CUBE-AI/App/app_x-cube-ai.c ****   /*  In the case where "--allocate-outputs" option is used, memory buffer can be
+ 160:X-CUBE-AI/App/app_x-cube-ai.c ****    *  used from the activations buffer. This is no mandatory.
+ 161:X-CUBE-AI/App/app_x-cube-ai.c ****    */
+ 162:X-CUBE-AI/App/app_x-cube-ai.c ****   for (int idx=0; idx < AI_NETWORK_OUT_NUM; idx++) {
+ 266              		.loc 1 162 12 is_stmt 0 view .LVU54
+ 267 0050 0023     		movs	r3, #0
+ 268              	.LVL23:
+ 269              	.L16:
+ 270              		.loc 1 162 23 is_stmt 1 discriminator 1 view .LVU55
+ 271 0052 002B     		cmp	r3, #0
+ 272 0054 01DD     		ble	.L17
+ 273              	.LBE4:
+ARM GAS  /tmp/cc3KUCYO.s 			page 9
+
+
+ 163:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 164:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 165:X-CUBE-AI/App/app_x-cube-ai.c **** #else
+ 166:X-CUBE-AI/App/app_x-cube-ai.c ****   for (int idx=0; idx < AI_NETWORK_OUT_NUM; idx++) {
+ 167:X-CUBE-AI/App/app_x-cube-ai.c **** 	ai_output[idx].data = data_outs[idx];
+ 168:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 169:X-CUBE-AI/App/app_x-cube-ai.c **** #endif
+ 170:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 171:X-CUBE-AI/App/app_x-cube-ai.c ****   return 0;
+ 274              		.loc 1 171 3 view .LVU56
+ 172:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 275              		.loc 1 172 1 is_stmt 0 view .LVU57
+ 276 0056 0020     		movs	r0, #0
+ 277 0058 10BD     		pop	{r4, pc}
+ 278              	.L17:
+ 279              	.LBB5:
+ 163:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 280              		.loc 1 163 2 is_stmt 1 view .LVU58
+ 163:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 281              		.loc 1 163 28 is_stmt 0 view .LVU59
+ 282 005a C3EBC302 		rsb	r2, r3, r3, lsl #3
+ 283 005e 00EB8202 		add	r2, r0, r2, lsl #2
+ 163:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 284              		.loc 1 163 33 view .LVU60
+ 285 0062 5168     		ldr	r1, [r2, #4]
+ 163:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 286              		.loc 1 163 17 view .LVU61
+ 287 0064 074A     		ldr	r2, .L20+20
+ 288 0066 42F82310 		str	r1, [r2, r3, lsl #2]
+ 162:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 289              		.loc 1 162 48 is_stmt 1 discriminator 3 view .LVU62
+ 290 006a 0133     		adds	r3, r3, #1
+ 291              	.LVL24:
+ 162:X-CUBE-AI/App/app_x-cube-ai.c **** 	data_outs[idx] = ai_output[idx].data;
+ 292              		.loc 1 162 48 is_stmt 0 discriminator 3 view .LVU63
+ 293 006c F1E7     		b	.L16
+ 294              	.L21:
+ 295 006e 00BF     		.align	2
+ 296              	.L20:
+ 297 0070 00000000 		.word	network
+ 298 0074 00000000 		.word	ai_input
+ 299 0078 00000000 		.word	ai_output
+ 300 007c 00000000 		.word	.LC2
+ 301 0080 00000000 		.word	data_ins
+ 302 0084 00000000 		.word	data_outs
+ 303              	.LBE5:
+ 304              		.cfi_endproc
+ 305              	.LFE163:
+ 307              		.section	.rodata.ai_run.str1.4,"aMS",%progbits,1
+ 308              		.align	2
+ 309              	.LC3:
+ 310 0000 61695F6E 		.ascii	"ai_network_run\000"
+ 310      6574776F 
+ 310      726B5F72 
+ 310      756E00
+ 311              		.section	.text.ai_run,"ax",%progbits
+ 312              		.align	1
+ARM GAS  /tmp/cc3KUCYO.s 			page 10
+
+
+ 313              		.syntax unified
+ 314              		.thumb
+ 315              		.thumb_func
+ 317              	ai_run:
+ 318              	.LFB164:
+ 173:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 174:X-CUBE-AI/App/app_x-cube-ai.c **** static int ai_run(void)
+ 175:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 319              		.loc 1 175 1 is_stmt 1 view -0
+ 320              		.cfi_startproc
+ 321              		@ args = 0, pretend = 0, frame = 0
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323 0000 08B5     		push	{r3, lr}
+ 324              	.LCFI5:
+ 325              		.cfi_def_cfa_offset 8
+ 326              		.cfi_offset 3, -8
+ 327              		.cfi_offset 14, -4
+ 176:X-CUBE-AI/App/app_x-cube-ai.c ****   ai_i32 batch;
+ 328              		.loc 1 176 3 view .LVU65
+ 177:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 178:X-CUBE-AI/App/app_x-cube-ai.c ****   batch = ai_network_run(network, ai_input, ai_output);
+ 329              		.loc 1 178 3 view .LVU66
+ 330              		.loc 1 178 11 is_stmt 0 view .LVU67
+ 331 0002 094B     		ldr	r3, .L26
+ 332 0004 1A68     		ldr	r2, [r3]
+ 333 0006 094B     		ldr	r3, .L26+4
+ 334 0008 1968     		ldr	r1, [r3]
+ 335 000a 094B     		ldr	r3, .L26+8
+ 336 000c 1868     		ldr	r0, [r3]
+ 337 000e FFF7FEFF 		bl	ai_network_run
+ 338              	.LVL25:
+ 179:X-CUBE-AI/App/app_x-cube-ai.c ****   if (batch != 1) {
+ 339              		.loc 1 179 3 is_stmt 1 view .LVU68
+ 340              		.loc 1 179 6 is_stmt 0 view .LVU69
+ 341 0012 0128     		cmp	r0, #1
+ 342 0014 01D1     		bne	.L25
+ 180:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(ai_network_get_error(network),
+ 181:X-CUBE-AI/App/app_x-cube-ai.c ****         "ai_network_run");
+ 182:X-CUBE-AI/App/app_x-cube-ai.c ****     return -1;
+ 183:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 184:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 185:X-CUBE-AI/App/app_x-cube-ai.c ****   return 0;
+ 343              		.loc 1 185 3 is_stmt 1 view .LVU70
+ 186:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 344              		.loc 1 186 1 is_stmt 0 view .LVU71
+ 345 0016 0020     		movs	r0, #0
+ 346              	.LVL26:
+ 347              		.loc 1 186 1 view .LVU72
+ 348 0018 08BD     		pop	{r3, pc}
+ 349              	.LVL27:
+ 350              	.L25:
+ 180:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(ai_network_get_error(network),
+ 351              		.loc 1 180 5 is_stmt 1 view .LVU73
+ 352 001a 054B     		ldr	r3, .L26+8
+ 353 001c 1868     		ldr	r0, [r3]
+ 354              	.LVL28:
+ 180:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(ai_network_get_error(network),
+ARM GAS  /tmp/cc3KUCYO.s 			page 11
+
+
+ 355              		.loc 1 180 5 is_stmt 0 view .LVU74
+ 356 001e FFF7FEFF 		bl	ai_network_get_error
+ 357              	.LVL29:
+ 180:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(ai_network_get_error(network),
+ 358              		.loc 1 180 5 discriminator 1 view .LVU75
+ 359 0022 0449     		ldr	r1, .L26+12
+ 360 0024 FFF7FEFF 		bl	ai_log_err
+ 361              	.LVL30:
+ 362              	.L27:
+ 363              		.align	2
+ 364              	.L26:
+ 365 0028 00000000 		.word	ai_output
+ 366 002c 00000000 		.word	ai_input
+ 367 0030 00000000 		.word	network
+ 368 0034 00000000 		.word	.LC3
+ 369              		.cfi_endproc
+ 370              	.LFE164:
+ 372              		.section	.rodata.acquire_and_process_data.str1.4,"aMS",%progbits,1
+ 373              		.align	2
+ 374              	.LC4:
+ 375 0000 496E7075 		.ascii	"Input sample: P=%ld.%02ld hPa, T=%ld.%02ld C, H=%ld"
+ 375      74207361 
+ 375      6D706C65 
+ 375      3A20503D 
+ 375      256C642E 
+ 376 0033 2E253032 		.ascii	".%02ld %%\015\012\000"
+ 376      6C642025 
+ 376      250D0A00 
+ 377              		.section	.text.acquire_and_process_data,"ax",%progbits
+ 378              		.align	1
+ 379              		.global	acquire_and_process_data
+ 380              		.syntax unified
+ 381              		.thumb
+ 382              		.thumb_func
+ 384              	acquire_and_process_data:
+ 385              	.LVL31:
+ 386              	.LFB165:
+ 187:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 188:X-CUBE-AI/App/app_x-cube-ai.c **** /* USER CODE BEGIN 2 */
+ 189:X-CUBE-AI/App/app_x-cube-ai.c **** int acquire_and_process_data(ai_i8* data[])
+ 190:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 387              		.loc 1 190 1 is_stmt 1 view -0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 0
+ 390              		@ frame_needed = 0, uses_anonymous_args = 0
+ 391              		.loc 1 190 1 is_stmt 0 view .LVU77
+ 392 0000 30B5     		push	{r4, r5, lr}
+ 393              	.LCFI6:
+ 394              		.cfi_def_cfa_offset 12
+ 395              		.cfi_offset 4, -12
+ 396              		.cfi_offset 5, -8
+ 397              		.cfi_offset 14, -4
+ 398 0002 2DED088B 		vpush.64	{d8, d9, d10, d11}
+ 399              	.LCFI7:
+ 400              		.cfi_def_cfa_offset 44
+ 401              		.cfi_offset 80, -44
+ 402              		.cfi_offset 81, -40
+ARM GAS  /tmp/cc3KUCYO.s 			page 12
+
+
+ 403              		.cfi_offset 82, -36
+ 404              		.cfi_offset 83, -32
+ 405              		.cfi_offset 84, -28
+ 406              		.cfi_offset 85, -24
+ 407              		.cfi_offset 86, -20
+ 408              		.cfi_offset 87, -16
+ 409 0006 85B0     		sub	sp, sp, #20
+ 410              	.LCFI8:
+ 411              		.cfi_def_cfa_offset 64
+ 191:X-CUBE-AI/App/app_x-cube-ai.c ****   static uint32_t seeded = 0;
+ 412              		.loc 1 191 3 is_stmt 1 view .LVU78
+ 192:X-CUBE-AI/App/app_x-cube-ai.c ****   float *input = (float *)data[0];
+ 413              		.loc 1 192 3 view .LVU79
+ 414              		.loc 1 192 10 is_stmt 0 view .LVU80
+ 415 0008 0468     		ldr	r4, [r0]
+ 416              	.LVL32:
+ 193:X-CUBE-AI/App/app_x-cube-ai.c ****   float pressure;
+ 417              		.loc 1 193 3 is_stmt 1 view .LVU81
+ 194:X-CUBE-AI/App/app_x-cube-ai.c ****   float temperature;
+ 418              		.loc 1 194 3 view .LVU82
+ 195:X-CUBE-AI/App/app_x-cube-ai.c ****   float humidity;
+ 419              		.loc 1 195 3 view .LVU83
+ 196:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 197:X-CUBE-AI/App/app_x-cube-ai.c ****   if (!seeded) {
+ 420              		.loc 1 197 3 view .LVU84
+ 421              		.loc 1 197 7 is_stmt 0 view .LVU85
+ 422 000a 474B     		ldr	r3, .L32
+ 423 000c 1B68     		ldr	r3, [r3]
+ 424              		.loc 1 197 6 view .LVU86
+ 425 000e 002B     		cmp	r3, #0
+ 426 0010 00F08180 		beq	.L31
+ 427              	.LVL33:
+ 428              	.L29:
+ 198:X-CUBE-AI/App/app_x-cube-ai.c ****     srand((unsigned int)HAL_GetTick());
+ 199:X-CUBE-AI/App/app_x-cube-ai.c ****     seeded = 1;
+ 200:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 201:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 202:X-CUBE-AI/App/app_x-cube-ai.c ****   pressure = random_float_range(PRESSURE_MIN, PRESSURE_MAX);
+ 429              		.loc 1 202 3 is_stmt 1 view .LVU87
+ 430              		.loc 1 202 14 is_stmt 0 view .LVU88
+ 431 0014 DFED45BA 		vldr.32	s23, .L32+4
+ 432 0018 9FED45BA 		vldr.32	s22, .L32+8
+ 433 001c F0EE6B0A 		vmov.f32	s1, s23
+ 434 0020 B0EE4B0A 		vmov.f32	s0, s22
+ 435 0024 FFF7FEFF 		bl	random_float_range
+ 436              	.LVL34:
+ 437 0028 B0EE409A 		vmov.f32	s18, s0
+ 438              	.LVL35:
+ 203:X-CUBE-AI/App/app_x-cube-ai.c ****   temperature = random_float_range(TEMPERATURE_MIN, TEMPERATURE_MAX);
+ 439              		.loc 1 203 3 is_stmt 1 view .LVU89
+ 440              		.loc 1 203 17 is_stmt 0 view .LVU90
+ 441 002c DFED41AA 		vldr.32	s21, .L32+12
+ 442 0030 9FED41AA 		vldr.32	s20, .L32+16
+ 443 0034 F0EE6A0A 		vmov.f32	s1, s21
+ 444 0038 B0EE4A0A 		vmov.f32	s0, s20
+ 445              	.LVL36:
+ 446              		.loc 1 203 17 view .LVU91
+ARM GAS  /tmp/cc3KUCYO.s 			page 13
+
+
+ 447 003c FFF7FEFF 		bl	random_float_range
+ 448              	.LVL37:
+ 449 0040 F0EE409A 		vmov.f32	s19, s0
+ 450              	.LVL38:
+ 204:X-CUBE-AI/App/app_x-cube-ai.c ****   humidity = random_float_range(HUMIDITY_MIN, HUMIDITY_MAX);
+ 451              		.loc 1 204 3 is_stmt 1 view .LVU92
+ 452              		.loc 1 204 14 is_stmt 0 view .LVU93
+ 453 0044 9FED3D8A 		vldr.32	s16, .L32+20
+ 454 0048 F0EE480A 		vmov.f32	s1, s16
+ 455 004c B3EE040A 		vmov.f32	s0, #2.0e+1
+ 456              	.LVL39:
+ 457              		.loc 1 204 14 view .LVU94
+ 458 0050 FFF7FEFF 		bl	random_float_range
+ 459              	.LVL40:
+ 460 0054 F0EE408A 		vmov.f32	s17, s0
+ 461              	.LVL41:
+ 205:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 206:X-CUBE-AI/App/app_x-cube-ai.c ****   input[0] = normalize_float(pressure, PRESSURE_MIN, PRESSURE_MAX);
+ 462              		.loc 1 206 3 is_stmt 1 view .LVU95
+ 463              		.loc 1 206 14 is_stmt 0 view .LVU96
+ 464 0058 B0EE6B1A 		vmov.f32	s2, s23
+ 465 005c F0EE4B0A 		vmov.f32	s1, s22
+ 466 0060 B0EE490A 		vmov.f32	s0, s18
+ 467              	.LVL42:
+ 468              		.loc 1 206 14 view .LVU97
+ 469 0064 FFF7FEFF 		bl	normalize_float
+ 470              	.LVL43:
+ 471              		.loc 1 206 12 discriminator 1 view .LVU98
+ 472 0068 84ED000A 		vstr.32	s0, [r4]
+ 207:X-CUBE-AI/App/app_x-cube-ai.c ****   input[1] = normalize_float(temperature, TEMPERATURE_MIN, TEMPERATURE_MAX);
+ 473              		.loc 1 207 3 is_stmt 1 view .LVU99
+ 474              		.loc 1 207 14 is_stmt 0 view .LVU100
+ 475 006c B0EE6A1A 		vmov.f32	s2, s21
+ 476 0070 F0EE4A0A 		vmov.f32	s1, s20
+ 477 0074 B0EE690A 		vmov.f32	s0, s19
+ 478 0078 FFF7FEFF 		bl	normalize_float
+ 479              	.LVL44:
+ 480              		.loc 1 207 12 discriminator 1 view .LVU101
+ 481 007c 84ED010A 		vstr.32	s0, [r4, #4]
+ 208:X-CUBE-AI/App/app_x-cube-ai.c ****   input[2] = normalize_float(humidity, HUMIDITY_MIN, HUMIDITY_MAX);
+ 482              		.loc 1 208 3 is_stmt 1 view .LVU102
+ 483              		.loc 1 208 14 is_stmt 0 view .LVU103
+ 484 0080 B0EE481A 		vmov.f32	s2, s16
+ 485 0084 F3EE040A 		vmov.f32	s1, #2.0e+1
+ 486 0088 B0EE680A 		vmov.f32	s0, s17
+ 487 008c FFF7FEFF 		bl	normalize_float
+ 488              	.LVL45:
+ 489              		.loc 1 208 12 discriminator 1 view .LVU104
+ 490 0090 84ED020A 		vstr.32	s0, [r4, #8]
+ 209:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 210:X-CUBE-AI/App/app_x-cube-ai.c ****   printf("Input sample: P=%ld.%02ld hPa, T=%ld.%02ld C, H=%ld.%02ld %%\r\n",
+ 491              		.loc 1 210 3 is_stmt 1 view .LVU105
+ 211:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)pressure, (long)(pressure * 100.0f) % 100,
+ 492              		.loc 1 211 39 is_stmt 0 view .LVU106
+ 493 0094 69EE087A 		vmul.f32	s15, s18, s16
+ 494              		.loc 1 211 23 view .LVU107
+ 495 0098 FDEEE77A 		vcvt.s32.f32	s15, s15
+ARM GAS  /tmp/cc3KUCYO.s 			page 14
+
+
+ 496 009c 17EE900A 		vmov	r0, s15	@ int
+ 212:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)temperature, (long)(temperature * 100.0f) % 100,
+ 497              		.loc 1 212 45 view .LVU108
+ 498 00a0 69EE887A 		vmul.f32	s15, s19, s16
+ 499              		.loc 1 212 26 view .LVU109
+ 500 00a4 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 501 00a8 17EE901A 		vmov	r1, s15	@ int
+ 213:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)humidity, (long)(humidity * 100.0f) % 100);
+ 502              		.loc 1 213 39 view .LVU110
+ 503 00ac 28EE888A 		vmul.f32	s16, s17, s16
+ 504              		.loc 1 213 23 view .LVU111
+ 505 00b0 FDEEC87A 		vcvt.s32.f32	s15, s16
+ 506 00b4 17EE903A 		vmov	r3, s15	@ int
+ 210:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)pressure, (long)(pressure * 100.0f) % 100,
+ 507              		.loc 1 210 3 view .LVU112
+ 508 00b8 214C     		ldr	r4, .L32+24
+ 509              	.LVL46:
+ 210:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)pressure, (long)(pressure * 100.0f) % 100,
+ 510              		.loc 1 210 3 view .LVU113
+ 511 00ba 84FB0025 		smull	r2, r5, r4, r0
+ 512 00be C217     		asrs	r2, r0, #31
+ 513 00c0 C2EB6512 		rsb	r2, r2, r5, asr #5
+ 514 00c4 4FF0640C 		mov	ip, #100
+ 515 00c8 84FB03E5 		smull	lr, r5, r4, r3
+ 516 00cc 4FEAE37E 		asr	lr, r3, #31
+ 517 00d0 CEEB651E 		rsb	lr, lr, r5, asr #5
+ 518 00d4 0CFB1E33 		mls	r3, ip, lr, r3
+ 519 00d8 0293     		str	r3, [sp, #8]
+ 520 00da FDEEE88A 		vcvt.s32.f32	s17, s17
+ 521              	.LVL47:
+ 210:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)pressure, (long)(pressure * 100.0f) % 100,
+ 522              		.loc 1 210 3 view .LVU114
+ 523 00de CDED018A 		vstr.32	s17, [sp, #4]	@ int
+ 524 00e2 84FB0134 		smull	r3, r4, r4, r1
+ 525 00e6 CB17     		asrs	r3, r1, #31
+ 526 00e8 C3EB6413 		rsb	r3, r3, r4, asr #5
+ 527 00ec 0CFB1311 		mls	r1, ip, r3, r1
+ 528 00f0 0091     		str	r1, [sp]
+ 529 00f2 FDEEE97A 		vcvt.s32.f32	s15, s19
+ 530 00f6 17EE903A 		vmov	r3, s15	@ int
+ 531 00fa 0CFB1202 		mls	r2, ip, r2, r0
+ 532 00fe FDEEC97A 		vcvt.s32.f32	s15, s18
+ 533 0102 17EE901A 		vmov	r1, s15	@ int
+ 534 0106 0F48     		ldr	r0, .L32+28
+ 535 0108 FFF7FEFF 		bl	printf
+ 536              	.LVL48:
+ 214:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 215:X-CUBE-AI/App/app_x-cube-ai.c ****   return 0;
+ 537              		.loc 1 215 3 is_stmt 1 view .LVU115
+ 216:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 538              		.loc 1 216 1 is_stmt 0 view .LVU116
+ 539 010c 0020     		movs	r0, #0
+ 540 010e 05B0     		add	sp, sp, #20
+ 541              	.LCFI9:
+ 542              		.cfi_remember_state
+ 543              		.cfi_def_cfa_offset 44
+ 544              		@ sp needed
+ARM GAS  /tmp/cc3KUCYO.s 			page 15
+
+
+ 545 0110 BDEC088B 		vldm	sp!, {d8-d11}
+ 546              	.LCFI10:
+ 547              		.cfi_restore 86
+ 548              		.cfi_restore 87
+ 549              		.cfi_restore 84
+ 550              		.cfi_restore 85
+ 551              		.cfi_restore 82
+ 552              		.cfi_restore 83
+ 553              		.cfi_restore 80
+ 554              		.cfi_restore 81
+ 555              		.cfi_def_cfa_offset 12
+ 556              	.LVL49:
+ 557              		.loc 1 216 1 view .LVU117
+ 558 0114 30BD     		pop	{r4, r5, pc}
+ 559              	.LVL50:
+ 560              	.L31:
+ 561              	.LCFI11:
+ 562              		.cfi_restore_state
+ 198:X-CUBE-AI/App/app_x-cube-ai.c ****     seeded = 1;
+ 563              		.loc 1 198 5 is_stmt 1 view .LVU118
+ 198:X-CUBE-AI/App/app_x-cube-ai.c ****     seeded = 1;
+ 564              		.loc 1 198 25 is_stmt 0 view .LVU119
+ 565 0116 FFF7FEFF 		bl	HAL_GetTick
+ 566              	.LVL51:
+ 198:X-CUBE-AI/App/app_x-cube-ai.c ****     seeded = 1;
+ 567              		.loc 1 198 5 discriminator 1 view .LVU120
+ 568 011a FFF7FEFF 		bl	srand
+ 569              	.LVL52:
+ 199:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 570              		.loc 1 199 5 is_stmt 1 view .LVU121
+ 199:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 571              		.loc 1 199 12 is_stmt 0 view .LVU122
+ 572 011e 024B     		ldr	r3, .L32
+ 573 0120 0122     		movs	r2, #1
+ 574 0122 1A60     		str	r2, [r3]
+ 575 0124 76E7     		b	.L29
+ 576              	.L33:
+ 577 0126 00BF     		.align	2
+ 578              	.L32:
+ 579 0128 00000000 		.word	seeded.0
+ 580 012c 00008244 		.word	1149370368
+ 581 0130 00007544 		.word	1148518400
+ 582 0134 00002042 		.word	1109393408
+ 583 0138 00000000 		.word	0
+ 584 013c 0000C842 		.word	1120403456
+ 585 0140 1F85EB51 		.word	1374389535
+ 586 0144 00000000 		.word	.LC4
+ 587              		.cfi_endproc
+ 588              	.LFE165:
+ 590              		.section	.rodata.post_process.str1.4,"aMS",%progbits,1
+ 591              		.align	2
+ 592              	.LC5:
+ 593 0000 5241494E 		.ascii	"RAIN\000"
+ 593      00
+ 594 0005 000000   		.align	2
+ 595              	.LC6:
+ 596 0008 4E4F2052 		.ascii	"NO RAIN\000"
+ARM GAS  /tmp/cc3KUCYO.s 			page 16
+
+
+ 596      41494E00 
+ 597              		.align	2
+ 598              	.LC7:
+ 599 0010 4D6F6465 		.ascii	"Model output: %ld.%02ld -> %s\015\012\000"
+ 599      6C206F75 
+ 599      74707574 
+ 599      3A20256C 
+ 599      642E2530 
+ 600              		.section	.text.post_process,"ax",%progbits
+ 601              		.align	1
+ 602              		.global	post_process
+ 603              		.syntax unified
+ 604              		.thumb
+ 605              		.thumb_func
+ 607              	post_process:
+ 608              	.LVL53:
+ 609              	.LFB166:
+ 217:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 218:X-CUBE-AI/App/app_x-cube-ai.c **** int post_process(ai_i8* data[]) 
+ 219:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 610              		.loc 1 219 1 is_stmt 1 view -0
+ 611              		.cfi_startproc
+ 612              		@ args = 0, pretend = 0, frame = 0
+ 613              		@ frame_needed = 0, uses_anonymous_args = 0
+ 614              		.loc 1 219 1 is_stmt 0 view .LVU124
+ 615 0000 10B5     		push	{r4, lr}
+ 616              	.LCFI12:
+ 617              		.cfi_def_cfa_offset 8
+ 618              		.cfi_offset 4, -8
+ 619              		.cfi_offset 14, -4
+ 620 0002 2DED028B 		vpush.64	{d8}
+ 621              	.LCFI13:
+ 622              		.cfi_def_cfa_offset 16
+ 623              		.cfi_offset 80, -16
+ 624              		.cfi_offset 81, -12
+ 220:X-CUBE-AI/App/app_x-cube-ai.c ****   float *output = (float *)data[0];
+ 625              		.loc 1 220 3 is_stmt 1 view .LVU125
+ 626              		.loc 1 220 10 is_stmt 0 view .LVU126
+ 627 0006 0368     		ldr	r3, [r0]
+ 628              	.LVL54:
+ 221:X-CUBE-AI/App/app_x-cube-ai.c ****   float rain_probability = output[0];
+ 629              		.loc 1 221 3 is_stmt 1 view .LVU127
+ 630              		.loc 1 221 9 is_stmt 0 view .LVU128
+ 631 0008 93ED008A 		vldr.32	s16, [r3]
+ 632              	.LVL55:
+ 222:X-CUBE-AI/App/app_x-cube-ai.c ****   const char *prediction = (rain_probability >= 0.5f) ? "RAIN" : "NO RAIN";
+ 633              		.loc 1 222 3 is_stmt 1 view .LVU129
+ 634              		.loc 1 222 64 is_stmt 0 view .LVU130
+ 635 000c F6EE007A 		vmov.f32	s15, #5.0e-1
+ 636 0010 B4EEE78A 		vcmpe.f32	s16, s15
+ 637 0014 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 638 0018 23DB     		blt	.L39
+ 639              		.loc 1 222 64 discriminator 1 view .LVU131
+ 640 001a 134C     		ldr	r4, .L41
+ 641              	.L35:
+ 642              	.LVL56:
+ 223:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ARM GAS  /tmp/cc3KUCYO.s 			page 17
+
+
+ 224:X-CUBE-AI/App/app_x-cube-ai.c ****   BSP_LED_On(LED_GREEN);
+ 643              		.loc 1 224 3 is_stmt 1 view .LVU132
+ 644 001c 0020     		movs	r0, #0
+ 645              	.LVL57:
+ 646              		.loc 1 224 3 is_stmt 0 view .LVU133
+ 647 001e FFF7FEFF 		bl	BSP_LED_On
+ 648              	.LVL58:
+ 225:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 226:X-CUBE-AI/App/app_x-cube-ai.c ****   printf("Model output: %ld.%02ld -> %s\r\n",
+ 649              		.loc 1 226 3 is_stmt 1 view .LVU134
+ 227:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)rain_probability, (long)(rain_probability * 100.0f) % 100,
+ 650              		.loc 1 227 55 is_stmt 0 view .LVU135
+ 651 0022 DFED127A 		vldr.32	s15, .L41+4
+ 652 0026 68EE277A 		vmul.f32	s15, s16, s15
+ 653              		.loc 1 227 31 view .LVU136
+ 654 002a FDEEE77A 		vcvt.s32.f32	s15, s15
+ 655 002e 17EE901A 		vmov	r1, s15	@ int
+ 226:X-CUBE-AI/App/app_x-cube-ai.c ****       (long)rain_probability, (long)(rain_probability * 100.0f) % 100,
+ 656              		.loc 1 226 3 view .LVU137
+ 657 0032 0F4B     		ldr	r3, .L41+8
+ 658 0034 83FB0123 		smull	r2, r3, r3, r1
+ 659 0038 CA17     		asrs	r2, r1, #31
+ 660 003a C2EB6312 		rsb	r2, r2, r3, asr #5
+ 661 003e 2346     		mov	r3, r4
+ 662 0040 6420     		movs	r0, #100
+ 663 0042 00FB1212 		mls	r2, r0, r2, r1
+ 664 0046 FDEEC87A 		vcvt.s32.f32	s15, s16
+ 665 004a 17EE901A 		vmov	r1, s15	@ int
+ 666 004e 0948     		ldr	r0, .L41+12
+ 667 0050 FFF7FEFF 		bl	printf
+ 668              	.LVL59:
+ 228:X-CUBE-AI/App/app_x-cube-ai.c ****       prediction);
+ 229:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 230:X-CUBE-AI/App/app_x-cube-ai.c ****   BSP_LED_Off(LED_GREEN);
+ 669              		.loc 1 230 3 is_stmt 1 view .LVU138
+ 670 0054 0020     		movs	r0, #0
+ 671 0056 FFF7FEFF 		bl	BSP_LED_Off
+ 672              	.LVL60:
+ 231:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 232:X-CUBE-AI/App/app_x-cube-ai.c ****   return 0;
+ 673              		.loc 1 232 3 view .LVU139
+ 233:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 674              		.loc 1 233 1 is_stmt 0 view .LVU140
+ 675 005a 0020     		movs	r0, #0
+ 676 005c BDEC028B 		vldm	sp!, {d8}
+ 677              	.LCFI14:
+ 678              		.cfi_remember_state
+ 679              		.cfi_restore 80
+ 680              		.cfi_restore 81
+ 681              		.cfi_def_cfa_offset 8
+ 682              	.LVL61:
+ 683              		.loc 1 233 1 view .LVU141
+ 684 0060 10BD     		pop	{r4, pc}
+ 685              	.LVL62:
+ 686              	.L39:
+ 687              	.LCFI15:
+ 688              		.cfi_restore_state
+ARM GAS  /tmp/cc3KUCYO.s 			page 18
+
+
+ 222:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 689              		.loc 1 222 64 discriminator 2 view .LVU142
+ 690 0062 054C     		ldr	r4, .L41+16
+ 691 0064 DAE7     		b	.L35
+ 692              	.L42:
+ 693 0066 00BF     		.align	2
+ 694              	.L41:
+ 695 0068 00000000 		.word	.LC5
+ 696 006c 0000C842 		.word	1120403456
+ 697 0070 1F85EB51 		.word	1374389535
+ 698 0074 10000000 		.word	.LC7
+ 699 0078 08000000 		.word	.LC6
+ 700              		.cfi_endproc
+ 701              	.LFE166:
+ 703              		.section	.rodata.MX_X_CUBE_AI_Init.str1.4,"aMS",%progbits,1
+ 704              		.align	2
+ 705              	.LC8:
+ 706 0000 0D0A5445 		.ascii	"\015\012TEMPLATE - initialization\015\000"
+ 706      4D504C41 
+ 706      5445202D 
+ 706      20696E69 
+ 706      7469616C 
+ 707              		.section	.text.MX_X_CUBE_AI_Init,"ax",%progbits
+ 708              		.align	1
+ 709              		.global	MX_X_CUBE_AI_Init
+ 710              		.syntax unified
+ 711              		.thumb
+ 712              		.thumb_func
+ 714              	MX_X_CUBE_AI_Init:
+ 715              	.LFB167:
+ 234:X-CUBE-AI/App/app_x-cube-ai.c **** /* USER CODE END 2 */
+ 235:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 236:X-CUBE-AI/App/app_x-cube-ai.c **** /* Entry points --------------------------------------------------------------*/
+ 237:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 238:X-CUBE-AI/App/app_x-cube-ai.c **** void MX_X_CUBE_AI_Init(void)
+ 239:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 716              		.loc 1 239 1 is_stmt 1 view -0
+ 717              		.cfi_startproc
+ 718              		@ args = 0, pretend = 0, frame = 0
+ 719              		@ frame_needed = 0, uses_anonymous_args = 0
+ 720 0000 08B5     		push	{r3, lr}
+ 721              	.LCFI16:
+ 722              		.cfi_def_cfa_offset 8
+ 723              		.cfi_offset 3, -8
+ 724              		.cfi_offset 14, -4
+ 240:X-CUBE-AI/App/app_x-cube-ai.c ****     /* USER CODE BEGIN 5 */
+ 241:X-CUBE-AI/App/app_x-cube-ai.c ****   printf("\r\nTEMPLATE - initialization\r\n");
+ 725              		.loc 1 241 3 view .LVU144
+ 726 0002 0348     		ldr	r0, .L45
+ 727 0004 FFF7FEFF 		bl	puts
+ 728              	.LVL63:
+ 242:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 243:X-CUBE-AI/App/app_x-cube-ai.c ****   ai_boostrap(data_activations0);
+ 729              		.loc 1 243 3 view .LVU145
+ 730 0008 0248     		ldr	r0, .L45+4
+ 731 000a FFF7FEFF 		bl	ai_boostrap
+ 732              	.LVL64:
+ARM GAS  /tmp/cc3KUCYO.s 			page 19
+
+
+ 244:X-CUBE-AI/App/app_x-cube-ai.c ****     /* USER CODE END 5 */
+ 245:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 733              		.loc 1 245 1 is_stmt 0 view .LVU146
+ 734 000e 08BD     		pop	{r3, pc}
+ 735              	.L46:
+ 736              		.align	2
+ 737              	.L45:
+ 738 0010 00000000 		.word	.LC8
+ 739 0014 00000000 		.word	data_activations0
+ 740              		.cfi_endproc
+ 741              	.LFE167:
+ 743              		.section	.rodata.MX_X_CUBE_AI_Process.str1.4,"aMS",%progbits,1
+ 744              		.align	2
+ 745              	.LC9:
+ 746 0000 50726F63 		.ascii	"Process has FAILED\000"
+ 746      65737320 
+ 746      68617320 
+ 746      4641494C 
+ 746      454400
+ 747              		.section	.text.MX_X_CUBE_AI_Process,"ax",%progbits
+ 748              		.align	1
+ 749              		.global	MX_X_CUBE_AI_Process
+ 750              		.syntax unified
+ 751              		.thumb
+ 752              		.thumb_func
+ 754              	MX_X_CUBE_AI_Process:
+ 755              	.LFB168:
+ 246:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 247:X-CUBE-AI/App/app_x-cube-ai.c **** void MX_X_CUBE_AI_Process(void)
+ 248:X-CUBE-AI/App/app_x-cube-ai.c **** {
+ 756              		.loc 1 248 1 is_stmt 1 view -0
+ 757              		.cfi_startproc
+ 758              		@ args = 0, pretend = 0, frame = 0
+ 759              		@ frame_needed = 0, uses_anonymous_args = 0
+ 760 0000 08B5     		push	{r3, lr}
+ 761              	.LCFI17:
+ 762              		.cfi_def_cfa_offset 8
+ 763              		.cfi_offset 3, -8
+ 764              		.cfi_offset 14, -4
+ 249:X-CUBE-AI/App/app_x-cube-ai.c ****     /* USER CODE BEGIN 6 */
+ 250:X-CUBE-AI/App/app_x-cube-ai.c ****   int res = -1;
+ 765              		.loc 1 250 3 view .LVU148
+ 766              	.LVL65:
+ 251:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 252:X-CUBE-AI/App/app_x-cube-ai.c ****   if (network) {
+ 767              		.loc 1 252 3 view .LVU149
+ 768              		.loc 1 252 7 is_stmt 0 view .LVU150
+ 769 0002 104B     		ldr	r3, .L53
+ 770 0004 1B68     		ldr	r3, [r3]
+ 771              		.loc 1 252 6 view .LVU151
+ 772 0006 93B1     		cbz	r3, .L48
+ 253:X-CUBE-AI/App/app_x-cube-ai.c ****     /* 1 - acquire and pre-process input data */
+ 254:X-CUBE-AI/App/app_x-cube-ai.c ****     res = acquire_and_process_data(data_ins);
+ 773              		.loc 1 254 5 is_stmt 1 view .LVU152
+ 774              		.loc 1 254 11 is_stmt 0 view .LVU153
+ 775 0008 0F48     		ldr	r0, .L53+4
+ 776 000a FFF7FEFF 		bl	acquire_and_process_data
+ARM GAS  /tmp/cc3KUCYO.s 			page 20
+
+
+ 777              	.LVL66:
+ 255:X-CUBE-AI/App/app_x-cube-ai.c ****     /* 2 - process the data - call inference engine */
+ 256:X-CUBE-AI/App/app_x-cube-ai.c ****     if (res == 0)
+ 778              		.loc 1 256 5 is_stmt 1 view .LVU154
+ 779              		.loc 1 256 8 is_stmt 0 view .LVU155
+ 780 000e 0346     		mov	r3, r0
+ 781 0010 28B1     		cbz	r0, .L52
+ 782              	.L49:
+ 257:X-CUBE-AI/App/app_x-cube-ai.c ****       res = ai_run();
+ 258:X-CUBE-AI/App/app_x-cube-ai.c ****     /* 3 - post-process the predictions */
+ 259:X-CUBE-AI/App/app_x-cube-ai.c ****     if (res == 0)
+ 260:X-CUBE-AI/App/app_x-cube-ai.c ****       res = post_process(data_outs);
+ 261:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 262:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 263:X-CUBE-AI/App/app_x-cube-ai.c ****   if (res) {
+ 783              		.loc 1 263 3 is_stmt 1 view .LVU156
+ 784              		.loc 1 263 6 is_stmt 0 view .LVU157
+ 785 0012 63B9     		cbnz	r3, .L48
+ 264:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_error err = {AI_ERROR_INVALID_STATE, AI_ERROR_CODE_NETWORK};
+ 265:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(err, "Process has FAILED");
+ 266:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 267:X-CUBE-AI/App/app_x-cube-ai.c **** 
+ 268:X-CUBE-AI/App/app_x-cube-ai.c ****   HAL_Delay(1000);
+ 786              		.loc 1 268 3 is_stmt 1 view .LVU158
+ 787 0014 4FF47A70 		mov	r0, #1000
+ 788              	.LVL67:
+ 789              		.loc 1 268 3 is_stmt 0 view .LVU159
+ 790 0018 FFF7FEFF 		bl	HAL_Delay
+ 791              	.LVL68:
+ 269:X-CUBE-AI/App/app_x-cube-ai.c ****     /* USER CODE END 6 */
+ 270:X-CUBE-AI/App/app_x-cube-ai.c **** }
+ 792              		.loc 1 270 1 view .LVU160
+ 793 001c 08BD     		pop	{r3, pc}
+ 794              	.LVL69:
+ 795              	.L52:
+ 257:X-CUBE-AI/App/app_x-cube-ai.c ****     /* 3 - post-process the predictions */
+ 796              		.loc 1 257 7 is_stmt 1 view .LVU161
+ 257:X-CUBE-AI/App/app_x-cube-ai.c ****     /* 3 - post-process the predictions */
+ 797              		.loc 1 257 13 is_stmt 0 view .LVU162
+ 798 001e FFF7FEFF 		bl	ai_run
+ 799              	.LVL70:
+ 259:X-CUBE-AI/App/app_x-cube-ai.c ****       res = post_process(data_outs);
+ 800              		.loc 1 259 5 is_stmt 1 view .LVU163
+ 259:X-CUBE-AI/App/app_x-cube-ai.c ****       res = post_process(data_outs);
+ 801              		.loc 1 259 8 is_stmt 0 view .LVU164
+ 802 0022 20B9     		cbnz	r0, .L48
+ 260:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 803              		.loc 1 260 7 is_stmt 1 view .LVU165
+ 260:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 804              		.loc 1 260 13 is_stmt 0 view .LVU166
+ 805 0024 0948     		ldr	r0, .L53+8
+ 806              	.LVL71:
+ 260:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 807              		.loc 1 260 13 view .LVU167
+ 808 0026 FFF7FEFF 		bl	post_process
+ 809              	.LVL72:
+ 810 002a 0346     		mov	r3, r0
+ARM GAS  /tmp/cc3KUCYO.s 			page 21
+
+
+ 811              	.LVL73:
+ 260:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 812              		.loc 1 260 13 view .LVU168
+ 813 002c F1E7     		b	.L49
+ 814              	.LVL74:
+ 815              	.L48:
+ 816              	.LBB6:
+ 264:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(err, "Process has FAILED");
+ 817              		.loc 1 264 5 is_stmt 1 view .LVU169
+ 264:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(err, "Process has FAILED");
+ 818              		.loc 1 264 14 is_stmt 0 view .LVU170
+ 819 002e 0020     		movs	r0, #0
+ 820              	.LVL75:
+ 264:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(err, "Process has FAILED");
+ 821              		.loc 1 264 14 view .LVU171
+ 822 0030 1123     		movs	r3, #17
+ 823 0032 63F30700 		bfi	r0, r3, #0, #8
+ 824              	.LVL76:
+ 264:X-CUBE-AI/App/app_x-cube-ai.c ****     ai_log_err(err, "Process has FAILED");
+ 825              		.loc 1 264 14 view .LVU172
+ 826 0036 1023     		movs	r3, #16
+ 827 0038 63F31F20 		bfi	r0, r3, #8, #24
+ 265:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 828              		.loc 1 265 5 is_stmt 1 view .LVU173
+ 829 003c 0449     		ldr	r1, .L53+12
+ 830 003e FFF7FEFF 		bl	ai_log_err
+ 831              	.LVL77:
+ 832              	.L54:
+ 265:X-CUBE-AI/App/app_x-cube-ai.c ****   }
+ 833              		.loc 1 265 5 is_stmt 0 view .LVU174
+ 834 0042 00BF     		.align	2
+ 835              	.L53:
+ 836 0044 00000000 		.word	network
+ 837 0048 00000000 		.word	data_ins
+ 838 004c 00000000 		.word	data_outs
+ 839 0050 00000000 		.word	.LC9
+ 840              	.LBE6:
+ 841              		.cfi_endproc
+ 842              	.LFE168:
+ 844              		.section	.bss.seeded.0,"aw",%nobits
+ 845              		.align	2
+ 848              	seeded.0:
+ 849 0000 00000000 		.space	4
+ 850              		.section	.bss.ai_output,"aw",%nobits
+ 851              		.align	2
+ 854              	ai_output:
+ 855 0000 00000000 		.space	4
+ 856              		.section	.bss.ai_input,"aw",%nobits
+ 857              		.align	2
+ 860              	ai_input:
+ 861 0000 00000000 		.space	4
+ 862              		.section	.bss.network,"aw",%nobits
+ 863              		.align	2
+ 866              	network:
+ 867 0000 00000000 		.space	4
+ 868              		.global	data_activations0
+ 869              		.section	.data.data_activations0,"aw"
+ARM GAS  /tmp/cc3KUCYO.s 			page 22
+
+
+ 870              		.align	2
+ 873              	data_activations0:
+ 874 0000 00000000 		.word	pool0
+ 875              		.section	.bss.pool0,"aw",%nobits
+ 876              		.align	5
+ 879              	pool0:
+ 880 0000 00000000 		.space	384
+ 880      00000000 
+ 880      00000000 
+ 880      00000000 
+ 880      00000000 
+ 881              		.global	data_outs
+ 882              		.section	.bss.data_outs,"aw",%nobits
+ 883              		.align	2
+ 886              	data_outs:
+ 887 0000 00000000 		.space	4
+ 888              		.global	data_ins
+ 889              		.section	.bss.data_ins,"aw",%nobits
+ 890              		.align	2
+ 893              	data_ins:
+ 894 0000 00000000 		.space	4
+ 895              		.text
+ 896              	.Letext0:
+ 897              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 898              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 899              		.file 4 "Middlewares/ST/AI/Inc/ai_platform.h"
+ 900              		.file 5 "Drivers/BSP/STM32U5xx_Nucleo/stm32u5xx_nucleo.h"
+ 901              		.file 6 "X-CUBE-AI/App/network.h"
+ 902              		.file 7 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
+ 903              		.file 8 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal.h"
+ 904              		.file 9 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/stdlib.h"
+ 905              		.file 10 "<built-in>"
+ARM GAS  /tmp/cc3KUCYO.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 app_x-cube-ai.c
+     /tmp/cc3KUCYO.s:22     .text.normalize_float:00000000 $t
+     /tmp/cc3KUCYO.s:27     .text.normalize_float:00000000 normalize_float
+     /tmp/cc3KUCYO.s:49     .rodata.ai_log_err.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:57     .text.ai_log_err:00000000 $t
+     /tmp/cc3KUCYO.s:62     .text.ai_log_err:00000000 ai_log_err
+     /tmp/cc3KUCYO.s:108    .text.ai_log_err:0000001c $d
+     /tmp/cc3KUCYO.s:114    .text.random_float_range:00000000 $t
+     /tmp/cc3KUCYO.s:119    .text.random_float_range:00000000 random_float_range
+     /tmp/cc3KUCYO.s:166    .text.random_float_range:00000034 $d
+     /tmp/cc3KUCYO.s:171    .rodata.ai_boostrap.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:175    .text.ai_boostrap:00000000 $t
+     /tmp/cc3KUCYO.s:180    .text.ai_boostrap:00000000 ai_boostrap
+     /tmp/cc3KUCYO.s:297    .text.ai_boostrap:00000070 $d
+     /tmp/cc3KUCYO.s:866    .bss.network:00000000 network
+     /tmp/cc3KUCYO.s:860    .bss.ai_input:00000000 ai_input
+     /tmp/cc3KUCYO.s:854    .bss.ai_output:00000000 ai_output
+     /tmp/cc3KUCYO.s:893    .bss.data_ins:00000000 data_ins
+     /tmp/cc3KUCYO.s:886    .bss.data_outs:00000000 data_outs
+     /tmp/cc3KUCYO.s:308    .rodata.ai_run.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:312    .text.ai_run:00000000 $t
+     /tmp/cc3KUCYO.s:317    .text.ai_run:00000000 ai_run
+     /tmp/cc3KUCYO.s:365    .text.ai_run:00000028 $d
+     /tmp/cc3KUCYO.s:373    .rodata.acquire_and_process_data.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:378    .text.acquire_and_process_data:00000000 $t
+     /tmp/cc3KUCYO.s:384    .text.acquire_and_process_data:00000000 acquire_and_process_data
+     /tmp/cc3KUCYO.s:579    .text.acquire_and_process_data:00000128 $d
+     /tmp/cc3KUCYO.s:848    .bss.seeded.0:00000000 seeded.0
+     /tmp/cc3KUCYO.s:591    .rodata.post_process.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:601    .text.post_process:00000000 $t
+     /tmp/cc3KUCYO.s:607    .text.post_process:00000000 post_process
+     /tmp/cc3KUCYO.s:695    .text.post_process:00000068 $d
+     /tmp/cc3KUCYO.s:704    .rodata.MX_X_CUBE_AI_Init.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:708    .text.MX_X_CUBE_AI_Init:00000000 $t
+     /tmp/cc3KUCYO.s:714    .text.MX_X_CUBE_AI_Init:00000000 MX_X_CUBE_AI_Init
+     /tmp/cc3KUCYO.s:738    .text.MX_X_CUBE_AI_Init:00000010 $d
+     /tmp/cc3KUCYO.s:873    .data.data_activations0:00000000 data_activations0
+     /tmp/cc3KUCYO.s:744    .rodata.MX_X_CUBE_AI_Process.str1.4:00000000 $d
+     /tmp/cc3KUCYO.s:748    .text.MX_X_CUBE_AI_Process:00000000 $t
+     /tmp/cc3KUCYO.s:754    .text.MX_X_CUBE_AI_Process:00000000 MX_X_CUBE_AI_Process
+     /tmp/cc3KUCYO.s:836    .text.MX_X_CUBE_AI_Process:00000044 $d
+     /tmp/cc3KUCYO.s:845    .bss.seeded.0:00000000 $d
+     /tmp/cc3KUCYO.s:851    .bss.ai_output:00000000 $d
+     /tmp/cc3KUCYO.s:857    .bss.ai_input:00000000 $d
+     /tmp/cc3KUCYO.s:863    .bss.network:00000000 $d
+     /tmp/cc3KUCYO.s:870    .data.data_activations0:00000000 $d
+     /tmp/cc3KUCYO.s:879    .bss.pool0:00000000 pool0
+     /tmp/cc3KUCYO.s:876    .bss.pool0:00000000 $d
+     /tmp/cc3KUCYO.s:883    .bss.data_outs:00000000 $d
+     /tmp/cc3KUCYO.s:890    .bss.data_ins:00000000 $d
+
+UNDEFINED SYMBOLS
+printf
+rand
+ai_network_create_and_init
+ai_network_inputs_get
+ARM GAS  /tmp/cc3KUCYO.s 			page 24
+
+
+ai_network_outputs_get
+ai_network_run
+ai_network_get_error
+HAL_GetTick
+srand
+BSP_LED_On
+BSP_LED_Off
+puts
+HAL_Delay

@@ -1,0 +1,789 @@
+ARM GAS  /tmp/cceXeJ1t.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"lps22hh_read_data_polling.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "Core/Src/lps22hh_read_data_polling.c"
+  21              		.section	.text.platform_read,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	platform_read:
+  28              	.LVL0:
+  29              	.LFB162:
+   1:Core/Src/lps22hh_read_data_polling.c **** /*
+   2:Core/Src/lps22hh_read_data_polling.c ****  ******************************************************************************
+   3:Core/Src/lps22hh_read_data_polling.c ****  * @file    read_data_polling.c
+   4:Core/Src/lps22hh_read_data_polling.c ****  * @author  MEMS Software Solution Team
+   5:Core/Src/lps22hh_read_data_polling.c ****  * @brief   This file shows how to get data from sensor .
+   6:Core/Src/lps22hh_read_data_polling.c ****  *
+   7:Core/Src/lps22hh_read_data_polling.c ****  ******************************************************************************
+   8:Core/Src/lps22hh_read_data_polling.c ****  * @attention
+   9:Core/Src/lps22hh_read_data_polling.c ****  *
+  10:Core/Src/lps22hh_read_data_polling.c ****  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  11:Core/Src/lps22hh_read_data_polling.c ****  * All rights reserved.</center></h2>
+  12:Core/Src/lps22hh_read_data_polling.c ****  *
+  13:Core/Src/lps22hh_read_data_polling.c ****  * This software component is licensed by ST under BSD 3-Clause license,
+  14:Core/Src/lps22hh_read_data_polling.c ****  * the "License"; You may not use this file except in compliance with the
+  15:Core/Src/lps22hh_read_data_polling.c ****  * License. You may obtain a copy of the License at:
+  16:Core/Src/lps22hh_read_data_polling.c ****  *                        opensource.org/licenses/BSD-3-Clause
+  17:Core/Src/lps22hh_read_data_polling.c ****  *
+  18:Core/Src/lps22hh_read_data_polling.c ****  ******************************************************************************
+  19:Core/Src/lps22hh_read_data_polling.c ****  */
+  20:Core/Src/lps22hh_read_data_polling.c **** 
+  21:Core/Src/lps22hh_read_data_polling.c **** /*
+  22:Core/Src/lps22hh_read_data_polling.c ****  * This example was developed using the following STMicroelectronics
+  23:Core/Src/lps22hh_read_data_polling.c ****  * evaluation boards:
+  24:Core/Src/lps22hh_read_data_polling.c ****  *
+  25:Core/Src/lps22hh_read_data_polling.c ****  * - STEVAL_MKI109V3 + STEVAL-MKI192V1
+  26:Core/Src/lps22hh_read_data_polling.c ****  * - NUCLEO_F401RE + X_NUCLEO_IKS01A3
+  27:Core/Src/lps22hh_read_data_polling.c ****  * - DISCOVERY_SPC584B + STEVAL-MKI192V1
+  28:Core/Src/lps22hh_read_data_polling.c ****  *
+  29:Core/Src/lps22hh_read_data_polling.c ****  * and STM32CubeMX tool with STM32CubeF4 MCU Package
+ARM GAS  /tmp/cceXeJ1t.s 			page 2
+
+
+  30:Core/Src/lps22hh_read_data_polling.c ****  *
+  31:Core/Src/lps22hh_read_data_polling.c ****  * Used interfaces:
+  32:Core/Src/lps22hh_read_data_polling.c ****  *
+  33:Core/Src/lps22hh_read_data_polling.c ****  * STEVAL_MKI109V3    - Host side:   USB (Virtual COM)
+  34:Core/Src/lps22hh_read_data_polling.c ****  *                    - Sensor side: SPI(Default) / I2C(supported)
+  35:Core/Src/lps22hh_read_data_polling.c ****  *
+  36:Core/Src/lps22hh_read_data_polling.c ****  * NUCLEO_STM32F401RE - Host side: UART(COM) to USB bridge
+  37:Core/Src/lps22hh_read_data_polling.c ****  *                    - I2C(Default) / SPI(supported)
+  38:Core/Src/lps22hh_read_data_polling.c ****  *
+  39:Core/Src/lps22hh_read_data_polling.c ****  * DISCOVERY_SPC584B  - Host side: UART(COM) to USB bridge
+  40:Core/Src/lps22hh_read_data_polling.c ****  *                    - Sensor side: I2C(Default) / SPI(supported)
+  41:Core/Src/lps22hh_read_data_polling.c ****  *
+  42:Core/Src/lps22hh_read_data_polling.c ****  * If you need to run this example on a different hardware platform a
+  43:Core/Src/lps22hh_read_data_polling.c ****  * modification of the functions: `platform_write`, `platform_read`,
+  44:Core/Src/lps22hh_read_data_polling.c ****  * `tx_com` and 'platform_init' is required.
+  45:Core/Src/lps22hh_read_data_polling.c ****  *
+  46:Core/Src/lps22hh_read_data_polling.c ****  */
+  47:Core/Src/lps22hh_read_data_polling.c **** 
+  48:Core/Src/lps22hh_read_data_polling.c **** /* STMicroelectronics evaluation boards definition
+  49:Core/Src/lps22hh_read_data_polling.c ****  *
+  50:Core/Src/lps22hh_read_data_polling.c ****  * Please uncomment ONLY the evaluation boards in use.
+  51:Core/Src/lps22hh_read_data_polling.c ****  * If a different hardware is used please comment all
+  52:Core/Src/lps22hh_read_data_polling.c ****  * following target board and redefine yours.
+  53:Core/Src/lps22hh_read_data_polling.c ****  */
+  54:Core/Src/lps22hh_read_data_polling.c **** 
+  55:Core/Src/lps22hh_read_data_polling.c **** //#define STEVAL_MKI109V3  /* little endian */
+  56:Core/Src/lps22hh_read_data_polling.c **** //#define NUCLEO_F401RE    /* little endian */
+  57:Core/Src/lps22hh_read_data_polling.c **** //#define SPC584B_DIS      /* big endian */
+  58:Core/Src/lps22hh_read_data_polling.c **** 
+  59:Core/Src/lps22hh_read_data_polling.c **** /* ATTENTION: By default the driver is little endian. If you need switch
+  60:Core/Src/lps22hh_read_data_polling.c ****  *            to big endian please see "Endianness definitions" in the
+  61:Core/Src/lps22hh_read_data_polling.c ****  *            header file of the driver (_reg.h).
+  62:Core/Src/lps22hh_read_data_polling.c ****  */
+  63:Core/Src/lps22hh_read_data_polling.c **** 
+  64:Core/Src/lps22hh_read_data_polling.c **** #if defined(STEVAL_MKI109V3)
+  65:Core/Src/lps22hh_read_data_polling.c **** /* MKI109V3: Define communication interface */
+  66:Core/Src/lps22hh_read_data_polling.c **** #define SENSOR_BUS hspi2
+  67:Core/Src/lps22hh_read_data_polling.c **** /* MKI109V3: Vdd and Vddio power supply values */
+  68:Core/Src/lps22hh_read_data_polling.c **** #define PWM_3V3 915
+  69:Core/Src/lps22hh_read_data_polling.c **** 
+  70:Core/Src/lps22hh_read_data_polling.c **** #elif defined(NUCLEO_F401RE)
+  71:Core/Src/lps22hh_read_data_polling.c **** /* NUCLEO_F401RE: Define communication interface */
+  72:Core/Src/lps22hh_read_data_polling.c **** #define SENSOR_BUS hi2c1
+  73:Core/Src/lps22hh_read_data_polling.c **** 
+  74:Core/Src/lps22hh_read_data_polling.c **** #elif defined(SPC584B_DIS)
+  75:Core/Src/lps22hh_read_data_polling.c **** /* DISCOVERY_SPC584B: Define communication interface */
+  76:Core/Src/lps22hh_read_data_polling.c **** #define SENSOR_BUS I2CD1
+  77:Core/Src/lps22hh_read_data_polling.c **** 
+  78:Core/Src/lps22hh_read_data_polling.c **** #endif
+  79:Core/Src/lps22hh_read_data_polling.c **** 
+  80:Core/Src/lps22hh_read_data_polling.c **** /* Includes ------------------------------------------------------------------*/
+  81:Core/Src/lps22hh_read_data_polling.c **** #include <string.h>
+  82:Core/Src/lps22hh_read_data_polling.c **** #include <stdio.h>
+  83:Core/Src/lps22hh_read_data_polling.c **** #include "lps22hh_reg.h"
+  84:Core/Src/lps22hh_read_data_polling.c **** #include "main.h"
+  85:Core/Src/lps22hh_read_data_polling.c **** 
+  86:Core/Src/lps22hh_read_data_polling.c **** extern I2C_HandleTypeDef hi2c1;
+ARM GAS  /tmp/cceXeJ1t.s 			page 3
+
+
+  87:Core/Src/lps22hh_read_data_polling.c **** #define SENSOR_BUS hi2c1
+  88:Core/Src/lps22hh_read_data_polling.c **** 
+  89:Core/Src/lps22hh_read_data_polling.c **** #if defined(NUCLEO_F401RE)
+  90:Core/Src/lps22hh_read_data_polling.c **** #include "stm32f4xx_hal.h"
+  91:Core/Src/lps22hh_read_data_polling.c **** #include "usart.h"
+  92:Core/Src/lps22hh_read_data_polling.c **** #include "gpio.h"
+  93:Core/Src/lps22hh_read_data_polling.c **** #include "i2c.h"
+  94:Core/Src/lps22hh_read_data_polling.c **** 
+  95:Core/Src/lps22hh_read_data_polling.c **** #elif defined(STEVAL_MKI109V3)
+  96:Core/Src/lps22hh_read_data_polling.c **** #include "stm32f4xx_hal.h"
+  97:Core/Src/lps22hh_read_data_polling.c **** #include "usbd_cdc_if.h"
+  98:Core/Src/lps22hh_read_data_polling.c **** #include "gpio.h"
+  99:Core/Src/lps22hh_read_data_polling.c **** #include "spi.h"
+ 100:Core/Src/lps22hh_read_data_polling.c **** #include "tim.h"
+ 101:Core/Src/lps22hh_read_data_polling.c **** 
+ 102:Core/Src/lps22hh_read_data_polling.c **** #elif defined(SPC584B_DIS)
+ 103:Core/Src/lps22hh_read_data_polling.c **** #include "components.h" 
+ 104:Core/Src/lps22hh_read_data_polling.c **** #endif
+ 105:Core/Src/lps22hh_read_data_polling.c **** 
+ 106:Core/Src/lps22hh_read_data_polling.c **** /* Private macro -------------------------------------------------------------*/
+ 107:Core/Src/lps22hh_read_data_polling.c **** #define    BOOT_TIME        5 //ms
+ 108:Core/Src/lps22hh_read_data_polling.c **** 
+ 109:Core/Src/lps22hh_read_data_polling.c **** #define TX_BUF_DIM          1000
+ 110:Core/Src/lps22hh_read_data_polling.c **** 
+ 111:Core/Src/lps22hh_read_data_polling.c **** /* Private variables ---------------------------------------------------------*/
+ 112:Core/Src/lps22hh_read_data_polling.c **** static uint32_t data_raw_pressure;
+ 113:Core/Src/lps22hh_read_data_polling.c **** static int16_t data_raw_temperature;
+ 114:Core/Src/lps22hh_read_data_polling.c **** static float_t pressure_hPa;
+ 115:Core/Src/lps22hh_read_data_polling.c **** static float_t temperature_degC;
+ 116:Core/Src/lps22hh_read_data_polling.c **** static uint8_t whoamI, rst;
+ 117:Core/Src/lps22hh_read_data_polling.c **** 
+ 118:Core/Src/lps22hh_read_data_polling.c **** 
+ 119:Core/Src/lps22hh_read_data_polling.c **** /* Extern variables ----------------------------------------------------------*/
+ 120:Core/Src/lps22hh_read_data_polling.c **** 
+ 121:Core/Src/lps22hh_read_data_polling.c **** /* Private functions ---------------------------------------------------------*/
+ 122:Core/Src/lps22hh_read_data_polling.c **** 
+ 123:Core/Src/lps22hh_read_data_polling.c **** /*
+ 124:Core/Src/lps22hh_read_data_polling.c ****  *   WARNING:
+ 125:Core/Src/lps22hh_read_data_polling.c ****  *   Functions declare in this section are defined at the end of this file
+ 126:Core/Src/lps22hh_read_data_polling.c ****  *   and are strictly related to the hardware platform used.
+ 127:Core/Src/lps22hh_read_data_polling.c ****  *
+ 128:Core/Src/lps22hh_read_data_polling.c ****  */
+ 129:Core/Src/lps22hh_read_data_polling.c **** 
+ 130:Core/Src/lps22hh_read_data_polling.c **** static int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp,
+ 131:Core/Src/lps22hh_read_data_polling.c ****                               uint16_t len);
+ 132:Core/Src/lps22hh_read_data_polling.c **** static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp,
+ 133:Core/Src/lps22hh_read_data_polling.c ****                              uint16_t len);
+ 134:Core/Src/lps22hh_read_data_polling.c **** 
+ 135:Core/Src/lps22hh_read_data_polling.c **** static void platform_delay(uint32_t ms);
+ 136:Core/Src/lps22hh_read_data_polling.c **** static void platform_init(void);
+ 137:Core/Src/lps22hh_read_data_polling.c **** 
+ 138:Core/Src/lps22hh_read_data_polling.c **** /* Main Example --------------------------------------------------------------*/
+ 139:Core/Src/lps22hh_read_data_polling.c **** 
+ 140:Core/Src/lps22hh_read_data_polling.c **** void lps22hh_read_data_polling(float_t *pressure_out, float_t *temperature_out)
+ 141:Core/Src/lps22hh_read_data_polling.c **** {
+ 142:Core/Src/lps22hh_read_data_polling.c ****   if ((pressure_out == NULL) || (temperature_out == NULL)) {
+ 143:Core/Src/lps22hh_read_data_polling.c ****     return;
+ARM GAS  /tmp/cceXeJ1t.s 			page 4
+
+
+ 144:Core/Src/lps22hh_read_data_polling.c ****   }
+ 145:Core/Src/lps22hh_read_data_polling.c **** 
+ 146:Core/Src/lps22hh_read_data_polling.c ****   stmdev_ctx_t dev_ctx;
+ 147:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_status_t status;
+ 148:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.write_reg = platform_write;
+ 149:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.read_reg = platform_read;
+ 150:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.mdelay = platform_delay;
+ 151:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.handle = &SENSOR_BUS;
+ 152:Core/Src/lps22hh_read_data_polling.c ****   platform_init();
+ 153:Core/Src/lps22hh_read_data_polling.c ****   platform_delay(BOOT_TIME);
+ 154:Core/Src/lps22hh_read_data_polling.c **** 
+ 155:Core/Src/lps22hh_read_data_polling.c ****   whoamI = 0;
+ 156:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_device_id_get(&dev_ctx, &whoamI);
+ 157:Core/Src/lps22hh_read_data_polling.c ****   //printf("LPS22HH whoamI=0x%02X\r\n", whoamI);  // should print 0xB3
+ 158:Core/Src/lps22hh_read_data_polling.c **** 
+ 159:Core/Src/lps22hh_read_data_polling.c ****   if (whoamI != LPS22HH_ID) {
+ 160:Core/Src/lps22hh_read_data_polling.c ****     printf("LPS22HH not found\r\n");
+ 161:Core/Src/lps22hh_read_data_polling.c ****     *pressure_out = 0.0f;
+ 162:Core/Src/lps22hh_read_data_polling.c ****     *temperature_out = 0.0f;
+ 163:Core/Src/lps22hh_read_data_polling.c ****     return;  // exit instead of while(1)
+ 164:Core/Src/lps22hh_read_data_polling.c ****   }
+ 165:Core/Src/lps22hh_read_data_polling.c **** 
+ 166:Core/Src/lps22hh_read_data_polling.c ****   /* Restore default configuration */
+ 167:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_reset_set(&dev_ctx, PROPERTY_ENABLE);
+ 168:Core/Src/lps22hh_read_data_polling.c ****   do {
+ 169:Core/Src/lps22hh_read_data_polling.c ****     lps22hh_reset_get(&dev_ctx, &rst);
+ 170:Core/Src/lps22hh_read_data_polling.c ****   } while (rst);
+ 171:Core/Src/lps22hh_read_data_polling.c **** 
+ 172:Core/Src/lps22hh_read_data_polling.c ****   /* Enable Block Data Update */
+ 173:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_block_data_update_set(&dev_ctx, PROPERTY_ENABLE);
+ 174:Core/Src/lps22hh_read_data_polling.c ****   /* Set Output Data Rate */
+ 175:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_data_rate_set(&dev_ctx, LPS22HH_10_Hz_LOW_NOISE);
+ 176:Core/Src/lps22hh_read_data_polling.c **** 
+ 177:Core/Src/lps22hh_read_data_polling.c ****   /* Wait until both pressure and temperature are ready */
+ 178:Core/Src/lps22hh_read_data_polling.c ****   do {
+ 179:Core/Src/lps22hh_read_data_polling.c ****     lps22hh_read_reg(&dev_ctx, LPS22HH_STATUS, (uint8_t *)&status, 1);
+ 180:Core/Src/lps22hh_read_data_polling.c ****   } while (!status.p_da || !status.t_da);
+ 181:Core/Src/lps22hh_read_data_polling.c **** 
+ 182:Core/Src/lps22hh_read_data_polling.c ****   /* Read pressure */
+ 183:Core/Src/lps22hh_read_data_polling.c ****   memset(&data_raw_pressure, 0x00, sizeof(uint32_t));
+ 184:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_pressure_raw_get(&dev_ctx, &data_raw_pressure);
+ 185:Core/Src/lps22hh_read_data_polling.c ****   pressure_hPa = lps22hh_from_lsb_to_hpa(data_raw_pressure);
+ 186:Core/Src/lps22hh_read_data_polling.c ****   *pressure_out = pressure_hPa;
+ 187:Core/Src/lps22hh_read_data_polling.c ****   printf("pressure [hPa]:%6.2f\r\n", pressure_hPa);
+ 188:Core/Src/lps22hh_read_data_polling.c **** 
+ 189:Core/Src/lps22hh_read_data_polling.c ****   /* Read temperature */
+ 190:Core/Src/lps22hh_read_data_polling.c ****   memset(&data_raw_temperature, 0x00, sizeof(int16_t));
+ 191:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_temperature_raw_get(&dev_ctx, &data_raw_temperature);
+ 192:Core/Src/lps22hh_read_data_polling.c ****   temperature_degC = lps22hh_from_lsb_to_celsius(data_raw_temperature);
+ 193:Core/Src/lps22hh_read_data_polling.c ****   *temperature_out = temperature_degC;
+ 194:Core/Src/lps22hh_read_data_polling.c ****   printf("temperature [degC]:%6.2f\r\n", temperature_degC);
+ 195:Core/Src/lps22hh_read_data_polling.c **** }
+ 196:Core/Src/lps22hh_read_data_polling.c **** static int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp,
+ 197:Core/Src/lps22hh_read_data_polling.c ****                               uint16_t len)
+ 198:Core/Src/lps22hh_read_data_polling.c **** {
+ 199:Core/Src/lps22hh_read_data_polling.c ****     HAL_I2C_Mem_Write(handle, LPS22HH_I2C_ADD_H, reg,  // was LIS2DW12_I2C_ADD_H
+ 200:Core/Src/lps22hh_read_data_polling.c ****                       I2C_MEMADD_SIZE_8BIT, (uint8_t *)bufp, len, 1000);
+ARM GAS  /tmp/cceXeJ1t.s 			page 5
+
+
+ 201:Core/Src/lps22hh_read_data_polling.c ****     return 0;
+ 202:Core/Src/lps22hh_read_data_polling.c **** }
+ 203:Core/Src/lps22hh_read_data_polling.c **** 
+ 204:Core/Src/lps22hh_read_data_polling.c **** static int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp,
+ 205:Core/Src/lps22hh_read_data_polling.c ****                              uint16_t len)
+ 206:Core/Src/lps22hh_read_data_polling.c **** {
+  30              		.loc 1 206 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 206 1 is_stmt 0 view .LVU1
+  35 0000 10B5     		push	{r4, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 14, -4
+  40 0002 84B0     		sub	sp, sp, #16
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 24
+ 207:Core/Src/lps22hh_read_data_polling.c ****     HAL_I2C_Mem_Read(handle, LPS22HH_I2C_ADD_H, reg,   // was LIS2DW12_I2C_ADD_H
+  43              		.loc 1 207 5 is_stmt 1 view .LVU2
+  44 0004 4FF47A74 		mov	r4, #1000
+  45 0008 0294     		str	r4, [sp, #8]
+  46 000a 0193     		str	r3, [sp, #4]
+  47 000c 0092     		str	r2, [sp]
+  48 000e 0123     		movs	r3, #1
+  49              	.LVL1:
+  50              		.loc 1 207 5 is_stmt 0 view .LVU3
+  51 0010 0A46     		mov	r2, r1
+  52              	.LVL2:
+  53              		.loc 1 207 5 view .LVU4
+  54 0012 BB21     		movs	r1, #187
+  55              	.LVL3:
+  56              		.loc 1 207 5 view .LVU5
+  57 0014 FFF7FEFF 		bl	HAL_I2C_Mem_Read
+  58              	.LVL4:
+ 208:Core/Src/lps22hh_read_data_polling.c ****                      I2C_MEMADD_SIZE_8BIT, bufp, len, 1000);
+ 209:Core/Src/lps22hh_read_data_polling.c ****     return 0;
+  59              		.loc 1 209 5 is_stmt 1 view .LVU6
+ 210:Core/Src/lps22hh_read_data_polling.c **** }
+  60              		.loc 1 210 1 is_stmt 0 view .LVU7
+  61 0018 0020     		movs	r0, #0
+  62 001a 04B0     		add	sp, sp, #16
+  63              	.LCFI2:
+  64              		.cfi_def_cfa_offset 8
+  65              		@ sp needed
+  66 001c 10BD     		pop	{r4, pc}
+  67              		.cfi_endproc
+  68              	.LFE162:
+  70              		.section	.text.platform_write,"ax",%progbits
+  71              		.align	1
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  76              	platform_write:
+  77              	.LVL5:
+  78              	.LFB161:
+ARM GAS  /tmp/cceXeJ1t.s 			page 6
+
+
+ 198:Core/Src/lps22hh_read_data_polling.c ****     HAL_I2C_Mem_Write(handle, LPS22HH_I2C_ADD_H, reg,  // was LIS2DW12_I2C_ADD_H
+  79              		.loc 1 198 1 is_stmt 1 view -0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+ 198:Core/Src/lps22hh_read_data_polling.c ****     HAL_I2C_Mem_Write(handle, LPS22HH_I2C_ADD_H, reg,  // was LIS2DW12_I2C_ADD_H
+  83              		.loc 1 198 1 is_stmt 0 view .LVU9
+  84 0000 10B5     		push	{r4, lr}
+  85              	.LCFI3:
+  86              		.cfi_def_cfa_offset 8
+  87              		.cfi_offset 4, -8
+  88              		.cfi_offset 14, -4
+  89 0002 84B0     		sub	sp, sp, #16
+  90              	.LCFI4:
+  91              		.cfi_def_cfa_offset 24
+ 199:Core/Src/lps22hh_read_data_polling.c ****                       I2C_MEMADD_SIZE_8BIT, (uint8_t *)bufp, len, 1000);
+  92              		.loc 1 199 5 is_stmt 1 view .LVU10
+  93 0004 4FF47A74 		mov	r4, #1000
+  94 0008 0294     		str	r4, [sp, #8]
+  95 000a 0193     		str	r3, [sp, #4]
+  96 000c 0092     		str	r2, [sp]
+  97 000e 0123     		movs	r3, #1
+  98              	.LVL6:
+ 199:Core/Src/lps22hh_read_data_polling.c ****                       I2C_MEMADD_SIZE_8BIT, (uint8_t *)bufp, len, 1000);
+  99              		.loc 1 199 5 is_stmt 0 view .LVU11
+ 100 0010 0A46     		mov	r2, r1
+ 101              	.LVL7:
+ 199:Core/Src/lps22hh_read_data_polling.c ****                       I2C_MEMADD_SIZE_8BIT, (uint8_t *)bufp, len, 1000);
+ 102              		.loc 1 199 5 view .LVU12
+ 103 0012 BB21     		movs	r1, #187
+ 104              	.LVL8:
+ 199:Core/Src/lps22hh_read_data_polling.c ****                       I2C_MEMADD_SIZE_8BIT, (uint8_t *)bufp, len, 1000);
+ 105              		.loc 1 199 5 view .LVU13
+ 106 0014 FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 107              	.LVL9:
+ 201:Core/Src/lps22hh_read_data_polling.c **** }
+ 108              		.loc 1 201 5 is_stmt 1 view .LVU14
+ 202:Core/Src/lps22hh_read_data_polling.c **** 
+ 109              		.loc 1 202 1 is_stmt 0 view .LVU15
+ 110 0018 0020     		movs	r0, #0
+ 111 001a 04B0     		add	sp, sp, #16
+ 112              	.LCFI5:
+ 113              		.cfi_def_cfa_offset 8
+ 114              		@ sp needed
+ 115 001c 10BD     		pop	{r4, pc}
+ 116              		.cfi_endproc
+ 117              	.LFE161:
+ 119              		.section	.text.platform_delay,"ax",%progbits
+ 120              		.align	1
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 125              	platform_delay:
+ 126              	.LVL10:
+ 127              	.LFB163:
+ 211:Core/Src/lps22hh_read_data_polling.c **** 
+ 212:Core/Src/lps22hh_read_data_polling.c **** static void platform_delay(uint32_t ms)
+ARM GAS  /tmp/cceXeJ1t.s 			page 7
+
+
+ 213:Core/Src/lps22hh_read_data_polling.c **** {
+ 128              		.loc 1 213 1 is_stmt 1 view -0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132              		.loc 1 213 1 is_stmt 0 view .LVU17
+ 133 0000 08B5     		push	{r3, lr}
+ 134              	.LCFI6:
+ 135              		.cfi_def_cfa_offset 8
+ 136              		.cfi_offset 3, -8
+ 137              		.cfi_offset 14, -4
+ 214:Core/Src/lps22hh_read_data_polling.c ****     HAL_Delay(ms);
+ 138              		.loc 1 214 5 is_stmt 1 view .LVU18
+ 139 0002 FFF7FEFF 		bl	HAL_Delay
+ 140              	.LVL11:
+ 215:Core/Src/lps22hh_read_data_polling.c **** }
+ 141              		.loc 1 215 1 is_stmt 0 view .LVU19
+ 142 0006 08BD     		pop	{r3, pc}
+ 143              		.cfi_endproc
+ 144              	.LFE163:
+ 146              		.section	.rodata.lps22hh_read_data_polling.str1.4,"aMS",%progbits,1
+ 147              		.align	2
+ 148              	.LC0:
+ 149 0000 4C505332 		.ascii	"LPS22HH not found\015\000"
+ 149      32484820 
+ 149      6E6F7420 
+ 149      666F756E 
+ 149      640D00
+ 150              		.global	__aeabi_f2d
+ 151 0013 00       		.align	2
+ 152              	.LC1:
+ 153 0014 70726573 		.ascii	"pressure [hPa]:%6.2f\015\012\000"
+ 153      73757265 
+ 153      205B6850 
+ 153      615D3A25 
+ 153      362E3266 
+ 154 002b 00       		.align	2
+ 155              	.LC2:
+ 156 002c 74656D70 		.ascii	"temperature [degC]:%6.2f\015\012\000"
+ 156      65726174 
+ 156      75726520 
+ 156      5B646567 
+ 156      435D3A25 
+ 157              		.section	.text.lps22hh_read_data_polling,"ax",%progbits
+ 158              		.align	1
+ 159              		.global	lps22hh_read_data_polling
+ 160              		.syntax unified
+ 161              		.thumb
+ 162              		.thumb_func
+ 164              	lps22hh_read_data_polling:
+ 165              	.LVL12:
+ 166              	.LFB160:
+ 141:Core/Src/lps22hh_read_data_polling.c ****   if ((pressure_out == NULL) || (temperature_out == NULL)) {
+ 167              		.loc 1 141 1 is_stmt 1 view -0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 24
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/cceXeJ1t.s 			page 8
+
+
+ 142:Core/Src/lps22hh_read_data_polling.c ****     return;
+ 171              		.loc 1 142 3 view .LVU21
+ 142:Core/Src/lps22hh_read_data_polling.c ****     return;
+ 172              		.loc 1 142 6 is_stmt 0 view .LVU22
+ 173 0000 0028     		cmp	r0, #0
+ 174 0002 72D0     		beq	.L14
+ 141:Core/Src/lps22hh_read_data_polling.c ****   if ((pressure_out == NULL) || (temperature_out == NULL)) {
+ 175              		.loc 1 141 1 view .LVU23
+ 176 0004 F0B5     		push	{r4, r5, r6, r7, lr}
+ 177              	.LCFI7:
+ 178              		.cfi_def_cfa_offset 20
+ 179              		.cfi_offset 4, -20
+ 180              		.cfi_offset 5, -16
+ 181              		.cfi_offset 6, -12
+ 182              		.cfi_offset 7, -8
+ 183              		.cfi_offset 14, -4
+ 184 0006 87B0     		sub	sp, sp, #28
+ 185              	.LCFI8:
+ 186              		.cfi_def_cfa_offset 48
+ 187 0008 0D46     		mov	r5, r1
+ 188 000a 0646     		mov	r6, r0
+ 142:Core/Src/lps22hh_read_data_polling.c ****     return;
+ 189              		.loc 1 142 30 discriminator 1 view .LVU24
+ 190 000c D1B1     		cbz	r1, .L7
+ 146:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_status_t status;
+ 191              		.loc 1 146 3 is_stmt 1 view .LVU25
+ 147:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.write_reg = platform_write;
+ 192              		.loc 1 147 3 view .LVU26
+ 148:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.read_reg = platform_read;
+ 193              		.loc 1 148 3 view .LVU27
+ 148:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.read_reg = platform_read;
+ 194              		.loc 1 148 21 is_stmt 0 view .LVU28
+ 195 000e 374B     		ldr	r3, .L17
+ 196 0010 0193     		str	r3, [sp, #4]
+ 149:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.mdelay = platform_delay;
+ 197              		.loc 1 149 3 is_stmt 1 view .LVU29
+ 149:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.mdelay = platform_delay;
+ 198              		.loc 1 149 20 is_stmt 0 view .LVU30
+ 199 0012 374B     		ldr	r3, .L17+4
+ 200 0014 0293     		str	r3, [sp, #8]
+ 150:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.handle = &SENSOR_BUS;
+ 201              		.loc 1 150 3 is_stmt 1 view .LVU31
+ 150:Core/Src/lps22hh_read_data_polling.c ****   dev_ctx.handle = &SENSOR_BUS;
+ 202              		.loc 1 150 18 is_stmt 0 view .LVU32
+ 203 0016 374B     		ldr	r3, .L17+8
+ 204 0018 0393     		str	r3, [sp, #12]
+ 151:Core/Src/lps22hh_read_data_polling.c ****   platform_init();
+ 205              		.loc 1 151 3 is_stmt 1 view .LVU33
+ 151:Core/Src/lps22hh_read_data_polling.c ****   platform_init();
+ 206              		.loc 1 151 18 is_stmt 0 view .LVU34
+ 207 001a 374B     		ldr	r3, .L17+12
+ 208 001c 0493     		str	r3, [sp, #16]
+ 152:Core/Src/lps22hh_read_data_polling.c ****   platform_delay(BOOT_TIME);
+ 209              		.loc 1 152 3 is_stmt 1 view .LVU35
+ 153:Core/Src/lps22hh_read_data_polling.c **** 
+ 210              		.loc 1 153 3 view .LVU36
+ 211 001e 0520     		movs	r0, #5
+ARM GAS  /tmp/cceXeJ1t.s 			page 9
+
+
+ 212              	.LVL13:
+ 153:Core/Src/lps22hh_read_data_polling.c **** 
+ 213              		.loc 1 153 3 is_stmt 0 view .LVU37
+ 214 0020 FFF7FEFF 		bl	platform_delay
+ 215              	.LVL14:
+ 155:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_device_id_get(&dev_ctx, &whoamI);
+ 216              		.loc 1 155 3 is_stmt 1 view .LVU38
+ 155:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_device_id_get(&dev_ctx, &whoamI);
+ 217              		.loc 1 155 10 is_stmt 0 view .LVU39
+ 218 0024 354C     		ldr	r4, .L17+16
+ 219 0026 0023     		movs	r3, #0
+ 220 0028 2370     		strb	r3, [r4]
+ 156:Core/Src/lps22hh_read_data_polling.c ****   //printf("LPS22HH whoamI=0x%02X\r\n", whoamI);  // should print 0xB3
+ 221              		.loc 1 156 3 is_stmt 1 view .LVU40
+ 222 002a 2146     		mov	r1, r4
+ 223 002c 01A8     		add	r0, sp, #4
+ 224 002e FFF7FEFF 		bl	lps22hh_device_id_get
+ 225              	.LVL15:
+ 159:Core/Src/lps22hh_read_data_polling.c ****     printf("LPS22HH not found\r\n");
+ 226              		.loc 1 159 3 view .LVU41
+ 159:Core/Src/lps22hh_read_data_polling.c ****     printf("LPS22HH not found\r\n");
+ 227              		.loc 1 159 14 is_stmt 0 view .LVU42
+ 228 0032 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 159:Core/Src/lps22hh_read_data_polling.c ****     printf("LPS22HH not found\r\n");
+ 229              		.loc 1 159 6 view .LVU43
+ 230 0034 B32B     		cmp	r3, #179
+ 231 0036 07D0     		beq	.L9
+ 160:Core/Src/lps22hh_read_data_polling.c ****     *pressure_out = 0.0f;
+ 232              		.loc 1 160 5 is_stmt 1 view .LVU44
+ 233 0038 3148     		ldr	r0, .L17+20
+ 234 003a FFF7FEFF 		bl	puts
+ 235              	.LVL16:
+ 161:Core/Src/lps22hh_read_data_polling.c ****     *temperature_out = 0.0f;
+ 236              		.loc 1 161 5 view .LVU45
+ 161:Core/Src/lps22hh_read_data_polling.c ****     *temperature_out = 0.0f;
+ 237              		.loc 1 161 19 is_stmt 0 view .LVU46
+ 238 003e 0023     		movs	r3, #0
+ 239 0040 3360     		str	r3, [r6]	@ float
+ 162:Core/Src/lps22hh_read_data_polling.c ****     return;  // exit instead of while(1)
+ 240              		.loc 1 162 5 is_stmt 1 view .LVU47
+ 162:Core/Src/lps22hh_read_data_polling.c ****     return;  // exit instead of while(1)
+ 241              		.loc 1 162 22 is_stmt 0 view .LVU48
+ 242 0042 2B60     		str	r3, [r5]	@ float
+ 163:Core/Src/lps22hh_read_data_polling.c ****   }
+ 243              		.loc 1 163 5 is_stmt 1 view .LVU49
+ 244              	.L7:
+ 195:Core/Src/lps22hh_read_data_polling.c **** static int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp,
+ 245              		.loc 1 195 1 is_stmt 0 view .LVU50
+ 246 0044 07B0     		add	sp, sp, #28
+ 247              	.LCFI9:
+ 248              		.cfi_remember_state
+ 249              		.cfi_def_cfa_offset 20
+ 250              		@ sp needed
+ 251 0046 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 252              	.LVL17:
+ 253              	.L9:
+ 254              	.LCFI10:
+ARM GAS  /tmp/cceXeJ1t.s 			page 10
+
+
+ 255              		.cfi_restore_state
+ 167:Core/Src/lps22hh_read_data_polling.c ****   do {
+ 256              		.loc 1 167 3 is_stmt 1 view .LVU51
+ 257 0048 0121     		movs	r1, #1
+ 258 004a 01A8     		add	r0, sp, #4
+ 259 004c FFF7FEFF 		bl	lps22hh_reset_set
+ 260              	.LVL18:
+ 261              	.L10:
+ 168:Core/Src/lps22hh_read_data_polling.c ****     lps22hh_reset_get(&dev_ctx, &rst);
+ 262              		.loc 1 168 3 view .LVU52
+ 169:Core/Src/lps22hh_read_data_polling.c ****   } while (rst);
+ 263              		.loc 1 169 5 view .LVU53
+ 264 0050 2C4C     		ldr	r4, .L17+24
+ 265 0052 2146     		mov	r1, r4
+ 266 0054 01A8     		add	r0, sp, #4
+ 267 0056 FFF7FEFF 		bl	lps22hh_reset_get
+ 268              	.LVL19:
+ 170:Core/Src/lps22hh_read_data_polling.c **** 
+ 269              		.loc 1 170 12 discriminator 1 view .LVU54
+ 270 005a 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 271 005c 002B     		cmp	r3, #0
+ 272 005e F7D1     		bne	.L10
+ 173:Core/Src/lps22hh_read_data_polling.c ****   /* Set Output Data Rate */
+ 273              		.loc 1 173 3 view .LVU55
+ 274 0060 0121     		movs	r1, #1
+ 275 0062 01A8     		add	r0, sp, #4
+ 276 0064 FFF7FEFF 		bl	lps22hh_block_data_update_set
+ 277              	.LVL20:
+ 175:Core/Src/lps22hh_read_data_polling.c **** 
+ 278              		.loc 1 175 3 view .LVU56
+ 279 0068 1221     		movs	r1, #18
+ 280 006a 01A8     		add	r0, sp, #4
+ 281 006c FFF7FEFF 		bl	lps22hh_data_rate_set
+ 282              	.LVL21:
+ 283              	.L11:
+ 178:Core/Src/lps22hh_read_data_polling.c ****     lps22hh_read_reg(&dev_ctx, LPS22HH_STATUS, (uint8_t *)&status, 1);
+ 284              		.loc 1 178 3 view .LVU57
+ 179:Core/Src/lps22hh_read_data_polling.c ****   } while (!status.p_da || !status.t_da);
+ 285              		.loc 1 179 5 view .LVU58
+ 286 0070 0123     		movs	r3, #1
+ 287 0072 6A46     		mov	r2, sp
+ 288 0074 2721     		movs	r1, #39
+ 289 0076 01A8     		add	r0, sp, #4
+ 290 0078 FFF7FEFF 		bl	lps22hh_read_reg
+ 291              	.LVL22:
+ 180:Core/Src/lps22hh_read_data_polling.c **** 
+ 292              		.loc 1 180 25 discriminator 1 view .LVU59
+ 293 007c 9DF80030 		ldrb	r3, [sp]	@ zero_extendqisi2
+ 294 0080 03F00303 		and	r3, r3, #3
+ 295 0084 032B     		cmp	r3, #3
+ 296 0086 F3D1     		bne	.L11
+ 183:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_pressure_raw_get(&dev_ctx, &data_raw_pressure);
+ 297              		.loc 1 183 3 view .LVU60
+ 298 0088 1F4C     		ldr	r4, .L17+28
+ 299 008a 0027     		movs	r7, #0
+ 300 008c 2760     		str	r7, [r4]
+ 184:Core/Src/lps22hh_read_data_polling.c ****   pressure_hPa = lps22hh_from_lsb_to_hpa(data_raw_pressure);
+ARM GAS  /tmp/cceXeJ1t.s 			page 11
+
+
+ 301              		.loc 1 184 3 view .LVU61
+ 302 008e 2146     		mov	r1, r4
+ 303 0090 01A8     		add	r0, sp, #4
+ 304 0092 FFF7FEFF 		bl	lps22hh_pressure_raw_get
+ 305              	.LVL23:
+ 185:Core/Src/lps22hh_read_data_polling.c ****   *pressure_out = pressure_hPa;
+ 306              		.loc 1 185 3 view .LVU62
+ 185:Core/Src/lps22hh_read_data_polling.c ****   *pressure_out = pressure_hPa;
+ 307              		.loc 1 185 18 is_stmt 0 view .LVU63
+ 308 0096 2068     		ldr	r0, [r4]
+ 309 0098 FFF7FEFF 		bl	lps22hh_from_lsb_to_hpa
+ 310              	.LVL24:
+ 311 009c 10EE100A 		vmov	r0, s0
+ 185:Core/Src/lps22hh_read_data_polling.c ****   *pressure_out = pressure_hPa;
+ 312              		.loc 1 185 16 discriminator 1 view .LVU64
+ 313 00a0 1A4B     		ldr	r3, .L17+32
+ 314 00a2 83ED000A 		vstr.32	s0, [r3]
+ 186:Core/Src/lps22hh_read_data_polling.c ****   printf("pressure [hPa]:%6.2f\r\n", pressure_hPa);
+ 315              		.loc 1 186 3 is_stmt 1 view .LVU65
+ 186:Core/Src/lps22hh_read_data_polling.c ****   printf("pressure [hPa]:%6.2f\r\n", pressure_hPa);
+ 316              		.loc 1 186 17 is_stmt 0 view .LVU66
+ 317 00a6 86ED000A 		vstr.32	s0, [r6]
+ 187:Core/Src/lps22hh_read_data_polling.c **** 
+ 318              		.loc 1 187 3 is_stmt 1 view .LVU67
+ 319 00aa FFF7FEFF 		bl	__aeabi_f2d
+ 320              	.LVL25:
+ 321 00ae 0246     		mov	r2, r0
+ 322 00b0 0B46     		mov	r3, r1
+ 323 00b2 1748     		ldr	r0, .L17+36
+ 324 00b4 FFF7FEFF 		bl	printf
+ 325              	.LVL26:
+ 190:Core/Src/lps22hh_read_data_polling.c ****   lps22hh_temperature_raw_get(&dev_ctx, &data_raw_temperature);
+ 326              		.loc 1 190 3 view .LVU68
+ 327 00b8 164C     		ldr	r4, .L17+40
+ 328 00ba 2780     		strh	r7, [r4]	@ movhi
+ 191:Core/Src/lps22hh_read_data_polling.c ****   temperature_degC = lps22hh_from_lsb_to_celsius(data_raw_temperature);
+ 329              		.loc 1 191 3 view .LVU69
+ 330 00bc 2146     		mov	r1, r4
+ 331 00be 01A8     		add	r0, sp, #4
+ 332 00c0 FFF7FEFF 		bl	lps22hh_temperature_raw_get
+ 333              	.LVL27:
+ 192:Core/Src/lps22hh_read_data_polling.c ****   *temperature_out = temperature_degC;
+ 334              		.loc 1 192 3 view .LVU70
+ 192:Core/Src/lps22hh_read_data_polling.c ****   *temperature_out = temperature_degC;
+ 335              		.loc 1 192 22 is_stmt 0 view .LVU71
+ 336 00c4 B4F90000 		ldrsh	r0, [r4]
+ 337 00c8 FFF7FEFF 		bl	lps22hh_from_lsb_to_celsius
+ 338              	.LVL28:
+ 339 00cc 10EE100A 		vmov	r0, s0
+ 192:Core/Src/lps22hh_read_data_polling.c ****   *temperature_out = temperature_degC;
+ 340              		.loc 1 192 20 discriminator 1 view .LVU72
+ 341 00d0 114B     		ldr	r3, .L17+44
+ 342 00d2 83ED000A 		vstr.32	s0, [r3]
+ 193:Core/Src/lps22hh_read_data_polling.c ****   printf("temperature [degC]:%6.2f\r\n", temperature_degC);
+ 343              		.loc 1 193 3 is_stmt 1 view .LVU73
+ 193:Core/Src/lps22hh_read_data_polling.c ****   printf("temperature [degC]:%6.2f\r\n", temperature_degC);
+ 344              		.loc 1 193 20 is_stmt 0 view .LVU74
+ARM GAS  /tmp/cceXeJ1t.s 			page 12
+
+
+ 345 00d6 85ED000A 		vstr.32	s0, [r5]
+ 194:Core/Src/lps22hh_read_data_polling.c **** }
+ 346              		.loc 1 194 3 is_stmt 1 view .LVU75
+ 347 00da FFF7FEFF 		bl	__aeabi_f2d
+ 348              	.LVL29:
+ 349 00de 0246     		mov	r2, r0
+ 350 00e0 0B46     		mov	r3, r1
+ 351 00e2 0E48     		ldr	r0, .L17+48
+ 352 00e4 FFF7FEFF 		bl	printf
+ 353              	.LVL30:
+ 354 00e8 ACE7     		b	.L7
+ 355              	.LVL31:
+ 356              	.L14:
+ 357              	.LCFI11:
+ 358              		.cfi_def_cfa_offset 0
+ 359              		.cfi_restore 4
+ 360              		.cfi_restore 5
+ 361              		.cfi_restore 6
+ 362              		.cfi_restore 7
+ 363              		.cfi_restore 14
+ 194:Core/Src/lps22hh_read_data_polling.c **** }
+ 364              		.loc 1 194 3 is_stmt 0 view .LVU76
+ 365 00ea 7047     		bx	lr
+ 366              	.L18:
+ 367              		.align	2
+ 368              	.L17:
+ 369 00ec 00000000 		.word	platform_write
+ 370 00f0 00000000 		.word	platform_read
+ 371 00f4 00000000 		.word	platform_delay
+ 372 00f8 00000000 		.word	hi2c1
+ 373 00fc 00000000 		.word	whoamI
+ 374 0100 00000000 		.word	.LC0
+ 375 0104 00000000 		.word	rst
+ 376 0108 00000000 		.word	data_raw_pressure
+ 377 010c 00000000 		.word	pressure_hPa
+ 378 0110 14000000 		.word	.LC1
+ 379 0114 00000000 		.word	data_raw_temperature
+ 380 0118 00000000 		.word	temperature_degC
+ 381 011c 2C000000 		.word	.LC2
+ 382              		.cfi_endproc
+ 383              	.LFE160:
+ 385              		.section	.bss.rst,"aw",%nobits
+ 388              	rst:
+ 389 0000 00       		.space	1
+ 390              		.section	.bss.whoamI,"aw",%nobits
+ 393              	whoamI:
+ 394 0000 00       		.space	1
+ 395              		.section	.bss.temperature_degC,"aw",%nobits
+ 396              		.align	2
+ 399              	temperature_degC:
+ 400 0000 00000000 		.space	4
+ 401              		.section	.bss.pressure_hPa,"aw",%nobits
+ 402              		.align	2
+ 405              	pressure_hPa:
+ 406 0000 00000000 		.space	4
+ 407              		.section	.bss.data_raw_temperature,"aw",%nobits
+ 408              		.align	1
+ARM GAS  /tmp/cceXeJ1t.s 			page 13
+
+
+ 411              	data_raw_temperature:
+ 412 0000 0000     		.space	2
+ 413              		.section	.bss.data_raw_pressure,"aw",%nobits
+ 414              		.align	2
+ 417              	data_raw_pressure:
+ 418 0000 00000000 		.space	4
+ 419              		.text
+ 420              	.Letext0:
+ 421              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 422              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 423              		.file 4 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/math.h"
+ 424              		.file 5 "Drivers/STMems/lps22hh_reg.h"
+ 425              		.file 6 "Drivers/CMSIS/Device/ST/STM32U5xx/Include/stm32u545xx.h"
+ 426              		.file 7 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_def.h"
+ 427              		.file 8 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_dma.h"
+ 428              		.file 9 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_dma_ex.h"
+ 429              		.file 10 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_i2c.h"
+ 430              		.file 11 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
+ 431              		.file 12 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal.h"
+ 432              		.file 13 "<built-in>"
+ARM GAS  /tmp/cceXeJ1t.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 lps22hh_read_data_polling.c
+     /tmp/cceXeJ1t.s:22     .text.platform_read:00000000 $t
+     /tmp/cceXeJ1t.s:27     .text.platform_read:00000000 platform_read
+     /tmp/cceXeJ1t.s:71     .text.platform_write:00000000 $t
+     /tmp/cceXeJ1t.s:76     .text.platform_write:00000000 platform_write
+     /tmp/cceXeJ1t.s:120    .text.platform_delay:00000000 $t
+     /tmp/cceXeJ1t.s:125    .text.platform_delay:00000000 platform_delay
+     /tmp/cceXeJ1t.s:147    .rodata.lps22hh_read_data_polling.str1.4:00000000 $d
+     /tmp/cceXeJ1t.s:158    .text.lps22hh_read_data_polling:00000000 $t
+     /tmp/cceXeJ1t.s:164    .text.lps22hh_read_data_polling:00000000 lps22hh_read_data_polling
+     /tmp/cceXeJ1t.s:369    .text.lps22hh_read_data_polling:000000ec $d
+     /tmp/cceXeJ1t.s:393    .bss.whoamI:00000000 whoamI
+     /tmp/cceXeJ1t.s:388    .bss.rst:00000000 rst
+     /tmp/cceXeJ1t.s:417    .bss.data_raw_pressure:00000000 data_raw_pressure
+     /tmp/cceXeJ1t.s:405    .bss.pressure_hPa:00000000 pressure_hPa
+     /tmp/cceXeJ1t.s:411    .bss.data_raw_temperature:00000000 data_raw_temperature
+     /tmp/cceXeJ1t.s:399    .bss.temperature_degC:00000000 temperature_degC
+     /tmp/cceXeJ1t.s:389    .bss.rst:00000000 $d
+     /tmp/cceXeJ1t.s:394    .bss.whoamI:00000000 $d
+     /tmp/cceXeJ1t.s:396    .bss.temperature_degC:00000000 $d
+     /tmp/cceXeJ1t.s:402    .bss.pressure_hPa:00000000 $d
+     /tmp/cceXeJ1t.s:408    .bss.data_raw_temperature:00000000 $d
+     /tmp/cceXeJ1t.s:414    .bss.data_raw_pressure:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_I2C_Mem_Read
+HAL_I2C_Mem_Write
+HAL_Delay
+__aeabi_f2d
+lps22hh_device_id_get
+puts
+lps22hh_reset_set
+lps22hh_reset_get
+lps22hh_block_data_update_set
+lps22hh_data_rate_set
+lps22hh_read_reg
+lps22hh_pressure_raw_get
+lps22hh_from_lsb_to_hpa
+printf
+lps22hh_temperature_raw_get
+lps22hh_from_lsb_to_celsius
+hi2c1
