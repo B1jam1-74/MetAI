@@ -2,6 +2,8 @@
 **Université Savoie Mont-Blanc** — Licence 3 ESET  
  *Maram Mezlini & Benjamin Avocat-Maulaz*  
 
+<div align="justify">
+
 ## **Introduction**  
 MetAI is an embedded AI project that runs a weather prediction model directly on an ultra-low-power STM32U545 microcontroller. Using onboard sensors (temperature, humidity, pressure), the system infers the current weather condition locally — no cloud compute required — and transmits the result over LoRaWAN for remote monitoring. The project demonstrates that meaningful AI inference can coexist with strict energy budgets, making it relevant for battery-operated or energy-harvesting IoT nodes.  
 
@@ -180,3 +182,5 @@ MetAI/
 </table>
 *Université Savoie Mont-Blanc — Licence Électronique et Systèmes Embarqués et Télécommunications (ESET) — 2025/2026*  
    
+</div>
+
