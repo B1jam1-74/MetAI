@@ -228,16 +228,31 @@ More broadly, the number of connected objects in our daily lives keeps growing �
 <a id="repository-structure"></a>
 ## **Repository Structure**  
 MetAI/  
-├── Notebooks/              # Jupyter notebooks — data prep, training, evaluation  
-│   ├── binary_rain_model.ipynb  
-│   └── multiclass_weather_model.ipynb  
-├── Firmware/               # STM32CubeIDE project for NUCLEO-U545RE-Q  
-│   ├── Core/  
-│   ├── X-CUBE-AI/          # Generated Neural-ART runtime files  
-│   └── ...  
-├── NodeRED/                # Node-RED flow export (JSON)  
-├── TTN/                    # TTN payload formatter (JavaScript)  
-└── docs/                   # Images and schematics  
+├── LICENSE  
+├── README.md  
+├── AI Models/                    # Exported TFLite models  
+│   ├── meteo_multiclasse.tflite  
+│   └── rain_model.tflite  
+├── Binaries/                     # Compiled binaries grouped by test/project  
+│   ├── Final project/  
+│   ├── First AI model/  
+│   └── Simple board test/  
+├── Firmwares/                    # STM32CubeIDE firmware projects  
+│   ├── implementation_gros_model/  
+│   ├── model_IA/  
+│   └── test/  
+├── Images/                       # Figures used in the README  
+│   ├── IKS01A3.png  
+│   ├── LoRa-E5.png  
+│   ├── U545.jpg  
+│   ├── meteostat.png  
+│   └── model.png  
+├── Jupyter Notebooks/            # Model training/testing notebooks  
+│   ├── Model_final.ipynb  
+│   └── Model_test.ipynb  
+├── NodeRED/                      # Node-RED assets/flows  
+└── TTN/                          # TTN payload formatter  
+	└── function decodeUplink.txt  
    
 <a id="dependencies"></a>
 ## **Dependencies**  
