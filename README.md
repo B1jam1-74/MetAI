@@ -12,6 +12,7 @@
 - [Part 4 - Power Consumption](#part-4-power-consumption)
 - [Part 5 - Conclusion](#part-5-conclusion)
 - [Repository Structure](#repository-structure)
+- [Build and Flash Workflow](#build-and-flash-workflow)
 - [Dependencies](#dependencies)
 
 
@@ -254,6 +255,14 @@ MetAI/
 └── TTN/                          # TTN payload formatter  
 	└── function decodeUplink.txt  
    
+
+<a id="build-and-flash-workflow"></a>
+## **Build and Flash Workflow**
+- The folders in **Binaries/** contain prebuilt firmware images. They can be directly uploaded to the STM32 board with **STM32CubeProgrammer**.
+- The firmware projects in **Firmwares/** are generated with **Makefiles**, so they are not locked to STM32CubeIDE.
+- You can open and edit the code in **VS Code**, then build/flash from a terminal with Make commands (including **make flash** when the target is configured).
+- This workflow makes it easy to iterate quickly: edit in VS Code, compile with Make, and program either with Make or STM32CubeProgrammer.
+
 <a id="dependencies"></a>
 ## **Dependencies**  
 <table align="center">
