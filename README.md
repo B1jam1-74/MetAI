@@ -201,6 +201,10 @@ Once decoded by TTN, the data is forwarded to a **Node-RED** flow that performs 
  
 **Note on the network side:** Routing, cloud dashboards, and persistent storage fall outside our electronics/embedded speciality, so we kept the network stack intentionally minimal. That said, since the full structured JSON is already being POSTed by Node-RED, plugging in a database (InfluxDB, TimescaleDB) or a dashboard (Grafana, Datacake) is straightforward and requires no firmware changes.  
 
+<p align="center">
+	<img src="Images/Web_server.png" alt="Web page of the server" />
+</p>
+
 <a id="part-4-power-consumption"></a>
 ## **Part 4 — Power Consumption**  
 
