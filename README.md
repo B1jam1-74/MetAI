@@ -199,11 +199,13 @@ Once decoded by TTN, the data is forwarded to a **Node-RED** flow that performs 
 	<img src="Images/NodeRED_Flow.png" alt="Flow NodeRED" />
 </p>
  
-**Note on the network side:** Routing, cloud dashboards, and persistent storage fall outside our electronics/embedded speciality, so we kept the network stack intentionally minimal. That said, since the full structured JSON is already being POSTed by Node-RED, plugging in a database (InfluxDB, TimescaleDB) or a dashboard (Grafana, Datacake) is straightforward and requires no firmware changes.  
+**Note on the network side:** Routing, cloud dashboards, and persistent storage fall outside our electronics/embedded speciality, so we kept the network stack intentionally minimal and modular. In practice, Node-RED already emits a complete JSON payload (`device_id`, timestamp, sensors, prediction), so the ingestion layer can be swapped without touching the STM32 firmware. We currently run a lightweight Docker setup with a FastAPI service for `/uplink` ingestion and `/stats` exposure, plus a Streamlit dashboard for visualization; adding another backend (InfluxDB/TimescaleDB) or another frontend (Grafana/Datacake) is therefore mostly a wiring/configuration task.  
 
 <p align="center">
 	<img src="Images/Web_server.png" alt="Web page of the server" />
 </p>
+
+The server receives uplinks from Node-RED, stores each sample in a local SQLite database, fetches real weather from Open-Meteo for comparison, then serves both raw history and aggregate metrics to the dashboard. This gives a full end-to-end pipeline (sensor -> TTN -> Node-RED -> API -> dashboard) while keeping deployment simple and reproducible with Docker Compose.  
 
 <a id="part-4-power-consumption"></a>
 ## **Part 4 — Power Consumption**  
