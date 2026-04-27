@@ -7,7 +7,7 @@ API = "http://api:8000"
 
 st.set_page_config(page_title="metAI Dashboard", page_icon="🌦️", layout="wide")
 st.title("🌦️ metAI — Weather Prediction Dashboard")
-st.caption("STM32 embedded ML model vs Open-Meteo real weather · Thonon-les-Bains")
+st.caption("STM32 embedded ML model vs Open-Meteo real weather · Le Bourget du Lac, Savoie, France")
 
 # ── Fetch data ─────────────────────────────────────────────────────────────────
 @st.cache_data(ttl=30)

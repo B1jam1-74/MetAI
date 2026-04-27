@@ -73,9 +73,9 @@ def init_db():
 init_db()
 
 # ── Open-Meteo ─────────────────────────────────────────────────────────────────
-# Coordinates: Thonon-les-Bains
-LAT = 46.37
-LON = 6.48
+# Coordinates: Le Bourget du Lac, Savoie, France
+LAT = 45.6491008
+LON = 5.8785792
 
 def fetch_real_weather():
     try:
