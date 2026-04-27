@@ -196,7 +196,7 @@ function decodeUplink(input) {
 Once decoded by TTN, the data is forwarded to a **Node-RED** flow that performs an HTTP POST to a [Request Baskets](https://rbaskets.in/ "https://rbaskets.in/") endpoint. This makes the payload immediately inspectable from a browser, as shown in the screenshot below, and provides a convenient webhook URL that any downstream service can subscribe to.  
 
 <p align="center">
-	<img src="Images/NodeRED_flow.png" alt="Flow NodeRED" />
+	<img src="Images/NodeRED_Flow.png" alt="Flow NodeRED" />
 </p>
  
 **Note on the network side:** Routing, cloud dashboards, and persistent storage fall outside our electronics/embedded speciality, so we kept the network stack intentionally minimal. That said, since the full structured JSON is already being POSTed by Node-RED, plugging in a database (InfluxDB, TimescaleDB) or a dashboard (Grafana, Datacake) is straightforward and requires no firmware changes.  
