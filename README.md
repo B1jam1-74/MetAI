@@ -214,13 +214,22 @@ STMicroelectronics' **X-NUCLEO-LPM01A** (Power Shield) is the reference tool for
 2. **Software:** Install  **STM32CubeMonitor-Power** on the host PC and connect to the LPM01A over USB.   
 3. **Run the acquisition:** Flash the firmware, trigger a measurement session, and observe the current waveform. STM32CubeMonitor-Power integrates the waveform to give average current, peak current, and total charge (µAh) per acquisition cycle.  
 
-**Ajouter photo de la U sans jumper**
-**Ajouter photo de la U avec la LPM**
+<p align="center">
+	<img src="Images/U545_no_jumper.png" alt="U545 without jumper" />
+</p>
+
+<p align="center">
+	<img src="Images/Power_measurement.png" alt="Power Measurement" />
+</p>
 
 ### **Measured Power Budget**  
 Our system operates at **1.8 V** supply and draws approximately  **3 mA** in the active sensing + inference phase, corresponding to:  
 $$P = V \times I = 1.8,\text{V} \times 3,\text{mA} = \mathbf{5.4,mW}$$  
 Between acquisitions, the MCU enters a low-power Stop mode, bringing average consumption well below the active peak.  
+
+<p align="center">
+	<img src="Images/Power_consumption.png" alt="Power Consumption" />
+</p>
 
 <a id="part-5-conclusion"></a>
 ## **Part 5 — Conclusion**  
