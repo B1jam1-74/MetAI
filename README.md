@@ -294,7 +294,13 @@ MetAI/
 ## **Complete Project Implementation**
 This section gives a practical end-to-end sequence to run the full MetAI chain: STM32 board -> LoRaWAN (TTN) -> Node-RED -> server API/dashboard.
 
-### **1) Flash the binaries on the STM32U545 board**
+### **1) Clone the repository**
+```bash
+git clone https://github.com/MetAI/MetAI.git
+cd MetAI
+```
+
+### **2) Flash the binaries on the STM32U545 board**
 1. Connect the NUCLEO-U545RE-Q over USB (ST-LINK).
 2. Open **STM32CubeProgrammer** and select **ST-LINK** as the connection type.
 3. Pick the firmware image you want from **Binaries/**:
@@ -304,21 +310,6 @@ This section gives a practical end-to-end sequence to run the full MetAI chain: 
 4. Program the image, verify flashing, then reset/run the board.
 5. Open a serial terminal at **115200 baud** to check runtime logs and LoRa responses.
 
-### **2) Mount the server using the Serveur folder**
-1. Go to **Serveur/**.
-2. Start the stack with Docker Compose:
-	- `docker compose up --build -d`
-3. Validate services:
-	- API on **http://localhost:8000**
-	- Dashboard on **http://localhost:8501**
-4. Optional checks:
-	- `docker compose ps`
-	- `docker compose logs -f api`
-	- `docker compose logs -f dashboard`
-
-The compose file starts two services:
-- **api** (FastAPI ingestion and stats)
-- **dashboard** (Streamlit visualization)
 
 ### **3) Configure the LoRaWAN device**
 1. In TTN, create an **Application** and register an **End Device** (OTAA).
@@ -352,6 +343,22 @@ In this project firmware, uplinks are sent as text payloads through `AT+MSG` in 
 	- `prediction_fr`
 
 Once this is done, TTN can forward decoded JSON to Node-RED, and Node-RED can POST it to the API `/uplink` endpoint used by the dashboard.
+
+### **5) Mount the server using the Serveur folder**
+1. Go to **Serveur/**.
+2. Start the stack with Docker Compose:
+	- `docker compose up --build -d`
+3. Validate services:
+	- API on **http://localhost:8000**
+	- Dashboard on **http://localhost:8501**
+4. Optional checks:
+	- `docker compose ps`
+	- `docker compose logs -f api`
+	- `docker compose logs -f dashboard`
+
+The compose file starts two services:
+- **api** (FastAPI ingestion and stats)
+- **dashboard** (Streamlit visualization)
 
 <a id="dependencies"></a>
 ## **Dependencies**  
