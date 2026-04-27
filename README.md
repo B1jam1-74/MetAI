@@ -381,6 +381,7 @@ The compose file starts two services:
 	<tr><td>The Things Network</td><td>LoRaWAN network server</td></tr>
 	<tr><td>Node-RED</td><td>Payload forwarding</td></tr>
 	<tr><td>STM32CubeMonitor-Power</td><td>Power consumption measurement</td></tr>
+	<tr><td>Docker</td><td>Deployment of the web server</td></tr>
 </table>
 *Université Savoie Mont-Blanc — Licence Électronique et Systèmes Embarqués et Télécommunications (ESET) — 2025/2026*  
    
