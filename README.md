@@ -215,11 +215,11 @@ STMicroelectronics' **X-NUCLEO-LPM01A** (Power Shield) is the reference tool for
 3. **Run the acquisition:** Flash the firmware, trigger a measurement session, and observe the current waveform. STM32CubeMonitor-Power integrates the waveform to give average current, peak current, and total charge (µAh) per acquisition cycle.  
 
 <p align="center">
-	<img src="Images/U545_no_jumpers.jpeg" alt="U545 without jumper" />
+	<img src="Images/U545_no_jumpers.jpeg" alt="U545 without jumper" width="50%"/>
 </p>
 
 <p align="center">
-	<img src="Images/Power_mesurement.jpeg" alt="Power Measurement" />
+	<img src="Images/Power_mesurement.jpeg" alt="Power Measurement" width="50%"/>
 </p>
 
 ### **Measured Power Budget**  
@@ -228,7 +228,7 @@ $$P = V \times I = 1.8,\text{V} \times 3,\text{mA} = \mathbf{5.4,mW}$$
 Between acquisitions, the MCU enters a low-power Stop mode, bringing average consumption well below the active peak.  
 
 <p align="center">
-	<img src="Images/Power_consumption.png" alt="Power Consumption" />
+	<img src="Images/Power_consumption.png" alt="Power Consumption" width="50%"/>
 </p>
 
 <a id="part-5-conclusion"></a>
