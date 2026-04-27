@@ -228,7 +228,7 @@ $$P = V \times I = 1.8,\text{V} \times 3,\text{mA} = \mathbf{5.4,mW}$$
 Between acquisitions, the MCU enters a low-power Stop mode, bringing average consumption well below the active peak.  
 
 <p align="center">
-	<img src="Images/Power_consumption.png" alt="Power Consumption" width="50%"/>
+	<img src="Images/Power_consumption.png" alt="Power Consumption"/>
 </p>
 
 <a id="part-5-conclusion"></a>
