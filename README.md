@@ -260,17 +260,26 @@ MetAI/
 │   ├── model_IA/  
 │   └── test/  
 ├── Images/                       # Figures used in the README  
-│   ├── IKS01A3.png  
-│   ├── LoRa-E5.png  
-│   ├── U545.jpg  
-│   ├── meteostat.png  
-│   └── model.png  
+│   └── ...  
 ├── Jupyter Notebooks/            # Model training/testing notebooks  
 │   ├── Model_final.ipynb  
 │   └── Model_test.ipynb  
 ├── NodeRED/                      # Node-RED assets/flows  
+│   └── flows.json  
+├── scripts/                      # Utility scripts  
+├── Serveur/                      # Backend API + Streamlit dashboard + compose  
+│   ├── docker-compose.yml  
+│   ├── api/  
+│   │   ├── Dockerfile  
+│   │   ├── main.py  
+│   │   └── requirements.txt  
+│   ├── dashboard/  
+│   │   ├── app.py  
+│   │   ├── Dockerfile  
+│   │   └── requirements.txt  
+│   └── data/  
 └── TTN/                          # TTN payload formatter  
-	└── function decodeUplink.txt  
+    └── function decodeUplink.txt  
    
 
 <a id="build-and-flash-workflow"></a>
