@@ -12,7 +12,6 @@
 - [Part 4 - Power Consumption](#part-4-power-consumption)
 - [Part 5 - Conclusion](#part-5-conclusion)
 - [Repository Structure](#repository-structure)
-- [Build and Flash Workflow](#build-and-flash-workflow)
 - [Complete Project Implementation](#complete-project-implementation)
 - [Dependencies](#dependencies)
 
@@ -283,13 +282,6 @@ MetAI/
     └── function decodeUplink.txt  
    
 
-<a id="build-and-flash-workflow"></a>
-## **Build and Flash Workflow**
-- The folders in **Binaries/** contain prebuilt firmware images. They can be directly uploaded to the STM32 board with **STM32CubeProgrammer**.
-- The firmware projects in **Firmwares/** are generated with **Makefiles**, so they are not locked to STM32CubeIDE.
-- You can open and edit the code in **VS Code**, then build/flash from a terminal with Make commands (including **make flash** when the target is configured).
-- This workflow makes it easy to iterate quickly: edit in VS Code, compile with Make, and program either with Make or STM32CubeProgrammer.
-
 <a id="complete-project-implementation"></a>
 ## **Complete Project Implementation**
 This section gives a practical end-to-end sequence to run the full MetAI chain: STM32 board -> LoRaWAN (TTN) -> Node-RED -> server API/dashboard.
@@ -301,6 +293,21 @@ cd MetAI
 ```
 
 ### **2) Flash the binaries on the STM32U545 board**
+This project supports two flash paths:
+- **Prebuilt binaries** from **Binaries/** for fast deployment.
+- **Build + flash** from **Firmwares/** when you modify the source code.
+
+The firmware projects in **Firmwares/** are generated with **Makefiles**, so you can work from **VS Code** and a terminal (not only STM32CubeIDE).
+
+If you want to compile from source before flashing:
+1. Go to the target firmware folder (example):
+	- `cd Firmwares/implementation_gros_model`
+2. Build:
+	- `make -j`
+3. Flash with Make (when target is configured):
+	- `make flash`
+
+To flash a prebuilt image with STM32CubeProgrammer:
 1. Connect the NUCLEO-U545RE-Q over USB (ST-LINK).
 2. Open **STM32CubeProgrammer** and select **ST-LINK** as the connection type.
 3. Pick the firmware image you want from **Binaries/**:
