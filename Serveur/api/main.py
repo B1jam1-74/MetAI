@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Optional
-import sqlite3, os, requests
+import sqlite3, os, requests, urllib.request, urllib.parse
+from datetime import datetime, timezone
 
 app = FastAPI(title="metAI API")
 DB_PATH = "/data/metai.db"
 
-# ── WMO code → French label (grouped to match model classes) ──────────────────
+INFLUX_URL = "http://192.168.0.79:8181/api/v3/write_lp?db=metai"
+
+# ── WMO code → French label ────────────────────────────────────────────────────
 WMO_FR = {
     0:  "Ciel dégagé",
     1:  "Peu nuageux",
@@ -33,10 +36,8 @@ WMO_FR = {
 }
 
 def wmo_to_fr(code: int) -> str:
-    # Match closest code
     if code in WMO_FR:
         return WMO_FR[code]
-    # Fallback: find nearest
     closest = min(WMO_FR.keys(), key=lambda k: abs(k - code))
     return WMO_FR[closest]
 
@@ -64,7 +65,7 @@ def init_db():
             real_pressure   REAL,
             real_wmo_code   INTEGER,
             real_condition  TEXT,
-            match           INTEGER  -- 1 if prediction_fr matches real_condition, else 0
+            match           INTEGER
         )
     """)
     conn.commit()
@@ -73,9 +74,8 @@ def init_db():
 init_db()
 
 # ── Open-Meteo ─────────────────────────────────────────────────────────────────
-# Coordinates: Le Bourget du Lac, Savoie, France
-LAT = 45.6491008
-LON = 5.8785792
+LAT = 46.366
+LON = 6.4791
 
 def fetch_real_weather():
     try:
@@ -109,26 +109,64 @@ def fetch_real_weather():
             "real_condition": None
         }
 
+# ── InfluxDB write ─────────────────────────────────────────────────────────────
+def write_to_influx(data, real, match: int):
+    try:
+        ts_ns = int(
+            datetime.fromisoformat(data.received_at.replace("Z", "+00:00"))
+            .timestamp() * 1_000_000_000
+        )
+
+        line = (
+            f"weather_sensor,device_id={data.device_id}"
+            f" temperature_C={data.temperature_deg_c}"
+            f",humidity_pct={data.humidity_percent}"
+            f",pressure_hPa={data.pressure_hpa}"
+            f",weather_class={data.predicted_class}"
+            f',weather_label="{data.prediction_fr}"'
+        )
+
+        if real["real_temp"] is not None:
+            line += (
+                f",real_temp={real['real_temp']}"
+                f",real_humidity={real['real_humidity']}"
+                f",real_pressure={real['real_pressure']}"
+                f',real_condition="{real["real_condition"]}"'
+                f",match={match}"
+            )
+
+        line += f" {ts_ns}"
+
+        req = urllib.request.Request(
+            INFLUX_URL,
+            data=line.encode(),
+            headers={"Content-Type": "text/plain; charset=utf-8"},
+            method="POST"
+        )
+        urllib.request.urlopen(req, timeout=3)
+        print(f"[InfluxDB] write OK: {line}")
+
+    except Exception as e:
+        print(f"[InfluxDB] write failed: {e}")
+
 # ── Schema ─────────────────────────────────────────────────────────────────────
 class Uplink(BaseModel):
-    device_id:       str
-    received_at:     str
-    temperature_deg_c: Optional[float] = None
-    humidity_percent:  Optional[float] = None
-    pressure_hpa:      Optional[float] = None
-    predicted_class:   Optional[int]   = None
-    prediction_fr:     Optional[str]   = None
+    device_id:          str
+    received_at:        str
+    temperature_deg_c:  Optional[float] = None
+    humidity_percent:   Optional[float] = None
+    pressure_hpa:       Optional[float] = None
+    predicted_class:    Optional[int]   = None
+    prediction_fr:      Optional[str]   = None
 
 # ── Endpoints ──────────────────────────────────────────────────────────────────
 @app.post("/uplink")
 def receive_uplink(data: Uplink):
-    # Ignore everything that isn't metai
     if data.device_id != "metai":
         return {"status": "ignored", "reason": "unknown device"}
 
     real = fetch_real_weather()
 
-    # Soft match: check if prediction_fr is contained in real_condition or vice versa
     match = 0
     if data.prediction_fr and real["real_condition"]:
         a = data.prediction_fr.lower()
@@ -154,6 +192,9 @@ def receive_uplink(data: Uplink):
     ))
     conn.commit()
     conn.close()
+
+    # Write to InfluxDB
+    write_to_influx(data, real, match)
 
     return {"status": "ok", "real_weather": real, "match": bool(match)}
 
@@ -181,3 +222,16 @@ def get_stats():
     """).fetchone()
     conn.close()
     return dict(row)
+
+@app.get("/influx_history")
+def influx_history(limit: int = 200):
+    query = f"SELECT * FROM weather_sensor ORDER BY time DESC LIMIT {limit}"
+    url = (
+        "http://192.168.0.79:8181/api/v3/query_sql"
+        f"?db=metai&q={urllib.parse.quote(query)}"
+    )
+    try:
+        r = requests.get(url, timeout=5)
+        return r.json()
+    except Exception as e:
+        return {"error": str(e)}

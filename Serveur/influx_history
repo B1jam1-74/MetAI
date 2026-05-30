@@ -1,0 +1,13 @@
+@app.get("/influx_history")
+def influx_history(limit: int = 200):
+    import urllib.parse
+    query = f"SELECT * FROM weather_sensor ORDER BY time DESC LIMIT {limit}"
+    url = (
+        "http://192.168.0.79:8181/api/v3/query_sql"
+        f"?db=metai&q={urllib.parse.quote(query)}"
+    )
+    try:
+        r = requests.get(url, timeout=5)
+        return r.json()
+    except Exception as e:
+        return {"error": str(e)}

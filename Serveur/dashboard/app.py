@@ -7,7 +7,7 @@ API = "http://api:8000"
 
 st.set_page_config(page_title="metAI Dashboard", page_icon="🌦️", layout="wide")
 st.title("🌦️ metAI — Weather Prediction Dashboard")
-st.caption("STM32 embedded ML model vs Open-Meteo real weather · Le Bourget du Lac, Savoie, France")
+st.caption("STM32 embedded ML model vs Open-Meteo real weather · Thonon-les-Bains, Haute-Savoie, France")
 
 # ── Fetch data ─────────────────────────────────────────────────────────────────
 @st.cache_data(ttl=30)
@@ -121,6 +121,29 @@ with tab_press:
                     use_container_width=True)
 
 st.divider()
+
+
+st.divider()
+st.subheader("🗄️ InfluxDB — Raw history")
+
+@st.cache_data(ttl=30)
+def load_influx():
+    try:
+        rows = requests.get(f"{API}/influx_history", params={"limit": 200}, timeout=5).json()
+        return pd.DataFrame(rows)
+    except:
+        return pd.DataFrame()
+
+idf = load_influx()
+if not idf.empty and "time" in idf.columns:
+    idf["time"] = pd.to_datetime(idf["time"])
+    idf = idf.sort_values("time")
+    st.dataframe(idf.tail(20)[["time","temperature_C","humidity_pct",
+                                "pressure_hPa","weather_label","real_condition"]],
+                 use_container_width=True, hide_index=True)
+else:
+    st.info("No InfluxDB data yet, or endpoint unreachable.")
+
 
 # ── Prediction distribution ────────────────────────────────────────────────────
 st.subheader("🤖 Prediction class distribution")
