@@ -2,12 +2,16 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import requests
+from streamlit_autorefresh import st_autorefresh
 
 API = "http://api:8000"
 
 st.set_page_config(page_title="metAI Dashboard", page_icon="🌦️", layout="wide")
 st.title("🌦️ metAI — Weather Prediction Dashboard")
 st.caption("STM32 embedded ML model vs Open-Meteo real weather · Thonon-les-Bains, Haute-Savoie, France")
+
+# auto-refresh every 30 seconds
+st_autorefresh(interval=30000, key="autorefresh")
 
 # ── Fetch data ─────────────────────────────────────────────────────────────────
 @st.cache_data(ttl=30)
