@@ -1,0 +1,2712 @@
+ARM GAS  /tmp/ccXCx1Bj.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"stts22h.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "Drivers/Sensors/STTS22H/stts22h.c"
+  21              		.section	.text.STTS22H_GetCapabilities,"ax",%progbits
+  22              		.align	1
+  23              		.global	STTS22H_GetCapabilities
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	STTS22H_GetCapabilities:
+  29              	.LVL0:
+  30              	.LFB4:
+   1:Drivers/Sensors/STTS22H/stts22h.c **** /**
+   2:Drivers/Sensors/STTS22H/stts22h.c ****   ******************************************************************************
+   3:Drivers/Sensors/STTS22H/stts22h.c ****   * @file    stts22h.c
+   4:Drivers/Sensors/STTS22H/stts22h.c ****   * @author  MEMS Software Solutions Team
+   5:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief   STTS22H driver file
+   6:Drivers/Sensors/STTS22H/stts22h.c ****   ******************************************************************************
+   7:Drivers/Sensors/STTS22H/stts22h.c ****   * @attention
+   8:Drivers/Sensors/STTS22H/stts22h.c ****   *
+   9:Drivers/Sensors/STTS22H/stts22h.c ****   * Copyright (c) 2019 STMicroelectronics.
+  10:Drivers/Sensors/STTS22H/stts22h.c ****   * All rights reserved.
+  11:Drivers/Sensors/STTS22H/stts22h.c ****   *
+  12:Drivers/Sensors/STTS22H/stts22h.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  13:Drivers/Sensors/STTS22H/stts22h.c ****   * in the root directory of this software component.
+  14:Drivers/Sensors/STTS22H/stts22h.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:Drivers/Sensors/STTS22H/stts22h.c ****   *
+  16:Drivers/Sensors/STTS22H/stts22h.c ****   ******************************************************************************
+  17:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  18:Drivers/Sensors/STTS22H/stts22h.c **** 
+  19:Drivers/Sensors/STTS22H/stts22h.c **** /* Includes ------------------------------------------------------------------*/
+  20:Drivers/Sensors/STTS22H/stts22h.c **** #include "stts22h.h"
+  21:Drivers/Sensors/STTS22H/stts22h.c **** 
+  22:Drivers/Sensors/STTS22H/stts22h.c **** /** @addtogroup BSP BSP
+  23:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+  24:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  25:Drivers/Sensors/STTS22H/stts22h.c **** 
+  26:Drivers/Sensors/STTS22H/stts22h.c **** /** @addtogroup Component Component
+  27:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+  28:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ARM GAS  /tmp/ccXCx1Bj.s 			page 2
+
+
+  29:Drivers/Sensors/STTS22H/stts22h.c **** 
+  30:Drivers/Sensors/STTS22H/stts22h.c **** /** @defgroup STTS22H STTS22H
+  31:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+  32:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  33:Drivers/Sensors/STTS22H/stts22h.c **** 
+  34:Drivers/Sensors/STTS22H/stts22h.c **** /** @defgroup STTS22H_Exported_Variables STTS22H Exported Variables
+  35:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+  36:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  37:Drivers/Sensors/STTS22H/stts22h.c **** 
+  38:Drivers/Sensors/STTS22H/stts22h.c **** STTS22H_CommonDrv_t STTS22H_COMMON_Driver =
+  39:Drivers/Sensors/STTS22H/stts22h.c **** {
+  40:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Init,
+  41:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_DeInit,
+  42:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_ReadID,
+  43:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_GetCapabilities,
+  44:Drivers/Sensors/STTS22H/stts22h.c **** };
+  45:Drivers/Sensors/STTS22H/stts22h.c **** 
+  46:Drivers/Sensors/STTS22H/stts22h.c **** STTS22H_TEMP_Drv_t STTS22H_TEMP_Driver =
+  47:Drivers/Sensors/STTS22H/stts22h.c **** {
+  48:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_TEMP_Enable,
+  49:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_TEMP_Disable,
+  50:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_TEMP_GetOutputDataRate,
+  51:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_TEMP_SetOutputDataRate,
+  52:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_TEMP_GetTemperature,
+  53:Drivers/Sensors/STTS22H/stts22h.c **** };
+  54:Drivers/Sensors/STTS22H/stts22h.c **** 
+  55:Drivers/Sensors/STTS22H/stts22h.c **** /**
+  56:Drivers/Sensors/STTS22H/stts22h.c ****   * @}
+  57:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  58:Drivers/Sensors/STTS22H/stts22h.c **** 
+  59:Drivers/Sensors/STTS22H/stts22h.c **** /** @defgroup STTS22H_Private_Function_Prototypes STTS22H Private Function Prototypes
+  60:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+  61:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  62:Drivers/Sensors/STTS22H/stts22h.c **** 
+  63:Drivers/Sensors/STTS22H/stts22h.c **** static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
+  64:Drivers/Sensors/STTS22H/stts22h.c **** static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length);
+  65:Drivers/Sensors/STTS22H/stts22h.c **** 
+  66:Drivers/Sensors/STTS22H/stts22h.c **** /**
+  67:Drivers/Sensors/STTS22H/stts22h.c ****   * @}
+  68:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  69:Drivers/Sensors/STTS22H/stts22h.c **** 
+  70:Drivers/Sensors/STTS22H/stts22h.c **** /** @defgroup STTS22H_Exported_Functions STTS22H Exported Functions
+  71:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+  72:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  73:Drivers/Sensors/STTS22H/stts22h.c **** 
+  74:Drivers/Sensors/STTS22H/stts22h.c **** /**
+  75:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Register Component Bus IO operations
+  76:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+  77:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+  78:Drivers/Sensors/STTS22H/stts22h.c ****   */
+  79:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_RegisterBusIO(STTS22H_Object_t *pObj, STTS22H_IO_t *pIO)
+  80:Drivers/Sensors/STTS22H/stts22h.c **** {
+  81:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret;
+  82:Drivers/Sensors/STTS22H/stts22h.c **** 
+  83:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj == NULL)
+  84:Drivers/Sensors/STTS22H/stts22h.c ****   {
+  85:Drivers/Sensors/STTS22H/stts22h.c ****     ret = STTS22H_ERROR;
+ARM GAS  /tmp/ccXCx1Bj.s 			page 3
+
+
+  86:Drivers/Sensors/STTS22H/stts22h.c ****   }
+  87:Drivers/Sensors/STTS22H/stts22h.c ****   else
+  88:Drivers/Sensors/STTS22H/stts22h.c ****   {
+  89:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.Init      = pIO->Init;
+  90:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.DeInit    = pIO->DeInit;
+  91:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.BusType   = pIO->BusType;
+  92:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.Address   = pIO->Address;
+  93:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.WriteReg  = pIO->WriteReg;
+  94:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.ReadReg   = pIO->ReadReg;
+  95:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.GetTick   = pIO->GetTick;
+  96:Drivers/Sensors/STTS22H/stts22h.c **** 
+  97:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.read_reg  = ReadRegWrap;
+  98:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.write_reg = WriteRegWrap;
+  99:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.mdelay    = pIO->Delay;
+ 100:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.handle   = pObj;
+ 101:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 102:Drivers/Sensors/STTS22H/stts22h.c ****     if (pObj->IO.Init != NULL)
+ 103:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 104:Drivers/Sensors/STTS22H/stts22h.c ****       ret = pObj->IO.Init();
+ 105:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 106:Drivers/Sensors/STTS22H/stts22h.c ****     else
+ 107:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 108:Drivers/Sensors/STTS22H/stts22h.c ****       ret = STTS22H_ERROR;
+ 109:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 110:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 111:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 112:Drivers/Sensors/STTS22H/stts22h.c ****   return ret;
+ 113:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 114:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 115:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 116:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Initialize the STTS22H sensor
+ 117:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 118:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 119:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 120:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_Init(STTS22H_Object_t *pObj)
+ 121:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 122:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->is_initialized == 0U)
+ 123:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 124:Drivers/Sensors/STTS22H/stts22h.c ****     /* Set default ODR */
+ 125:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->temp_odr = 1.0f;
+ 126:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 127:Drivers/Sensors/STTS22H/stts22h.c ****     /* Enable BDU */
+ 128:Drivers/Sensors/STTS22H/stts22h.c ****     if (stts22h_block_data_update_set(&(pObj->Ctx), PROPERTY_ENABLE) != STTS22H_OK)
+ 129:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 130:Drivers/Sensors/STTS22H/stts22h.c ****       return STTS22H_ERROR;
+ 131:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 132:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 133:Drivers/Sensors/STTS22H/stts22h.c ****     /* Enable Automatic Address Increment */
+ 134:Drivers/Sensors/STTS22H/stts22h.c ****     if (stts22h_auto_increment_set(&(pObj->Ctx), PROPERTY_ENABLE) != STTS22H_OK)
+ 135:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 136:Drivers/Sensors/STTS22H/stts22h.c ****       return STTS22H_ERROR;
+ 137:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 138:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 139:Drivers/Sensors/STTS22H/stts22h.c ****     /* Put the component in standby mode. */
+ 140:Drivers/Sensors/STTS22H/stts22h.c ****     if (stts22h_temp_data_rate_set(&(pObj->Ctx), STTS22H_POWER_DOWN) != STTS22H_OK)
+ 141:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 142:Drivers/Sensors/STTS22H/stts22h.c ****       return STTS22H_ERROR;
+ARM GAS  /tmp/ccXCx1Bj.s 			page 4
+
+
+ 143:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 144:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 145:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 146:Drivers/Sensors/STTS22H/stts22h.c ****   pObj->is_initialized = 1;
+ 147:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 148:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 149:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 150:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 151:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 152:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Deinitialize the STTS22H sensor
+ 153:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 154:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 155:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 156:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_DeInit(STTS22H_Object_t *pObj)
+ 157:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 158:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->is_initialized == 1U)
+ 159:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 160:Drivers/Sensors/STTS22H/stts22h.c ****     /* Put the component in standby mode */
+ 161:Drivers/Sensors/STTS22H/stts22h.c ****     if (STTS22H_TEMP_Disable(pObj) != STTS22H_OK)
+ 162:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 163:Drivers/Sensors/STTS22H/stts22h.c ****       return STTS22H_ERROR;
+ 164:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 165:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 166:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 167:Drivers/Sensors/STTS22H/stts22h.c ****   pObj->is_initialized = 0;
+ 168:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 169:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 170:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 171:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 172:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 173:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get WHO_AM_I value
+ 174:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 175:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Id the WHO_AM_I value
+ 176:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 177:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 178:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_ReadID(STTS22H_Object_t *pObj, uint8_t *Id)
+ 179:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 180:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t buf;
+ 181:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 182:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_dev_id_get(&(pObj->Ctx), &buf) != STTS22H_OK)
+ 183:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 184:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 185:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 186:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 187:Drivers/Sensors/STTS22H/stts22h.c ****   *Id = buf;
+ 188:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 189:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 190:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 191:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 192:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 193:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get STTS22H sensor capabilities
+ 194:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj Component object pointer
+ 195:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Capabilities pointer to STTS22H sensor capabilities
+ 196:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 197:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 198:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_GetCapabilities(STTS22H_Object_t *pObj, STTS22H_Capabilities_t *Capabilities)
+ 199:Drivers/Sensors/STTS22H/stts22h.c **** {
+ARM GAS  /tmp/ccXCx1Bj.s 			page 5
+
+
+  31              		.loc 1 199 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		@ link register save eliminated.
+ 200:Drivers/Sensors/STTS22H/stts22h.c ****   /* Prevent unused argument(s) compilation warning */
+ 201:Drivers/Sensors/STTS22H/stts22h.c ****   (void)(pObj);
+  36              		.loc 1 201 3 view .LVU1
+ 202:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 203:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->Humidity    = 0;
+  37              		.loc 1 203 3 view .LVU2
+  38              		.loc 1 203 29 is_stmt 0 view .LVU3
+  39 0000 0020     		movs	r0, #0
+  40              	.LVL1:
+  41              		.loc 1 203 29 view .LVU4
+  42 0002 8870     		strb	r0, [r1, #2]
+ 204:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->Pressure    = 0;
+  43              		.loc 1 204 3 is_stmt 1 view .LVU5
+  44              		.loc 1 204 29 is_stmt 0 view .LVU6
+  45 0004 4870     		strb	r0, [r1, #1]
+ 205:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->Temperature = 1;
+  46              		.loc 1 205 3 is_stmt 1 view .LVU7
+  47              		.loc 1 205 29 is_stmt 0 view .LVU8
+  48 0006 0123     		movs	r3, #1
+  49 0008 0B70     		strb	r3, [r1]
+ 206:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->Gas         = 0;
+  50              		.loc 1 206 3 is_stmt 1 view .LVU9
+  51              		.loc 1 206 29 is_stmt 0 view .LVU10
+  52 000a C870     		strb	r0, [r1, #3]
+ 207:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->LowPower    = 0;
+  53              		.loc 1 207 3 is_stmt 1 view .LVU11
+  54              		.loc 1 207 29 is_stmt 0 view .LVU12
+  55 000c 0871     		strb	r0, [r1, #4]
+ 208:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->HumMaxOdr   = 0.0f;
+  56              		.loc 1 208 3 is_stmt 1 view .LVU13
+  57              		.loc 1 208 29 is_stmt 0 view .LVU14
+  58 000e 0023     		movs	r3, #0
+  59 0010 8B60     		str	r3, [r1, #8]	@ float
+ 209:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->TempMaxOdr  = 200.0f;
+  60              		.loc 1 209 3 is_stmt 1 view .LVU15
+  61              		.loc 1 209 29 is_stmt 0 view .LVU16
+  62 0012 024A     		ldr	r2, .L2
+  63 0014 CA60     		str	r2, [r1, #12]	@ float
+ 210:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->PressMaxOdr = 0.0f;
+  64              		.loc 1 210 3 is_stmt 1 view .LVU17
+  65              		.loc 1 210 29 is_stmt 0 view .LVU18
+  66 0016 0B61     		str	r3, [r1, #16]	@ float
+ 211:Drivers/Sensors/STTS22H/stts22h.c ****   Capabilities->GasMaxOdr   = 0.0f;
+  67              		.loc 1 211 3 is_stmt 1 view .LVU19
+  68              		.loc 1 211 29 is_stmt 0 view .LVU20
+  69 0018 4B61     		str	r3, [r1, #20]	@ float
+ 212:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+  70              		.loc 1 212 3 is_stmt 1 view .LVU21
+ 213:Drivers/Sensors/STTS22H/stts22h.c **** }
+  71              		.loc 1 213 1 is_stmt 0 view .LVU22
+  72 001a 7047     		bx	lr
+  73              	.L3:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 6
+
+
+  74              		.align	2
+  75              	.L2:
+  76 001c 00004843 		.word	1128792064
+  77              		.cfi_endproc
+  78              	.LFE4:
+  80              		.section	.text.ReadRegWrap,"ax",%progbits
+  81              		.align	1
+  82              		.syntax unified
+  83              		.thumb
+  84              		.thumb_func
+  86              	ReadRegWrap:
+  87              	.LVL2:
+  88              	.LFB19:
+ 214:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 215:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 216:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H initialization status
+ 217:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 218:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Status 1 if initialized, 0 otherwise
+ 219:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 220:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 221:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_Get_Init_Status(STTS22H_Object_t *pObj, uint8_t *Status)
+ 222:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 223:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj == NULL)
+ 224:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 225:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 226:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 227:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 228:Drivers/Sensors/STTS22H/stts22h.c ****   *Status = pObj->is_initialized;
+ 229:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 230:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 231:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 232:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 233:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 234:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Enable the STTS22H temperature sensor
+ 235:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 236:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 237:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 238:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_Enable(STTS22H_Object_t *pObj)
+ 239:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 240:Drivers/Sensors/STTS22H/stts22h.c ****   /* Check if the component is already enabled */
+ 241:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->temp_is_enabled == 1U)
+ 242:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 243:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_OK;
+ 244:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 245:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 246:Drivers/Sensors/STTS22H/stts22h.c ****   /* Power on the component and set the odr. */
+ 247:Drivers/Sensors/STTS22H/stts22h.c ****   if (STTS22H_TEMP_SetOutputDataRate(pObj, pObj->temp_odr) != STTS22H_OK)
+ 248:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 249:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 250:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 251:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 252:Drivers/Sensors/STTS22H/stts22h.c ****   pObj->temp_is_enabled = 1;
+ 253:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 254:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 255:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 256:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 257:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ARM GAS  /tmp/ccXCx1Bj.s 			page 7
+
+
+ 258:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Disable the STTS22H temperature sensor
+ 259:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 260:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 261:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 262:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_Disable(STTS22H_Object_t *pObj)
+ 263:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 264:Drivers/Sensors/STTS22H/stts22h.c ****   /* Check if the component is already disabled */
+ 265:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->temp_is_enabled == 0U)
+ 266:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 267:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_OK;
+ 268:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 269:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 270:Drivers/Sensors/STTS22H/stts22h.c ****   /* Save the current odr. */
+ 271:Drivers/Sensors/STTS22H/stts22h.c ****   if (STTS22H_TEMP_GetOutputDataRate(pObj, &pObj->temp_odr) != STTS22H_OK)
+ 272:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 273:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 274:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 275:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 276:Drivers/Sensors/STTS22H/stts22h.c ****   /* Put the component in standby mode. */
+ 277:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_data_rate_set(&(pObj->Ctx), STTS22H_POWER_DOWN) != STTS22H_OK)
+ 278:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 279:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 280:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 281:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 282:Drivers/Sensors/STTS22H/stts22h.c ****   pObj->temp_is_enabled = 0;
+ 283:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 284:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 285:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 286:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 287:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 288:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H temperature sensor output data rate
+ 289:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 290:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Odr pointer where the output data rate is written
+ 291:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 292:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 293:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_GetOutputDataRate(STTS22H_Object_t *pObj, float *Odr)
+ 294:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 295:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret = STTS22H_OK;
+ 296:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_odr_temp_t odr_low_level;
+ 297:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 298:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_data_rate_get(&(pObj->Ctx), &odr_low_level) != STTS22H_OK)
+ 299:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 300:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 301:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 302:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 303:Drivers/Sensors/STTS22H/stts22h.c ****   switch (odr_low_level)
+ 304:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 305:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_POWER_DOWN:
+ 306:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_ONE_SHOT:
+ 307:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 0.0f;
+ 308:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 309:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 310:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_1Hz:
+ 311:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 1.0f;
+ 312:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 313:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 314:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_25Hz:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 8
+
+
+ 315:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 25.0f;
+ 316:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 317:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 318:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_50Hz:
+ 319:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 50.0f;
+ 320:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 321:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 322:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_100Hz:
+ 323:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 100.0f;
+ 324:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 325:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 326:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_200Hz:
+ 327:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 200.0f;
+ 328:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 329:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 330:Drivers/Sensors/STTS22H/stts22h.c ****     default:
+ 331:Drivers/Sensors/STTS22H/stts22h.c ****       ret = STTS22H_ERROR;
+ 332:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 333:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 334:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 335:Drivers/Sensors/STTS22H/stts22h.c ****   return ret;
+ 336:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 337:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 338:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 339:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Set the STTS22H temperature sensor output data rate
+ 340:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 341:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Odr the output data rate value to be set
+ 342:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 343:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 344:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_SetOutputDataRate(STTS22H_Object_t *pObj, float Odr)
+ 345:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 346:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_odr_temp_t new_odr;
+ 347:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 348:Drivers/Sensors/STTS22H/stts22h.c ****   new_odr = (Odr <= 1.0f) ? STTS22H_1Hz
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 25.0f) ? STTS22H_25Hz
+ 350:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 351:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 100.0f) ? STTS22H_100Hz
+ 352:Drivers/Sensors/STTS22H/stts22h.c ****             :                    STTS22H_200Hz;
+ 353:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 354:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_data_rate_set(&(pObj->Ctx), new_odr) != STTS22H_OK)
+ 355:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 356:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 357:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 358:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 359:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 360:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 361:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 362:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 363:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H temperature value
+ 364:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 365:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Value pointer where the temperature value is written
+ 366:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 367:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 368:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_GetTemperature(STTS22H_Object_t *pObj, float *Value)
+ 369:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 370:Drivers/Sensors/STTS22H/stts22h.c ****   int16_t raw_value;
+ 371:Drivers/Sensors/STTS22H/stts22h.c **** 
+ARM GAS  /tmp/ccXCx1Bj.s 			page 9
+
+
+ 372:Drivers/Sensors/STTS22H/stts22h.c ****   /* Get the temperature */
+ 373:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temperature_raw_get(&(pObj->Ctx), &raw_value) != STTS22H_OK)
+ 374:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 375:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 376:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 377:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 378:Drivers/Sensors/STTS22H/stts22h.c ****   *Value = stts22h_from_lsb_to_celsius(raw_value);
+ 379:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 380:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 381:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 382:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 383:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 384:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H temperature data ready bit value
+ 385:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 386:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Status the status of data ready bit
+ 387:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 388:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 389:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_Get_DRDY_Status(STTS22H_Object_t *pObj, uint8_t *Status)
+ 390:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 391:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t val;
+ 392:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 393:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_flag_data_ready_get(&(pObj->Ctx), &val) != STTS22H_OK)
+ 394:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 395:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 396:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 397:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 398:Drivers/Sensors/STTS22H/stts22h.c ****   if (val)
+ 399:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 400:Drivers/Sensors/STTS22H/stts22h.c ****     *Status = 1;
+ 401:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 402:Drivers/Sensors/STTS22H/stts22h.c ****   else
+ 403:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 404:Drivers/Sensors/STTS22H/stts22h.c ****     *Status = 0;
+ 405:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 406:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 407:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 408:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 409:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 410:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 411:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Set the STTS22H high temperature threshold value
+ 412:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 413:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Value the high temperature threshold to be set
+ 414:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 415:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 416:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_SetHighTemperatureThreshold(STTS22H_Object_t *pObj, float Value)
+ 417:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 418:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t raw_value;
+ 419:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 420:Drivers/Sensors/STTS22H/stts22h.c ****   raw_value = (uint8_t)((Value / 0.64f) + 63.0f);
+ 421:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 422:Drivers/Sensors/STTS22H/stts22h.c ****   /* Set the temperature threshold */
+ 423:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_trshld_high_set(&(pObj->Ctx), raw_value) != STTS22H_OK)
+ 424:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 425:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 426:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 427:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 428:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ARM GAS  /tmp/ccXCx1Bj.s 			page 10
+
+
+ 429:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 430:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 431:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 432:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Set the STTS22H low temperature threshold value
+ 433:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 434:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Value the high temperature threshold to be set
+ 435:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 436:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 437:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_SetLowTemperatureThreshold(STTS22H_Object_t *pObj, float Value)
+ 438:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 439:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t raw_value;
+ 440:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 441:Drivers/Sensors/STTS22H/stts22h.c ****   raw_value = (uint8_t)((Value / 0.64f) + 63.0f);
+ 442:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 443:Drivers/Sensors/STTS22H/stts22h.c ****   /* Set the temperature threshold */
+ 444:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_trshld_low_set(&(pObj->Ctx), raw_value) != STTS22H_OK)
+ 445:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 446:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 447:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 448:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 449:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 450:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 451:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 452:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 453:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H temperature limits status
+ 454:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 455:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  HighLimit indicates that high temperature limit has been exceeded
+ 456:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  LowhLimit indicates that low temperature limit has been exceeded
+ 457:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 458:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 459:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_TEMP_GetTemperatureLimitStatus(STTS22H_Object_t *pObj, uint8_t *HighLimit, uint8_t 
+ 460:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 461:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_temp_trlhd_src_t status;
+ 462:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 463:Drivers/Sensors/STTS22H/stts22h.c ****   /* Read status register */
+ 464:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_trshld_src_get(&(pObj->Ctx), &status) != STTS22H_OK)
+ 465:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 466:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 467:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 468:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 469:Drivers/Sensors/STTS22H/stts22h.c ****   if (HighLimit != NULL)
+ 470:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 471:Drivers/Sensors/STTS22H/stts22h.c ****     *HighLimit = status.over_thh;
+ 472:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 473:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 474:Drivers/Sensors/STTS22H/stts22h.c ****   if (LowLimit != NULL)
+ 475:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 476:Drivers/Sensors/STTS22H/stts22h.c ****     *LowLimit = status.under_thl;
+ 477:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 478:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 479:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 480:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 481:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 482:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 483:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H register value
+ 484:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 485:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Reg address to be read
+ARM GAS  /tmp/ccXCx1Bj.s 			page 11
+
+
+ 486:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Data pointer where the value is written
+ 487:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 488:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 489:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_Read_Reg(STTS22H_Object_t *pObj, uint8_t Reg, uint8_t *Data)
+ 490:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 491:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_read_reg(&(pObj->Ctx), Reg, Data, 1) != STTS22H_OK)
+ 492:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 493:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 494:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 495:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 496:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 497:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 498:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 499:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 500:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Set the STTS22H register value
+ 501:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 502:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Reg address to be written
+ 503:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Data value to be written
+ 504:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 505:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 506:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_Write_Reg(STTS22H_Object_t *pObj, uint8_t Reg, uint8_t Data)
+ 507:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 508:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_write_reg(&(pObj->Ctx), Reg, &Data, 1) != STTS22H_OK)
+ 509:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 510:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 511:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 512:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 513:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 514:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 515:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 516:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 517:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Set the STTS22H One Shot Mode
+ 518:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 519:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 520:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 521:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_Set_One_Shot(STTS22H_Object_t *pObj)
+ 522:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 523:Drivers/Sensors/STTS22H/stts22h.c ****   /* Start One Shot Measurement */
+ 524:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_temp_data_rate_set(&(pObj->Ctx), STTS22H_ONE_SHOT) != STTS22H_OK)
+ 525:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 526:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 527:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 528:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 529:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 530:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 531:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 532:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 533:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H One Shot Status
+ 534:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
+ 535:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Status pointer to the one shot status (1 means measurements available, 0 means measurem
+ 536:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 537:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 538:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_Get_One_Shot_Status(STTS22H_Object_t *pObj, uint8_t *Status)
+ 539:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 540:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_dev_status_t status;
+ 541:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 542:Drivers/Sensors/STTS22H/stts22h.c ****   /* Get Busy flag */
+ARM GAS  /tmp/ccXCx1Bj.s 			page 12
+
+
+ 543:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_dev_status_get(&(pObj->Ctx), &status) != STTS22H_OK)
+ 544:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 545:Drivers/Sensors/STTS22H/stts22h.c ****     return STTS22H_ERROR;
+ 546:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 547:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 548:Drivers/Sensors/STTS22H/stts22h.c ****   if (status.busy)
+ 549:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 550:Drivers/Sensors/STTS22H/stts22h.c ****     *Status = 0;
+ 551:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 552:Drivers/Sensors/STTS22H/stts22h.c ****   else
+ 553:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 554:Drivers/Sensors/STTS22H/stts22h.c ****     *Status = 1;
+ 555:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 556:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 557:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
+ 558:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 559:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 560:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 561:Drivers/Sensors/STTS22H/stts22h.c ****   * @}
+ 562:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 563:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 564:Drivers/Sensors/STTS22H/stts22h.c **** /** @defgroup STTS22H_Private_Functions STTS22H Private Functions
+ 565:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
+ 566:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 567:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 568:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 569:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Wrap Read register component function to Bus IO function
+ 570:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Handle the device handler
+ 571:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Reg the register address
+ 572:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pData the stored data pointer
+ 573:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Length the length
+ 574:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 575:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 576:Drivers/Sensors/STTS22H/stts22h.c **** static int32_t ReadRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
+ 577:Drivers/Sensors/STTS22H/stts22h.c **** {
+  89              		.loc 1 577 1 is_stmt 1 view -0
+  90              		.cfi_startproc
+  91              		@ args = 0, pretend = 0, frame = 0
+  92              		@ frame_needed = 0, uses_anonymous_args = 0
+  93              		.loc 1 577 1 is_stmt 0 view .LVU24
+  94 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+  95              	.LCFI0:
+  96              		.cfi_def_cfa_offset 32
+  97              		.cfi_offset 3, -32
+  98              		.cfi_offset 4, -28
+  99              		.cfi_offset 5, -24
+ 100              		.cfi_offset 6, -20
+ 101              		.cfi_offset 7, -16
+ 102              		.cfi_offset 8, -12
+ 103              		.cfi_offset 9, -8
+ 104              		.cfi_offset 14, -4
+ 105 0004 1E46     		mov	r6, r3
+ 578:Drivers/Sensors/STTS22H/stts22h.c ****   uint16_t i;
+ 106              		.loc 1 578 3 is_stmt 1 view .LVU25
+ 579:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret = STTS22H_OK;
+ 107              		.loc 1 579 3 view .LVU26
+ 108              	.LVL3:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 13
+
+
+ 580:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
+ 109              		.loc 1 580 3 view .LVU27
+ 581:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 582:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->IO.BusType == (uint32_t)STTS22H_I2C_BUS) /* I2C */
+ 110              		.loc 1 582 3 view .LVU28
+ 111              		.loc 1 582 15 is_stmt 0 view .LVU29
+ 112 0006 8368     		ldr	r3, [r0, #8]
+ 113              	.LVL4:
+ 114              		.loc 1 582 6 view .LVU30
+ 115 0008 B3B1     		cbz	r3, .L8
+ 579:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
+ 116              		.loc 1 579 11 view .LVU31
+ 117 000a 0023     		movs	r3, #0
+ 118              	.LVL5:
+ 119              	.L4:
+ 583:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 584:Drivers/Sensors/STTS22H/stts22h.c ****     for (i = 0; i < Length; i++)
+ 585:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 586:Drivers/Sensors/STTS22H/stts22h.c ****       ret = pObj->IO.ReadReg(pObj->IO.Address, (Reg + i), &pData[i], 1);
+ 587:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 588:Drivers/Sensors/STTS22H/stts22h.c ****       {
+ 589:Drivers/Sensors/STTS22H/stts22h.c ****         return STTS22H_ERROR;
+ 590:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 591:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 592:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 593:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 594:Drivers/Sensors/STTS22H/stts22h.c ****   return ret;
+ 595:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 120              		.loc 1 595 1 view .LVU32
+ 121 000c 1846     		mov	r0, r3
+ 122 000e BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 123              	.LVL6:
+ 124              	.L11:
+ 584:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 125              		.loc 1 584 30 is_stmt 1 discriminator 2 view .LVU33
+ 126 0012 0134     		adds	r4, r4, #1
+ 127              	.LVL7:
+ 584:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 128              		.loc 1 584 30 is_stmt 0 discriminator 2 view .LVU34
+ 129 0014 A4B2     		uxth	r4, r4
+ 130              	.LVL8:
+ 131              	.L5:
+ 584:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 132              		.loc 1 584 19 is_stmt 1 discriminator 1 view .LVU35
+ 133 0016 B442     		cmp	r4, r6
+ 134 0018 F8D2     		bcs	.L4
+ 586:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 135              		.loc 1 586 7 view .LVU36
+ 586:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 136              		.loc 1 586 13 is_stmt 0 view .LVU37
+ 137 001a 09EB0401 		add	r1, r9, r4
+ 138 001e 0123     		movs	r3, #1
+ 139              	.LVL9:
+ 586:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 140              		.loc 1 586 13 view .LVU38
+ 141 0020 08EB0402 		add	r2, r8, r4
+ 142 0024 89B2     		uxth	r1, r1
+ARM GAS  /tmp/ccXCx1Bj.s 			page 14
+
+
+ 143 0026 287B     		ldrb	r0, [r5, #12]	@ zero_extendqisi2
+ 144 0028 6F69     		ldr	r7, [r5, #20]
+ 145 002a B847     		blx	r7
+ 146              	.LVL10:
+ 587:Drivers/Sensors/STTS22H/stts22h.c ****       {
+ 147              		.loc 1 587 7 is_stmt 1 view .LVU39
+ 587:Drivers/Sensors/STTS22H/stts22h.c ****       {
+ 148              		.loc 1 587 10 is_stmt 0 view .LVU40
+ 149 002c 0346     		mov	r3, r0
+ 150 002e 0028     		cmp	r0, #0
+ 151 0030 EFD0     		beq	.L11
+ 589:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 152              		.loc 1 589 16 view .LVU41
+ 153 0032 4FF0FF33 		mov	r3, #-1
+ 154              	.LVL11:
+ 589:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 155              		.loc 1 589 16 view .LVU42
+ 156 0036 E9E7     		b	.L4
+ 157              	.LVL12:
+ 158              	.L8:
+ 589:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 159              		.loc 1 589 16 view .LVU43
+ 160 0038 0546     		mov	r5, r0
+ 161 003a 8946     		mov	r9, r1
+ 162 003c 9046     		mov	r8, r2
+ 579:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
+ 163              		.loc 1 579 11 view .LVU44
+ 164 003e 0023     		movs	r3, #0
+ 584:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 165              		.loc 1 584 12 view .LVU45
+ 166 0040 1C46     		mov	r4, r3
+ 167 0042 E8E7     		b	.L5
+ 168              		.cfi_endproc
+ 169              	.LFE19:
+ 171              		.section	.text.WriteRegWrap,"ax",%progbits
+ 172              		.align	1
+ 173              		.syntax unified
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	WriteRegWrap:
+ 178              	.LVL13:
+ 179              	.LFB20:
+ 596:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 597:Drivers/Sensors/STTS22H/stts22h.c **** /**
+ 598:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Wrap Write register component function to Bus IO function
+ 599:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Handle the device handler
+ 600:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Reg the register address
+ 601:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pData the stored data pointer
+ 602:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Length the length
+ 603:Drivers/Sensors/STTS22H/stts22h.c ****   * @retval 0 in case of success, an error code otherwise
+ 604:Drivers/Sensors/STTS22H/stts22h.c ****   */
+ 605:Drivers/Sensors/STTS22H/stts22h.c **** static int32_t WriteRegWrap(void *Handle, uint8_t Reg, uint8_t *pData, uint16_t Length)
+ 606:Drivers/Sensors/STTS22H/stts22h.c **** {
+ 180              		.loc 1 606 1 is_stmt 1 view -0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 0
+ 183              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccXCx1Bj.s 			page 15
+
+
+ 184              		.loc 1 606 1 is_stmt 0 view .LVU47
+ 185 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 186              	.LCFI1:
+ 187              		.cfi_def_cfa_offset 32
+ 188              		.cfi_offset 3, -32
+ 189              		.cfi_offset 4, -28
+ 190              		.cfi_offset 5, -24
+ 191              		.cfi_offset 6, -20
+ 192              		.cfi_offset 7, -16
+ 193              		.cfi_offset 8, -12
+ 194              		.cfi_offset 9, -8
+ 195              		.cfi_offset 14, -4
+ 196 0004 1E46     		mov	r6, r3
+ 607:Drivers/Sensors/STTS22H/stts22h.c ****   uint16_t i;
+ 197              		.loc 1 607 3 is_stmt 1 view .LVU48
+ 608:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret = STTS22H_OK;
+ 198              		.loc 1 608 3 view .LVU49
+ 199              	.LVL14:
+ 609:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
+ 200              		.loc 1 609 3 view .LVU50
+ 610:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 611:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->IO.BusType == (uint32_t)STTS22H_I2C_BUS) /* I2C */
+ 201              		.loc 1 611 3 view .LVU51
+ 202              		.loc 1 611 15 is_stmt 0 view .LVU52
+ 203 0006 8368     		ldr	r3, [r0, #8]
+ 204              	.LVL15:
+ 205              		.loc 1 611 6 view .LVU53
+ 206 0008 B3B1     		cbz	r3, .L16
+ 608:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
+ 207              		.loc 1 608 11 view .LVU54
+ 208 000a 0023     		movs	r3, #0
+ 209              	.LVL16:
+ 210              	.L12:
+ 612:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 613:Drivers/Sensors/STTS22H/stts22h.c ****     for (i = 0; i < Length; i++)
+ 614:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 615:Drivers/Sensors/STTS22H/stts22h.c ****       ret = pObj->IO.WriteReg(pObj->IO.Address, (Reg + i), &pData[i], 1);
+ 616:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 617:Drivers/Sensors/STTS22H/stts22h.c ****       {
+ 618:Drivers/Sensors/STTS22H/stts22h.c ****         return STTS22H_ERROR;
+ 619:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 620:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 621:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 622:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 623:Drivers/Sensors/STTS22H/stts22h.c ****   return ret;
+ 624:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 211              		.loc 1 624 1 view .LVU55
+ 212 000c 1846     		mov	r0, r3
+ 213 000e BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 214              	.LVL17:
+ 215              	.L19:
+ 613:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 216              		.loc 1 613 30 is_stmt 1 discriminator 2 view .LVU56
+ 217 0012 0134     		adds	r4, r4, #1
+ 218              	.LVL18:
+ 613:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 219              		.loc 1 613 30 is_stmt 0 discriminator 2 view .LVU57
+ARM GAS  /tmp/ccXCx1Bj.s 			page 16
+
+
+ 220 0014 A4B2     		uxth	r4, r4
+ 221              	.LVL19:
+ 222              	.L13:
+ 613:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 223              		.loc 1 613 19 is_stmt 1 discriminator 1 view .LVU58
+ 224 0016 B442     		cmp	r4, r6
+ 225 0018 F8D2     		bcs	.L12
+ 615:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 226              		.loc 1 615 7 view .LVU59
+ 615:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 227              		.loc 1 615 13 is_stmt 0 view .LVU60
+ 228 001a 09EB0401 		add	r1, r9, r4
+ 229 001e 0123     		movs	r3, #1
+ 230              	.LVL20:
+ 615:Drivers/Sensors/STTS22H/stts22h.c ****       if (ret != STTS22H_OK)
+ 231              		.loc 1 615 13 view .LVU61
+ 232 0020 08EB0402 		add	r2, r8, r4
+ 233 0024 89B2     		uxth	r1, r1
+ 234 0026 287B     		ldrb	r0, [r5, #12]	@ zero_extendqisi2
+ 235 0028 2F69     		ldr	r7, [r5, #16]
+ 236 002a B847     		blx	r7
+ 237              	.LVL21:
+ 616:Drivers/Sensors/STTS22H/stts22h.c ****       {
+ 238              		.loc 1 616 7 is_stmt 1 view .LVU62
+ 616:Drivers/Sensors/STTS22H/stts22h.c ****       {
+ 239              		.loc 1 616 10 is_stmt 0 view .LVU63
+ 240 002c 0346     		mov	r3, r0
+ 241 002e 0028     		cmp	r0, #0
+ 242 0030 EFD0     		beq	.L19
+ 618:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 243              		.loc 1 618 16 view .LVU64
+ 244 0032 4FF0FF33 		mov	r3, #-1
+ 245              	.LVL22:
+ 618:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 246              		.loc 1 618 16 view .LVU65
+ 247 0036 E9E7     		b	.L12
+ 248              	.LVL23:
+ 249              	.L16:
+ 618:Drivers/Sensors/STTS22H/stts22h.c ****       }
+ 250              		.loc 1 618 16 view .LVU66
+ 251 0038 0546     		mov	r5, r0
+ 252 003a 8946     		mov	r9, r1
+ 253 003c 9046     		mov	r8, r2
+ 608:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
+ 254              		.loc 1 608 11 view .LVU67
+ 255 003e 0023     		movs	r3, #0
+ 613:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 256              		.loc 1 613 12 view .LVU68
+ 257 0040 1C46     		mov	r4, r3
+ 258 0042 E8E7     		b	.L13
+ 259              		.cfi_endproc
+ 260              	.LFE20:
+ 262              		.section	.text.STTS22H_Init,"ax",%progbits
+ 263              		.align	1
+ 264              		.global	STTS22H_Init
+ 265              		.syntax unified
+ 266              		.thumb
+ARM GAS  /tmp/ccXCx1Bj.s 			page 17
+
+
+ 267              		.thumb_func
+ 269              	STTS22H_Init:
+ 270              	.LVL24:
+ 271              	.LFB1:
+ 121:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->is_initialized == 0U)
+ 272              		.loc 1 121 1 is_stmt 1 view -0
+ 273              		.cfi_startproc
+ 274              		@ args = 0, pretend = 0, frame = 0
+ 275              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->is_initialized == 0U)
+ 276              		.loc 1 121 1 is_stmt 0 view .LVU70
+ 277 0000 38B5     		push	{r3, r4, r5, lr}
+ 278              	.LCFI2:
+ 279              		.cfi_def_cfa_offset 16
+ 280              		.cfi_offset 3, -16
+ 281              		.cfi_offset 4, -12
+ 282              		.cfi_offset 5, -8
+ 283              		.cfi_offset 14, -4
+ 284 0002 0446     		mov	r4, r0
+ 122:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 285              		.loc 1 122 3 is_stmt 1 view .LVU71
+ 122:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 286              		.loc 1 122 11 is_stmt 0 view .LVU72
+ 287 0004 90F83030 		ldrb	r3, [r0, #48]	@ zero_extendqisi2
+ 122:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 288              		.loc 1 122 6 view .LVU73
+ 289 0008 23B1     		cbz	r3, .L27
+ 290              	.LVL25:
+ 291              	.L21:
+ 146:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 292              		.loc 1 146 3 is_stmt 1 view .LVU74
+ 146:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 293              		.loc 1 146 24 is_stmt 0 view .LVU75
+ 294 000a 0123     		movs	r3, #1
+ 295 000c 84F83030 		strb	r3, [r4, #48]
+ 148:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 296              		.loc 1 148 3 is_stmt 1 view .LVU76
+ 148:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 297              		.loc 1 148 10 is_stmt 0 view .LVU77
+ 298 0010 0020     		movs	r0, #0
+ 299              	.L20:
+ 149:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 300              		.loc 1 149 1 view .LVU78
+ 301 0012 38BD     		pop	{r3, r4, r5, pc}
+ 302              	.LVL26:
+ 303              	.L27:
+ 125:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 304              		.loc 1 125 5 is_stmt 1 view .LVU79
+ 125:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 305              		.loc 1 125 20 is_stmt 0 view .LVU80
+ 306 0014 4FF07E53 		mov	r3, #1065353216
+ 307 0018 4363     		str	r3, [r0, #52]	@ float
+ 128:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 308              		.loc 1 128 5 is_stmt 1 view .LVU81
+ 128:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 309              		.loc 1 128 9 is_stmt 0 view .LVU82
+ 310 001a 00F12005 		add	r5, r0, #32
+ARM GAS  /tmp/ccXCx1Bj.s 			page 18
+
+
+ 311 001e 0121     		movs	r1, #1
+ 312 0020 2846     		mov	r0, r5
+ 313              	.LVL27:
+ 128:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 314              		.loc 1 128 9 view .LVU83
+ 315 0022 FFF7FEFF 		bl	stts22h_block_data_update_set
+ 316              	.LVL28:
+ 128:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 317              		.loc 1 128 8 discriminator 1 view .LVU84
+ 318 0026 68B9     		cbnz	r0, .L23
+ 134:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 319              		.loc 1 134 5 is_stmt 1 view .LVU85
+ 134:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 320              		.loc 1 134 9 is_stmt 0 view .LVU86
+ 321 0028 0121     		movs	r1, #1
+ 322 002a 2846     		mov	r0, r5
+ 323 002c FFF7FEFF 		bl	stts22h_auto_increment_set
+ 324              	.LVL29:
+ 134:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 325              		.loc 1 134 8 discriminator 1 view .LVU87
+ 326 0030 58B9     		cbnz	r0, .L24
+ 140:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 327              		.loc 1 140 5 is_stmt 1 view .LVU88
+ 140:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 328              		.loc 1 140 9 is_stmt 0 view .LVU89
+ 329 0032 0021     		movs	r1, #0
+ 330 0034 2846     		mov	r0, r5
+ 331 0036 FFF7FEFF 		bl	stts22h_temp_data_rate_set
+ 332              	.LVL30:
+ 140:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 333              		.loc 1 140 8 discriminator 1 view .LVU90
+ 334 003a 0028     		cmp	r0, #0
+ 335 003c E5D0     		beq	.L21
+ 142:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 336              		.loc 1 142 14 view .LVU91
+ 337 003e 4FF0FF30 		mov	r0, #-1
+ 338 0042 E6E7     		b	.L20
+ 339              	.L23:
+ 130:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 340              		.loc 1 130 14 view .LVU92
+ 341 0044 4FF0FF30 		mov	r0, #-1
+ 342 0048 E3E7     		b	.L20
+ 343              	.L24:
+ 136:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 344              		.loc 1 136 14 view .LVU93
+ 345 004a 4FF0FF30 		mov	r0, #-1
+ 346 004e E0E7     		b	.L20
+ 347              		.cfi_endproc
+ 348              	.LFE1:
+ 350              		.section	.text.STTS22H_TEMP_SetOutputDataRate,"ax",%progbits
+ 351              		.align	1
+ 352              		.global	STTS22H_TEMP_SetOutputDataRate
+ 353              		.syntax unified
+ 354              		.thumb
+ 355              		.thumb_func
+ 357              	STTS22H_TEMP_SetOutputDataRate:
+ 358              	.LVL31:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 19
+
+
+ 359              	.LFB9:
+ 345:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_odr_temp_t new_odr;
+ 360              		.loc 1 345 1 is_stmt 1 view -0
+ 361              		.cfi_startproc
+ 362              		@ args = 0, pretend = 0, frame = 0
+ 363              		@ frame_needed = 0, uses_anonymous_args = 0
+ 345:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_odr_temp_t new_odr;
+ 364              		.loc 1 345 1 is_stmt 0 view .LVU95
+ 365 0000 08B5     		push	{r3, lr}
+ 366              	.LCFI3:
+ 367              		.cfi_def_cfa_offset 8
+ 368              		.cfi_offset 3, -8
+ 369              		.cfi_offset 14, -4
+ 346:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 370              		.loc 1 346 3 is_stmt 1 view .LVU96
+ 348:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 25.0f) ? STTS22H_25Hz
+ 371              		.loc 1 348 3 view .LVU97
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 372              		.loc 1 349 13 is_stmt 0 view .LVU98
+ 373 0002 F7EE007A 		vmov.f32	s15, #1.0e+0
+ 374 0006 B4EEE70A 		vcmpe.f32	s0, s15
+ 375 000a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 376 000e 16D9     		bls	.L32
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 377              		.loc 1 349 13 discriminator 2 view .LVU99
+ 378 0010 F3EE097A 		vmov.f32	s15, #2.5e+1
+ 379 0014 B4EEE70A 		vcmpe.f32	s0, s15
+ 380 0018 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 381 001c 15D9     		bls	.L33
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 382              		.loc 1 349 13 discriminator 4 view .LVU100
+ 383 001e DFED0F7A 		vldr.32	s15, .L41
+ 384 0022 B4EEE70A 		vcmpe.f32	s0, s15
+ 385 0026 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 386 002a 10D9     		bls	.L34
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 387              		.loc 1 349 13 discriminator 7 view .LVU101
+ 388 002c DFED0C7A 		vldr.32	s15, .L41+4
+ 389 0030 B4EEE70A 		vcmpe.f32	s0, s15
+ 390 0034 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 391 0038 0BD8     		bhi	.L38
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 392              		.loc 1 349 13 discriminator 9 view .LVU102
+ 393 003a 2221     		movs	r1, #34
+ 394 003c 00E0     		b	.L29
+ 395              	.L32:
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 396              		.loc 1 349 13 discriminator 1 view .LVU103
+ 397 003e 0421     		movs	r1, #4
+ 398              	.L29:
+ 399              	.LVL32:
+ 354:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 400              		.loc 1 354 3 is_stmt 1 view .LVU104
+ 354:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 401              		.loc 1 354 7 is_stmt 0 view .LVU105
+ 402 0040 2030     		adds	r0, r0, #32
+ 403              	.LVL33:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 20
+
+
+ 354:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 404              		.loc 1 354 7 view .LVU106
+ 405 0042 FFF7FEFF 		bl	stts22h_temp_data_rate_set
+ 406              	.LVL34:
+ 354:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 407              		.loc 1 354 6 discriminator 1 view .LVU107
+ 408 0046 30B9     		cbnz	r0, .L40
+ 409              	.L28:
+ 360:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 410              		.loc 1 360 1 view .LVU108
+ 411 0048 08BD     		pop	{r3, pc}
+ 412              	.LVL35:
+ 413              	.L33:
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 414              		.loc 1 349 13 discriminator 3 view .LVU109
+ 415 004a 0221     		movs	r1, #2
+ 416 004c F8E7     		b	.L29
+ 417              	.L34:
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 418              		.loc 1 349 13 discriminator 6 view .LVU110
+ 419 004e 1221     		movs	r1, #18
+ 420 0050 F6E7     		b	.L29
+ 421              	.L38:
+ 349:Drivers/Sensors/STTS22H/stts22h.c ****             : (Odr <= 50.0f) ? STTS22H_50Hz
+ 422              		.loc 1 349 13 discriminator 10 view .LVU111
+ 423 0052 3221     		movs	r1, #50
+ 424 0054 F4E7     		b	.L29
+ 425              	.LVL36:
+ 426              	.L40:
+ 356:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 427              		.loc 1 356 12 view .LVU112
+ 428 0056 4FF0FF30 		mov	r0, #-1
+ 429 005a F5E7     		b	.L28
+ 430              	.L42:
+ 431              		.align	2
+ 432              	.L41:
+ 433 005c 00004842 		.word	1112014848
+ 434 0060 0000C842 		.word	1120403456
+ 435              		.cfi_endproc
+ 436              	.LFE9:
+ 438              		.section	.text.STTS22H_TEMP_Enable,"ax",%progbits
+ 439              		.align	1
+ 440              		.global	STTS22H_TEMP_Enable
+ 441              		.syntax unified
+ 442              		.thumb
+ 443              		.thumb_func
+ 445              	STTS22H_TEMP_Enable:
+ 446              	.LVL37:
+ 447              	.LFB6:
+ 239:Drivers/Sensors/STTS22H/stts22h.c ****   /* Check if the component is already enabled */
+ 448              		.loc 1 239 1 is_stmt 1 view -0
+ 449              		.cfi_startproc
+ 450              		@ args = 0, pretend = 0, frame = 0
+ 451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 241:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 452              		.loc 1 241 3 view .LVU114
+ 241:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ARM GAS  /tmp/ccXCx1Bj.s 			page 21
+
+
+ 453              		.loc 1 241 11 is_stmt 0 view .LVU115
+ 454 0000 90F83130 		ldrb	r3, [r0, #49]	@ zero_extendqisi2
+ 241:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 455              		.loc 1 241 6 view .LVU116
+ 456 0004 012B     		cmp	r3, #1
+ 457 0006 0AD0     		beq	.L45
+ 239:Drivers/Sensors/STTS22H/stts22h.c ****   /* Check if the component is already enabled */
+ 458              		.loc 1 239 1 view .LVU117
+ 459 0008 10B5     		push	{r4, lr}
+ 460              	.LCFI4:
+ 461              		.cfi_def_cfa_offset 8
+ 462              		.cfi_offset 4, -8
+ 463              		.cfi_offset 14, -4
+ 464 000a 0446     		mov	r4, r0
+ 247:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 465              		.loc 1 247 3 is_stmt 1 view .LVU118
+ 247:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 466              		.loc 1 247 7 is_stmt 0 view .LVU119
+ 467 000c 90ED0D0A 		vldr.32	s0, [r0, #52]
+ 468 0010 FFF7FEFF 		bl	STTS22H_TEMP_SetOutputDataRate
+ 469              	.LVL38:
+ 247:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 470              		.loc 1 247 6 discriminator 1 view .LVU120
+ 471 0014 28B9     		cbnz	r0, .L46
+ 252:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 472              		.loc 1 252 3 is_stmt 1 view .LVU121
+ 252:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 473              		.loc 1 252 25 is_stmt 0 view .LVU122
+ 474 0016 0123     		movs	r3, #1
+ 475 0018 84F83130 		strb	r3, [r4, #49]
+ 254:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 476              		.loc 1 254 3 is_stmt 1 view .LVU123
+ 477              	.L43:
+ 255:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 478              		.loc 1 255 1 is_stmt 0 view .LVU124
+ 479 001c 10BD     		pop	{r4, pc}
+ 480              	.LVL39:
+ 481              	.L45:
+ 482              	.LCFI5:
+ 483              		.cfi_def_cfa_offset 0
+ 484              		.cfi_restore 4
+ 485              		.cfi_restore 14
+ 243:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 486              		.loc 1 243 12 view .LVU125
+ 487 001e 0020     		movs	r0, #0
+ 488              	.LVL40:
+ 255:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 489              		.loc 1 255 1 view .LVU126
+ 490 0020 7047     		bx	lr
+ 491              	.LVL41:
+ 492              	.L46:
+ 493              	.LCFI6:
+ 494              		.cfi_def_cfa_offset 8
+ 495              		.cfi_offset 4, -8
+ 496              		.cfi_offset 14, -4
+ 249:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 497              		.loc 1 249 12 view .LVU127
+ARM GAS  /tmp/ccXCx1Bj.s 			page 22
+
+
+ 498 0022 4FF0FF30 		mov	r0, #-1
+ 499 0026 F9E7     		b	.L43
+ 500              		.cfi_endproc
+ 501              	.LFE6:
+ 503              		.section	.text.STTS22H_ReadID,"ax",%progbits
+ 504              		.align	1
+ 505              		.global	STTS22H_ReadID
+ 506              		.syntax unified
+ 507              		.thumb
+ 508              		.thumb_func
+ 510              	STTS22H_ReadID:
+ 511              	.LVL42:
+ 512              	.LFB3:
+ 179:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t buf;
+ 513              		.loc 1 179 1 is_stmt 1 view -0
+ 514              		.cfi_startproc
+ 515              		@ args = 0, pretend = 0, frame = 8
+ 516              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t buf;
+ 517              		.loc 1 179 1 is_stmt 0 view .LVU129
+ 518 0000 10B5     		push	{r4, lr}
+ 519              	.LCFI7:
+ 520              		.cfi_def_cfa_offset 8
+ 521              		.cfi_offset 4, -8
+ 522              		.cfi_offset 14, -4
+ 523 0002 82B0     		sub	sp, sp, #8
+ 524              	.LCFI8:
+ 525              		.cfi_def_cfa_offset 16
+ 526 0004 0C46     		mov	r4, r1
+ 180:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 527              		.loc 1 180 3 is_stmt 1 view .LVU130
+ 182:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 528              		.loc 1 182 3 view .LVU131
+ 182:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 529              		.loc 1 182 7 is_stmt 0 view .LVU132
+ 530 0006 0DF10701 		add	r1, sp, #7
+ 531              	.LVL43:
+ 182:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 532              		.loc 1 182 7 view .LVU133
+ 533 000a 2030     		adds	r0, r0, #32
+ 534              	.LVL44:
+ 182:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 535              		.loc 1 182 7 view .LVU134
+ 536 000c FFF7FEFF 		bl	stts22h_dev_id_get
+ 537              	.LVL45:
+ 182:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 538              		.loc 1 182 6 discriminator 1 view .LVU135
+ 539 0010 20B9     		cbnz	r0, .L53
+ 187:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 540              		.loc 1 187 3 is_stmt 1 view .LVU136
+ 187:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 541              		.loc 1 187 7 is_stmt 0 view .LVU137
+ 542 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 543 0016 2370     		strb	r3, [r4]
+ 189:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 544              		.loc 1 189 3 is_stmt 1 view .LVU138
+ 545              	.L51:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 23
+
+
+ 190:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 546              		.loc 1 190 1 is_stmt 0 view .LVU139
+ 547 0018 02B0     		add	sp, sp, #8
+ 548              	.LCFI9:
+ 549              		.cfi_remember_state
+ 550              		.cfi_def_cfa_offset 8
+ 551              		@ sp needed
+ 552 001a 10BD     		pop	{r4, pc}
+ 553              	.LVL46:
+ 554              	.L53:
+ 555              	.LCFI10:
+ 556              		.cfi_restore_state
+ 184:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 557              		.loc 1 184 12 view .LVU140
+ 558 001c 4FF0FF30 		mov	r0, #-1
+ 559 0020 FAE7     		b	.L51
+ 560              		.cfi_endproc
+ 561              	.LFE3:
+ 563              		.section	.text.STTS22H_TEMP_GetOutputDataRate,"ax",%progbits
+ 564              		.align	1
+ 565              		.global	STTS22H_TEMP_GetOutputDataRate
+ 566              		.syntax unified
+ 567              		.thumb
+ 568              		.thumb_func
+ 570              	STTS22H_TEMP_GetOutputDataRate:
+ 571              	.LVL47:
+ 572              	.LFB8:
+ 294:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret = STTS22H_OK;
+ 573              		.loc 1 294 1 is_stmt 1 view -0
+ 574              		.cfi_startproc
+ 575              		@ args = 0, pretend = 0, frame = 8
+ 576              		@ frame_needed = 0, uses_anonymous_args = 0
+ 294:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret = STTS22H_OK;
+ 577              		.loc 1 294 1 is_stmt 0 view .LVU142
+ 578 0000 10B5     		push	{r4, lr}
+ 579              	.LCFI11:
+ 580              		.cfi_def_cfa_offset 8
+ 581              		.cfi_offset 4, -8
+ 582              		.cfi_offset 14, -4
+ 583 0002 82B0     		sub	sp, sp, #8
+ 584              	.LCFI12:
+ 585              		.cfi_def_cfa_offset 16
+ 586 0004 0C46     		mov	r4, r1
+ 295:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_odr_temp_t odr_low_level;
+ 587              		.loc 1 295 3 is_stmt 1 view .LVU143
+ 588              	.LVL48:
+ 296:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 589              		.loc 1 296 3 view .LVU144
+ 298:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 590              		.loc 1 298 3 view .LVU145
+ 298:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 591              		.loc 1 298 7 is_stmt 0 view .LVU146
+ 592 0006 0DF10701 		add	r1, sp, #7
+ 593              	.LVL49:
+ 298:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 594              		.loc 1 298 7 view .LVU147
+ 595 000a 2030     		adds	r0, r0, #32
+ARM GAS  /tmp/ccXCx1Bj.s 			page 24
+
+
+ 596              	.LVL50:
+ 298:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 597              		.loc 1 298 7 view .LVU148
+ 598 000c FFF7FEFF 		bl	stts22h_temp_data_rate_get
+ 599              	.LVL51:
+ 298:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 600              		.loc 1 298 6 discriminator 1 view .LVU149
+ 601 0010 0028     		cmp	r0, #0
+ 602 0012 32D1     		bne	.L64
+ 303:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 603              		.loc 1 303 3 is_stmt 1 view .LVU150
+ 604 0014 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 605 0018 322B     		cmp	r3, #50
+ 606 001a 31D8     		bhi	.L65
+ 607 001c DFE803F0 		tbb	[pc, r3]
+ 608              	.L58:
+ 609 0020 1A       		.byte	(.L63-.L58)/2
+ 610 0021 1A       		.byte	(.L63-.L58)/2
+ 611 0022 21       		.byte	(.L62-.L58)/2
+ 612 0023 30       		.byte	(.L65-.L58)/2
+ 613 0024 1D       		.byte	(.L61-.L58)/2
+ 614 0025 30       		.byte	(.L65-.L58)/2
+ 615 0026 30       		.byte	(.L65-.L58)/2
+ 616 0027 30       		.byte	(.L65-.L58)/2
+ 617 0028 30       		.byte	(.L65-.L58)/2
+ 618 0029 30       		.byte	(.L65-.L58)/2
+ 619 002a 30       		.byte	(.L65-.L58)/2
+ 620 002b 30       		.byte	(.L65-.L58)/2
+ 621 002c 30       		.byte	(.L65-.L58)/2
+ 622 002d 30       		.byte	(.L65-.L58)/2
+ 623 002e 30       		.byte	(.L65-.L58)/2
+ 624 002f 30       		.byte	(.L65-.L58)/2
+ 625 0030 30       		.byte	(.L65-.L58)/2
+ 626 0031 30       		.byte	(.L65-.L58)/2
+ 627 0032 24       		.byte	(.L60-.L58)/2
+ 628 0033 30       		.byte	(.L65-.L58)/2
+ 629 0034 30       		.byte	(.L65-.L58)/2
+ 630 0035 30       		.byte	(.L65-.L58)/2
+ 631 0036 30       		.byte	(.L65-.L58)/2
+ 632 0037 30       		.byte	(.L65-.L58)/2
+ 633 0038 30       		.byte	(.L65-.L58)/2
+ 634 0039 30       		.byte	(.L65-.L58)/2
+ 635 003a 30       		.byte	(.L65-.L58)/2
+ 636 003b 30       		.byte	(.L65-.L58)/2
+ 637 003c 30       		.byte	(.L65-.L58)/2
+ 638 003d 30       		.byte	(.L65-.L58)/2
+ 639 003e 30       		.byte	(.L65-.L58)/2
+ 640 003f 30       		.byte	(.L65-.L58)/2
+ 641 0040 30       		.byte	(.L65-.L58)/2
+ 642 0041 30       		.byte	(.L65-.L58)/2
+ 643 0042 27       		.byte	(.L59-.L58)/2
+ 644 0043 30       		.byte	(.L65-.L58)/2
+ 645 0044 30       		.byte	(.L65-.L58)/2
+ 646 0045 30       		.byte	(.L65-.L58)/2
+ 647 0046 30       		.byte	(.L65-.L58)/2
+ 648 0047 30       		.byte	(.L65-.L58)/2
+ 649 0048 30       		.byte	(.L65-.L58)/2
+ARM GAS  /tmp/ccXCx1Bj.s 			page 25
+
+
+ 650 0049 30       		.byte	(.L65-.L58)/2
+ 651 004a 30       		.byte	(.L65-.L58)/2
+ 652 004b 30       		.byte	(.L65-.L58)/2
+ 653 004c 30       		.byte	(.L65-.L58)/2
+ 654 004d 30       		.byte	(.L65-.L58)/2
+ 655 004e 30       		.byte	(.L65-.L58)/2
+ 656 004f 30       		.byte	(.L65-.L58)/2
+ 657 0050 30       		.byte	(.L65-.L58)/2
+ 658 0051 30       		.byte	(.L65-.L58)/2
+ 659 0052 2A       		.byte	(.L57-.L58)/2
+ 660 0053 00       		.p2align 1
+ 661              	.L63:
+ 307:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 662              		.loc 1 307 7 view .LVU151
+ 307:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 663              		.loc 1 307 12 is_stmt 0 view .LVU152
+ 664 0054 0023     		movs	r3, #0
+ 665 0056 2360     		str	r3, [r4]	@ float
+ 308:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 666              		.loc 1 308 7 is_stmt 1 view .LVU153
+ 667 0058 14E0     		b	.L55
+ 668              	.L61:
+ 311:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 669              		.loc 1 311 7 view .LVU154
+ 311:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 670              		.loc 1 311 12 is_stmt 0 view .LVU155
+ 671 005a 4FF07E53 		mov	r3, #1065353216
+ 672 005e 2360     		str	r3, [r4]	@ float
+ 312:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 673              		.loc 1 312 7 is_stmt 1 view .LVU156
+ 674 0060 10E0     		b	.L55
+ 675              	.L62:
+ 315:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 676              		.loc 1 315 7 view .LVU157
+ 315:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 677              		.loc 1 315 12 is_stmt 0 view .LVU158
+ 678 0062 094B     		ldr	r3, .L67
+ 679 0064 2360     		str	r3, [r4]	@ float
+ 316:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 680              		.loc 1 316 7 is_stmt 1 view .LVU159
+ 681 0066 0DE0     		b	.L55
+ 682              	.L60:
+ 319:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 683              		.loc 1 319 7 view .LVU160
+ 319:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 684              		.loc 1 319 12 is_stmt 0 view .LVU161
+ 685 0068 084B     		ldr	r3, .L67+4
+ 686 006a 2360     		str	r3, [r4]	@ float
+ 320:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 687              		.loc 1 320 7 is_stmt 1 view .LVU162
+ 688 006c 0AE0     		b	.L55
+ 689              	.L59:
+ 323:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 690              		.loc 1 323 7 view .LVU163
+ 323:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 691              		.loc 1 323 12 is_stmt 0 view .LVU164
+ 692 006e 084B     		ldr	r3, .L67+8
+ARM GAS  /tmp/ccXCx1Bj.s 			page 26
+
+
+ 693 0070 2360     		str	r3, [r4]	@ float
+ 324:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 694              		.loc 1 324 7 is_stmt 1 view .LVU165
+ 695 0072 07E0     		b	.L55
+ 696              	.L57:
+ 327:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 697              		.loc 1 327 7 view .LVU166
+ 327:Drivers/Sensors/STTS22H/stts22h.c ****       break;
+ 698              		.loc 1 327 12 is_stmt 0 view .LVU167
+ 699 0074 074B     		ldr	r3, .L67+12
+ 700 0076 2360     		str	r3, [r4]	@ float
+ 328:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 701              		.loc 1 328 7 is_stmt 1 view .LVU168
+ 702 0078 04E0     		b	.L55
+ 703              	.L64:
+ 300:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 704              		.loc 1 300 12 is_stmt 0 view .LVU169
+ 705 007a 4FF0FF30 		mov	r0, #-1
+ 706 007e 01E0     		b	.L55
+ 707              	.L65:
+ 303:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 708              		.loc 1 303 3 view .LVU170
+ 709 0080 4FF0FF30 		mov	r0, #-1
+ 710              	.LVL52:
+ 711              	.L55:
+ 336:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 712              		.loc 1 336 1 view .LVU171
+ 713 0084 02B0     		add	sp, sp, #8
+ 714              	.LCFI13:
+ 715              		.cfi_def_cfa_offset 8
+ 716              		@ sp needed
+ 717 0086 10BD     		pop	{r4, pc}
+ 718              	.LVL53:
+ 719              	.L68:
+ 336:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 720              		.loc 1 336 1 view .LVU172
+ 721              		.align	2
+ 722              	.L67:
+ 723 0088 0000C841 		.word	1103626240
+ 724 008c 00004842 		.word	1112014848
+ 725 0090 0000C842 		.word	1120403456
+ 726 0094 00004843 		.word	1128792064
+ 727              		.cfi_endproc
+ 728              	.LFE8:
+ 730              		.section	.text.STTS22H_TEMP_Disable,"ax",%progbits
+ 731              		.align	1
+ 732              		.global	STTS22H_TEMP_Disable
+ 733              		.syntax unified
+ 734              		.thumb
+ 735              		.thumb_func
+ 737              	STTS22H_TEMP_Disable:
+ 738              	.LVL54:
+ 739              	.LFB7:
+ 263:Drivers/Sensors/STTS22H/stts22h.c ****   /* Check if the component is already disabled */
+ 740              		.loc 1 263 1 is_stmt 1 view -0
+ 741              		.cfi_startproc
+ 742              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccXCx1Bj.s 			page 27
+
+
+ 743              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 744              		.loc 1 265 3 view .LVU174
+ 265:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 745              		.loc 1 265 11 is_stmt 0 view .LVU175
+ 746 0000 90F83130 		ldrb	r3, [r0, #49]	@ zero_extendqisi2
+ 265:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 747              		.loc 1 265 6 view .LVU176
+ 748 0004 0BB9     		cbnz	r3, .L78
+ 267:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 749              		.loc 1 267 12 view .LVU177
+ 750 0006 0020     		movs	r0, #0
+ 751              	.LVL55:
+ 285:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 752              		.loc 1 285 1 view .LVU178
+ 753 0008 7047     		bx	lr
+ 754              	.LVL56:
+ 755              	.L78:
+ 263:Drivers/Sensors/STTS22H/stts22h.c ****   /* Check if the component is already disabled */
+ 756              		.loc 1 263 1 view .LVU179
+ 757 000a 10B5     		push	{r4, lr}
+ 758              	.LCFI14:
+ 759              		.cfi_def_cfa_offset 8
+ 760              		.cfi_offset 4, -8
+ 761              		.cfi_offset 14, -4
+ 762 000c 0446     		mov	r4, r0
+ 271:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 763              		.loc 1 271 3 is_stmt 1 view .LVU180
+ 271:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 764              		.loc 1 271 7 is_stmt 0 view .LVU181
+ 765 000e 00F13401 		add	r1, r0, #52
+ 766 0012 FFF7FEFF 		bl	STTS22H_TEMP_GetOutputDataRate
+ 767              	.LVL57:
+ 271:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 768              		.loc 1 271 6 discriminator 1 view .LVU182
+ 769 0016 40B9     		cbnz	r0, .L72
+ 277:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 770              		.loc 1 277 3 is_stmt 1 view .LVU183
+ 277:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 771              		.loc 1 277 7 is_stmt 0 view .LVU184
+ 772 0018 0021     		movs	r1, #0
+ 773 001a 04F12000 		add	r0, r4, #32
+ 774 001e FFF7FEFF 		bl	stts22h_temp_data_rate_set
+ 775              	.LVL58:
+ 277:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 776              		.loc 1 277 6 discriminator 1 view .LVU185
+ 777 0022 28B9     		cbnz	r0, .L73
+ 282:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 778              		.loc 1 282 3 is_stmt 1 view .LVU186
+ 282:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 779              		.loc 1 282 25 is_stmt 0 view .LVU187
+ 780 0024 84F83100 		strb	r0, [r4, #49]
+ 284:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 781              		.loc 1 284 3 is_stmt 1 view .LVU188
+ 782              	.L69:
+ 285:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 783              		.loc 1 285 1 is_stmt 0 view .LVU189
+ARM GAS  /tmp/ccXCx1Bj.s 			page 28
+
+
+ 784 0028 10BD     		pop	{r4, pc}
+ 785              	.LVL59:
+ 786              	.L72:
+ 273:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 787              		.loc 1 273 12 view .LVU190
+ 788 002a 4FF0FF30 		mov	r0, #-1
+ 789 002e FBE7     		b	.L69
+ 790              	.L73:
+ 279:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 791              		.loc 1 279 12 view .LVU191
+ 792 0030 4FF0FF30 		mov	r0, #-1
+ 793 0034 F8E7     		b	.L69
+ 794              		.cfi_endproc
+ 795              	.LFE7:
+ 797              		.section	.text.STTS22H_DeInit,"ax",%progbits
+ 798              		.align	1
+ 799              		.global	STTS22H_DeInit
+ 800              		.syntax unified
+ 801              		.thumb
+ 802              		.thumb_func
+ 804              	STTS22H_DeInit:
+ 805              	.LVL60:
+ 806              	.LFB2:
+ 157:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->is_initialized == 1U)
+ 807              		.loc 1 157 1 is_stmt 1 view -0
+ 808              		.cfi_startproc
+ 809              		@ args = 0, pretend = 0, frame = 0
+ 810              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj->is_initialized == 1U)
+ 811              		.loc 1 157 1 is_stmt 0 view .LVU193
+ 812 0000 10B5     		push	{r4, lr}
+ 813              	.LCFI15:
+ 814              		.cfi_def_cfa_offset 8
+ 815              		.cfi_offset 4, -8
+ 816              		.cfi_offset 14, -4
+ 817 0002 0446     		mov	r4, r0
+ 158:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 818              		.loc 1 158 3 is_stmt 1 view .LVU194
+ 158:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 819              		.loc 1 158 11 is_stmt 0 view .LVU195
+ 820 0004 90F83030 		ldrb	r3, [r0, #48]	@ zero_extendqisi2
+ 158:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 821              		.loc 1 158 6 view .LVU196
+ 822 0008 012B     		cmp	r3, #1
+ 823 000a 03D0     		beq	.L84
+ 824              	.LVL61:
+ 825              	.L80:
+ 167:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 826              		.loc 1 167 3 is_stmt 1 view .LVU197
+ 167:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 827              		.loc 1 167 24 is_stmt 0 view .LVU198
+ 828 000c 0020     		movs	r0, #0
+ 829 000e 84F83000 		strb	r0, [r4, #48]
+ 169:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 830              		.loc 1 169 3 is_stmt 1 view .LVU199
+ 831              	.L79:
+ 170:Drivers/Sensors/STTS22H/stts22h.c **** 
+ARM GAS  /tmp/ccXCx1Bj.s 			page 29
+
+
+ 832              		.loc 1 170 1 is_stmt 0 view .LVU200
+ 833 0012 10BD     		pop	{r4, pc}
+ 834              	.LVL62:
+ 835              	.L84:
+ 161:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 836              		.loc 1 161 5 is_stmt 1 view .LVU201
+ 161:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 837              		.loc 1 161 9 is_stmt 0 view .LVU202
+ 838 0014 FFF7FEFF 		bl	STTS22H_TEMP_Disable
+ 839              	.LVL63:
+ 161:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 840              		.loc 1 161 8 discriminator 1 view .LVU203
+ 841 0018 0028     		cmp	r0, #0
+ 842 001a F7D0     		beq	.L80
+ 163:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 843              		.loc 1 163 14 view .LVU204
+ 844 001c 4FF0FF30 		mov	r0, #-1
+ 845 0020 F7E7     		b	.L79
+ 846              		.cfi_endproc
+ 847              	.LFE2:
+ 849              		.section	.text.STTS22H_TEMP_GetTemperature,"ax",%progbits
+ 850              		.align	1
+ 851              		.global	STTS22H_TEMP_GetTemperature
+ 852              		.syntax unified
+ 853              		.thumb
+ 854              		.thumb_func
+ 856              	STTS22H_TEMP_GetTemperature:
+ 857              	.LVL64:
+ 858              	.LFB10:
+ 369:Drivers/Sensors/STTS22H/stts22h.c ****   int16_t raw_value;
+ 859              		.loc 1 369 1 is_stmt 1 view -0
+ 860              		.cfi_startproc
+ 861              		@ args = 0, pretend = 0, frame = 8
+ 862              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369:Drivers/Sensors/STTS22H/stts22h.c ****   int16_t raw_value;
+ 863              		.loc 1 369 1 is_stmt 0 view .LVU206
+ 864 0000 30B5     		push	{r4, r5, lr}
+ 865              	.LCFI16:
+ 866              		.cfi_def_cfa_offset 12
+ 867              		.cfi_offset 4, -12
+ 868              		.cfi_offset 5, -8
+ 869              		.cfi_offset 14, -4
+ 870 0002 83B0     		sub	sp, sp, #12
+ 871              	.LCFI17:
+ 872              		.cfi_def_cfa_offset 24
+ 873 0004 0C46     		mov	r4, r1
+ 370:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 874              		.loc 1 370 3 is_stmt 1 view .LVU207
+ 373:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 875              		.loc 1 373 3 view .LVU208
+ 373:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 876              		.loc 1 373 7 is_stmt 0 view .LVU209
+ 877 0006 0DF10601 		add	r1, sp, #6
+ 878              	.LVL65:
+ 373:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 879              		.loc 1 373 7 view .LVU210
+ 880 000a 2030     		adds	r0, r0, #32
+ARM GAS  /tmp/ccXCx1Bj.s 			page 30
+
+
+ 881              	.LVL66:
+ 373:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 882              		.loc 1 373 7 view .LVU211
+ 883 000c FFF7FEFF 		bl	stts22h_temperature_raw_get
+ 884              	.LVL67:
+ 373:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 885              		.loc 1 373 6 discriminator 1 view .LVU212
+ 886 0010 48B9     		cbnz	r0, .L87
+ 887 0012 0546     		mov	r5, r0
+ 378:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 888              		.loc 1 378 3 is_stmt 1 view .LVU213
+ 378:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 889              		.loc 1 378 12 is_stmt 0 view .LVU214
+ 890 0014 BDF90600 		ldrsh	r0, [sp, #6]
+ 891 0018 FFF7FEFF 		bl	stts22h_from_lsb_to_celsius
+ 892              	.LVL68:
+ 378:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 893              		.loc 1 378 10 discriminator 1 view .LVU215
+ 894 001c 84ED000A 		vstr.32	s0, [r4]
+ 380:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 895              		.loc 1 380 3 is_stmt 1 view .LVU216
+ 896              	.L85:
+ 381:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 897              		.loc 1 381 1 is_stmt 0 view .LVU217
+ 898 0020 2846     		mov	r0, r5
+ 899 0022 03B0     		add	sp, sp, #12
+ 900              	.LCFI18:
+ 901              		.cfi_remember_state
+ 902              		.cfi_def_cfa_offset 12
+ 903              		@ sp needed
+ 904 0024 30BD     		pop	{r4, r5, pc}
+ 905              	.LVL69:
+ 906              	.L87:
+ 907              	.LCFI19:
+ 908              		.cfi_restore_state
+ 375:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 909              		.loc 1 375 12 view .LVU218
+ 910 0026 4FF0FF35 		mov	r5, #-1
+ 911 002a F9E7     		b	.L85
+ 912              		.cfi_endproc
+ 913              	.LFE10:
+ 915              		.section	.text.STTS22H_RegisterBusIO,"ax",%progbits
+ 916              		.align	1
+ 917              		.global	STTS22H_RegisterBusIO
+ 918              		.syntax unified
+ 919              		.thumb
+ 920              		.thumb_func
+ 922              	STTS22H_RegisterBusIO:
+ 923              	.LVL70:
+ 924              	.LFB0:
+  80:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret;
+ 925              		.loc 1 80 1 is_stmt 1 view -0
+ 926              		.cfi_startproc
+ 927              		@ args = 0, pretend = 0, frame = 0
+ 928              		@ frame_needed = 0, uses_anonymous_args = 0
+  81:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 929              		.loc 1 81 3 view .LVU220
+ARM GAS  /tmp/ccXCx1Bj.s 			page 31
+
+
+  83:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 930              		.loc 1 83 3 view .LVU221
+  83:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 931              		.loc 1 83 6 is_stmt 0 view .LVU222
+ 932 0000 C8B1     		cbz	r0, .L91
+  80:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret;
+ 933              		.loc 1 80 1 view .LVU223
+ 934 0002 08B5     		push	{r3, lr}
+ 935              	.LCFI20:
+ 936              		.cfi_def_cfa_offset 8
+ 937              		.cfi_offset 3, -8
+ 938              		.cfi_offset 14, -4
+ 939 0004 0346     		mov	r3, r0
+  89:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.DeInit    = pIO->DeInit;
+ 940              		.loc 1 89 5 is_stmt 1 view .LVU224
+  89:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.DeInit    = pIO->DeInit;
+ 941              		.loc 1 89 29 is_stmt 0 view .LVU225
+ 942 0006 0A68     		ldr	r2, [r1]
+  89:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.DeInit    = pIO->DeInit;
+ 943              		.loc 1 89 24 view .LVU226
+ 944 0008 0260     		str	r2, [r0]
+  90:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.BusType   = pIO->BusType;
+ 945              		.loc 1 90 5 is_stmt 1 view .LVU227
+  90:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.BusType   = pIO->BusType;
+ 946              		.loc 1 90 29 is_stmt 0 view .LVU228
+ 947 000a 4868     		ldr	r0, [r1, #4]
+ 948              	.LVL71:
+  90:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.BusType   = pIO->BusType;
+ 949              		.loc 1 90 24 view .LVU229
+ 950 000c 5860     		str	r0, [r3, #4]
+  91:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.Address   = pIO->Address;
+ 951              		.loc 1 91 5 is_stmt 1 view .LVU230
+  91:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.Address   = pIO->Address;
+ 952              		.loc 1 91 29 is_stmt 0 view .LVU231
+ 953 000e 8868     		ldr	r0, [r1, #8]
+  91:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.Address   = pIO->Address;
+ 954              		.loc 1 91 24 view .LVU232
+ 955 0010 9860     		str	r0, [r3, #8]
+  92:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.WriteReg  = pIO->WriteReg;
+ 956              		.loc 1 92 5 is_stmt 1 view .LVU233
+  92:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.WriteReg  = pIO->WriteReg;
+ 957              		.loc 1 92 29 is_stmt 0 view .LVU234
+ 958 0012 087B     		ldrb	r0, [r1, #12]	@ zero_extendqisi2
+  92:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.WriteReg  = pIO->WriteReg;
+ 959              		.loc 1 92 24 view .LVU235
+ 960 0014 1873     		strb	r0, [r3, #12]
+  93:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.ReadReg   = pIO->ReadReg;
+ 961              		.loc 1 93 5 is_stmt 1 view .LVU236
+  93:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.ReadReg   = pIO->ReadReg;
+ 962              		.loc 1 93 29 is_stmt 0 view .LVU237
+ 963 0016 0869     		ldr	r0, [r1, #16]
+  93:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.ReadReg   = pIO->ReadReg;
+ 964              		.loc 1 93 24 view .LVU238
+ 965 0018 1861     		str	r0, [r3, #16]
+  94:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.GetTick   = pIO->GetTick;
+ 966              		.loc 1 94 5 is_stmt 1 view .LVU239
+  94:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.GetTick   = pIO->GetTick;
+ARM GAS  /tmp/ccXCx1Bj.s 			page 32
+
+
+ 967              		.loc 1 94 29 is_stmt 0 view .LVU240
+ 968 001a 4869     		ldr	r0, [r1, #20]
+  94:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.GetTick   = pIO->GetTick;
+ 969              		.loc 1 94 24 view .LVU241
+ 970 001c 5861     		str	r0, [r3, #20]
+  95:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 971              		.loc 1 95 5 is_stmt 1 view .LVU242
+  95:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 972              		.loc 1 95 29 is_stmt 0 view .LVU243
+ 973 001e 8869     		ldr	r0, [r1, #24]
+  95:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 974              		.loc 1 95 24 view .LVU244
+ 975 0020 9861     		str	r0, [r3, #24]
+  97:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.write_reg = WriteRegWrap;
+ 976              		.loc 1 97 5 is_stmt 1 view .LVU245
+  97:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.write_reg = WriteRegWrap;
+ 977              		.loc 1 97 25 is_stmt 0 view .LVU246
+ 978 0022 0848     		ldr	r0, .L97
+ 979 0024 5862     		str	r0, [r3, #36]
+  98:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.mdelay    = pIO->Delay;
+ 980              		.loc 1 98 5 is_stmt 1 view .LVU247
+  98:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.mdelay    = pIO->Delay;
+ 981              		.loc 1 98 25 is_stmt 0 view .LVU248
+ 982 0026 0848     		ldr	r0, .L97+4
+ 983 0028 1862     		str	r0, [r3, #32]
+  99:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.handle   = pObj;
+ 984              		.loc 1 99 5 is_stmt 1 view .LVU249
+  99:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.handle   = pObj;
+ 985              		.loc 1 99 30 is_stmt 0 view .LVU250
+ 986 002a C969     		ldr	r1, [r1, #28]
+ 987              	.LVL72:
+  99:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->Ctx.handle   = pObj;
+ 988              		.loc 1 99 25 view .LVU251
+ 989 002c 9962     		str	r1, [r3, #40]
+ 100:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 990              		.loc 1 100 5 is_stmt 1 view .LVU252
+ 100:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 991              		.loc 1 100 24 is_stmt 0 view .LVU253
+ 992 002e DB62     		str	r3, [r3, #44]
+ 102:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 993              		.loc 1 102 5 is_stmt 1 view .LVU254
+ 102:Drivers/Sensors/STTS22H/stts22h.c ****     {
+ 994              		.loc 1 102 8 is_stmt 0 view .LVU255
+ 995 0030 22B1     		cbz	r2, .L92
+ 104:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 996              		.loc 1 104 7 is_stmt 1 view .LVU256
+ 104:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 997              		.loc 1 104 13 is_stmt 0 view .LVU257
+ 998 0032 9047     		blx	r2
+ 999              	.LVL73:
+ 1000              	.L89:
+ 113:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1001              		.loc 1 113 1 view .LVU258
+ 1002 0034 08BD     		pop	{r3, pc}
+ 1003              	.LVL74:
+ 1004              	.L91:
+ 1005              	.LCFI21:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 33
+
+
+ 1006              		.cfi_def_cfa_offset 0
+ 1007              		.cfi_restore 3
+ 1008              		.cfi_restore 14
+  85:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1009              		.loc 1 85 9 view .LVU259
+ 1010 0036 4FF0FF30 		mov	r0, #-1
+ 1011              	.LVL75:
+ 113:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1012              		.loc 1 113 1 view .LVU260
+ 1013 003a 7047     		bx	lr
+ 1014              	.LVL76:
+ 1015              	.L92:
+ 1016              	.LCFI22:
+ 1017              		.cfi_def_cfa_offset 8
+ 1018              		.cfi_offset 3, -8
+ 1019              		.cfi_offset 14, -4
+ 108:Drivers/Sensors/STTS22H/stts22h.c ****     }
+ 1020              		.loc 1 108 11 view .LVU261
+ 1021 003c 4FF0FF30 		mov	r0, #-1
+ 1022              	.LVL77:
+ 112:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 1023              		.loc 1 112 3 is_stmt 1 view .LVU262
+ 112:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 1024              		.loc 1 112 10 is_stmt 0 view .LVU263
+ 1025 0040 F8E7     		b	.L89
+ 1026              	.L98:
+ 1027 0042 00BF     		.align	2
+ 1028              	.L97:
+ 1029 0044 00000000 		.word	ReadRegWrap
+ 1030 0048 00000000 		.word	WriteRegWrap
+ 1031              		.cfi_endproc
+ 1032              	.LFE0:
+ 1034              		.section	.text.STTS22H_Get_Init_Status,"ax",%progbits
+ 1035              		.align	1
+ 1036              		.global	STTS22H_Get_Init_Status
+ 1037              		.syntax unified
+ 1038              		.thumb
+ 1039              		.thumb_func
+ 1041              	STTS22H_Get_Init_Status:
+ 1042              	.LVL78:
+ 1043              	.LFB5:
+ 222:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj == NULL)
+ 1044              		.loc 1 222 1 is_stmt 1 view -0
+ 1045              		.cfi_startproc
+ 1046              		@ args = 0, pretend = 0, frame = 0
+ 1047              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1048              		@ link register save eliminated.
+ 223:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1049              		.loc 1 223 3 view .LVU265
+ 223:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1050              		.loc 1 223 6 is_stmt 0 view .LVU266
+ 1051 0000 20B1     		cbz	r0, .L101
+ 228:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1052              		.loc 1 228 3 is_stmt 1 view .LVU267
+ 228:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1053              		.loc 1 228 17 is_stmt 0 view .LVU268
+ 1054 0002 90F83030 		ldrb	r3, [r0, #48]	@ zero_extendqisi2
+ARM GAS  /tmp/ccXCx1Bj.s 			page 34
+
+
+ 228:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1055              		.loc 1 228 11 view .LVU269
+ 1056 0006 0B70     		strb	r3, [r1]
+ 230:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 1057              		.loc 1 230 3 is_stmt 1 view .LVU270
+ 230:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 1058              		.loc 1 230 10 is_stmt 0 view .LVU271
+ 1059 0008 0020     		movs	r0, #0
+ 1060              	.LVL79:
+ 230:Drivers/Sensors/STTS22H/stts22h.c **** }
+ 1061              		.loc 1 230 10 view .LVU272
+ 1062 000a 7047     		bx	lr
+ 1063              	.LVL80:
+ 1064              	.L101:
+ 225:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1065              		.loc 1 225 12 view .LVU273
+ 1066 000c 4FF0FF30 		mov	r0, #-1
+ 1067              	.LVL81:
+ 231:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1068              		.loc 1 231 1 view .LVU274
+ 1069 0010 7047     		bx	lr
+ 1070              		.cfi_endproc
+ 1071              	.LFE5:
+ 1073              		.section	.text.STTS22H_TEMP_Get_DRDY_Status,"ax",%progbits
+ 1074              		.align	1
+ 1075              		.global	STTS22H_TEMP_Get_DRDY_Status
+ 1076              		.syntax unified
+ 1077              		.thumb
+ 1078              		.thumb_func
+ 1080              	STTS22H_TEMP_Get_DRDY_Status:
+ 1081              	.LVL82:
+ 1082              	.LFB11:
+ 390:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t val;
+ 1083              		.loc 1 390 1 is_stmt 1 view -0
+ 1084              		.cfi_startproc
+ 1085              		@ args = 0, pretend = 0, frame = 8
+ 1086              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t val;
+ 1087              		.loc 1 390 1 is_stmt 0 view .LVU276
+ 1088 0000 10B5     		push	{r4, lr}
+ 1089              	.LCFI23:
+ 1090              		.cfi_def_cfa_offset 8
+ 1091              		.cfi_offset 4, -8
+ 1092              		.cfi_offset 14, -4
+ 1093 0002 82B0     		sub	sp, sp, #8
+ 1094              	.LCFI24:
+ 1095              		.cfi_def_cfa_offset 16
+ 1096 0004 0C46     		mov	r4, r1
+ 391:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1097              		.loc 1 391 3 is_stmt 1 view .LVU277
+ 393:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1098              		.loc 1 393 3 view .LVU278
+ 393:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1099              		.loc 1 393 7 is_stmt 0 view .LVU279
+ 1100 0006 0DF10701 		add	r1, sp, #7
+ 1101              	.LVL83:
+ 393:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ARM GAS  /tmp/ccXCx1Bj.s 			page 35
+
+
+ 1102              		.loc 1 393 7 view .LVU280
+ 1103 000a 2030     		adds	r0, r0, #32
+ 1104              	.LVL84:
+ 393:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1105              		.loc 1 393 7 view .LVU281
+ 1106 000c FFF7FEFF 		bl	stts22h_temp_flag_data_ready_get
+ 1107              	.LVL85:
+ 393:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1108              		.loc 1 393 6 discriminator 1 view .LVU282
+ 1109 0010 48B9     		cbnz	r0, .L105
+ 398:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1110              		.loc 1 398 3 is_stmt 1 view .LVU283
+ 398:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1111              		.loc 1 398 7 is_stmt 0 view .LVU284
+ 1112 0012 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 398:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1113              		.loc 1 398 6 view .LVU285
+ 1114 0016 1BB1     		cbz	r3, .L104
+ 400:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1115              		.loc 1 400 5 is_stmt 1 view .LVU286
+ 400:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1116              		.loc 1 400 13 is_stmt 0 view .LVU287
+ 1117 0018 0123     		movs	r3, #1
+ 1118 001a 2370     		strb	r3, [r4]
+ 1119              	.L102:
+ 408:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1120              		.loc 1 408 1 view .LVU288
+ 1121 001c 02B0     		add	sp, sp, #8
+ 1122              	.LCFI25:
+ 1123              		.cfi_remember_state
+ 1124              		.cfi_def_cfa_offset 8
+ 1125              		@ sp needed
+ 1126 001e 10BD     		pop	{r4, pc}
+ 1127              	.LVL86:
+ 1128              	.L104:
+ 1129              	.LCFI26:
+ 1130              		.cfi_restore_state
+ 404:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1131              		.loc 1 404 5 is_stmt 1 view .LVU289
+ 404:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1132              		.loc 1 404 13 is_stmt 0 view .LVU290
+ 1133 0020 0023     		movs	r3, #0
+ 1134 0022 2370     		strb	r3, [r4]
+ 1135 0024 FAE7     		b	.L102
+ 1136              	.L105:
+ 395:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1137              		.loc 1 395 12 view .LVU291
+ 1138 0026 4FF0FF30 		mov	r0, #-1
+ 1139 002a F7E7     		b	.L102
+ 1140              		.cfi_endproc
+ 1141              	.LFE11:
+ 1143              		.section	.text.STTS22H_TEMP_SetHighTemperatureThreshold,"ax",%progbits
+ 1144              		.align	1
+ 1145              		.global	STTS22H_TEMP_SetHighTemperatureThreshold
+ 1146              		.syntax unified
+ 1147              		.thumb
+ 1148              		.thumb_func
+ARM GAS  /tmp/ccXCx1Bj.s 			page 36
+
+
+ 1150              	STTS22H_TEMP_SetHighTemperatureThreshold:
+ 1151              	.LVL87:
+ 1152              	.LFB12:
+ 417:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t raw_value;
+ 1153              		.loc 1 417 1 is_stmt 1 view -0
+ 1154              		.cfi_startproc
+ 1155              		@ args = 0, pretend = 0, frame = 8
+ 1156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 417:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t raw_value;
+ 1157              		.loc 1 417 1 is_stmt 0 view .LVU293
+ 1158 0000 00B5     		push	{lr}
+ 1159              	.LCFI27:
+ 1160              		.cfi_def_cfa_offset 4
+ 1161              		.cfi_offset 14, -4
+ 1162 0002 83B0     		sub	sp, sp, #12
+ 1163              	.LCFI28:
+ 1164              		.cfi_def_cfa_offset 16
+ 418:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1165              		.loc 1 418 3 is_stmt 1 view .LVU294
+ 420:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1166              		.loc 1 420 3 view .LVU295
+ 420:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1167              		.loc 1 420 32 is_stmt 0 view .LVU296
+ 1168 0004 9FED0B7A 		vldr.32	s14, .L112
+ 1169 0008 C0EE077A 		vdiv.f32	s15, s0, s14
+ 420:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1170              		.loc 1 420 41 view .LVU297
+ 1171 000c 9FED0A7A 		vldr.32	s14, .L112+4
+ 1172 0010 77EE877A 		vadd.f32	s15, s15, s14
+ 420:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1173              		.loc 1 420 13 view .LVU298
+ 1174 0014 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 1175 0018 CDED017A 		vstr.32	s15, [sp, #4]	@ int
+ 1176              	.LVL88:
+ 423:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1177              		.loc 1 423 3 is_stmt 1 view .LVU299
+ 423:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1178              		.loc 1 423 7 is_stmt 0 view .LVU300
+ 1179 001c 9DF80410 		ldrb	r1, [sp, #4]	@ zero_extendqisi2
+ 1180 0020 2030     		adds	r0, r0, #32
+ 1181              	.LVL89:
+ 423:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1182              		.loc 1 423 7 view .LVU301
+ 1183 0022 FFF7FEFF 		bl	stts22h_temp_trshld_high_set
+ 1184              	.LVL90:
+ 423:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1185              		.loc 1 423 6 discriminator 1 view .LVU302
+ 1186 0026 10B9     		cbnz	r0, .L111
+ 1187              	.L107:
+ 429:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1188              		.loc 1 429 1 view .LVU303
+ 1189 0028 03B0     		add	sp, sp, #12
+ 1190              	.LCFI29:
+ 1191              		.cfi_remember_state
+ 1192              		.cfi_def_cfa_offset 4
+ 1193              		@ sp needed
+ 1194 002a 5DF804FB 		ldr	pc, [sp], #4
+ARM GAS  /tmp/ccXCx1Bj.s 			page 37
+
+
+ 1195              	.LVL91:
+ 1196              	.L111:
+ 1197              	.LCFI30:
+ 1198              		.cfi_restore_state
+ 425:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1199              		.loc 1 425 12 view .LVU304
+ 1200 002e 4FF0FF30 		mov	r0, #-1
+ 1201 0032 F9E7     		b	.L107
+ 1202              	.L113:
+ 1203              		.align	2
+ 1204              	.L112:
+ 1205 0034 0AD7233F 		.word	1059313418
+ 1206 0038 00007C42 		.word	1115422720
+ 1207              		.cfi_endproc
+ 1208              	.LFE12:
+ 1210              		.section	.text.STTS22H_TEMP_SetLowTemperatureThreshold,"ax",%progbits
+ 1211              		.align	1
+ 1212              		.global	STTS22H_TEMP_SetLowTemperatureThreshold
+ 1213              		.syntax unified
+ 1214              		.thumb
+ 1215              		.thumb_func
+ 1217              	STTS22H_TEMP_SetLowTemperatureThreshold:
+ 1218              	.LVL92:
+ 1219              	.LFB13:
+ 438:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t raw_value;
+ 1220              		.loc 1 438 1 is_stmt 1 view -0
+ 1221              		.cfi_startproc
+ 1222              		@ args = 0, pretend = 0, frame = 8
+ 1223              		@ frame_needed = 0, uses_anonymous_args = 0
+ 438:Drivers/Sensors/STTS22H/stts22h.c ****   uint8_t raw_value;
+ 1224              		.loc 1 438 1 is_stmt 0 view .LVU306
+ 1225 0000 00B5     		push	{lr}
+ 1226              	.LCFI31:
+ 1227              		.cfi_def_cfa_offset 4
+ 1228              		.cfi_offset 14, -4
+ 1229 0002 83B0     		sub	sp, sp, #12
+ 1230              	.LCFI32:
+ 1231              		.cfi_def_cfa_offset 16
+ 439:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1232              		.loc 1 439 3 is_stmt 1 view .LVU307
+ 441:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1233              		.loc 1 441 3 view .LVU308
+ 441:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1234              		.loc 1 441 32 is_stmt 0 view .LVU309
+ 1235 0004 9FED0B7A 		vldr.32	s14, .L119
+ 1236 0008 C0EE077A 		vdiv.f32	s15, s0, s14
+ 441:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1237              		.loc 1 441 41 view .LVU310
+ 1238 000c 9FED0A7A 		vldr.32	s14, .L119+4
+ 1239 0010 77EE877A 		vadd.f32	s15, s15, s14
+ 441:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1240              		.loc 1 441 13 view .LVU311
+ 1241 0014 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 1242 0018 CDED017A 		vstr.32	s15, [sp, #4]	@ int
+ 1243              	.LVL93:
+ 444:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1244              		.loc 1 444 3 is_stmt 1 view .LVU312
+ARM GAS  /tmp/ccXCx1Bj.s 			page 38
+
+
+ 444:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1245              		.loc 1 444 7 is_stmt 0 view .LVU313
+ 1246 001c 9DF80410 		ldrb	r1, [sp, #4]	@ zero_extendqisi2
+ 1247 0020 2030     		adds	r0, r0, #32
+ 1248              	.LVL94:
+ 444:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1249              		.loc 1 444 7 view .LVU314
+ 1250 0022 FFF7FEFF 		bl	stts22h_temp_trshld_low_set
+ 1251              	.LVL95:
+ 444:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1252              		.loc 1 444 6 discriminator 1 view .LVU315
+ 1253 0026 10B9     		cbnz	r0, .L118
+ 1254              	.L114:
+ 450:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1255              		.loc 1 450 1 view .LVU316
+ 1256 0028 03B0     		add	sp, sp, #12
+ 1257              	.LCFI33:
+ 1258              		.cfi_remember_state
+ 1259              		.cfi_def_cfa_offset 4
+ 1260              		@ sp needed
+ 1261 002a 5DF804FB 		ldr	pc, [sp], #4
+ 1262              	.LVL96:
+ 1263              	.L118:
+ 1264              	.LCFI34:
+ 1265              		.cfi_restore_state
+ 446:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1266              		.loc 1 446 12 view .LVU317
+ 1267 002e 4FF0FF30 		mov	r0, #-1
+ 1268 0032 F9E7     		b	.L114
+ 1269              	.L120:
+ 1270              		.align	2
+ 1271              	.L119:
+ 1272 0034 0AD7233F 		.word	1059313418
+ 1273 0038 00007C42 		.word	1115422720
+ 1274              		.cfi_endproc
+ 1275              	.LFE13:
+ 1277              		.section	.text.STTS22H_TEMP_GetTemperatureLimitStatus,"ax",%progbits
+ 1278              		.align	1
+ 1279              		.global	STTS22H_TEMP_GetTemperatureLimitStatus
+ 1280              		.syntax unified
+ 1281              		.thumb
+ 1282              		.thumb_func
+ 1284              	STTS22H_TEMP_GetTemperatureLimitStatus:
+ 1285              	.LVL97:
+ 1286              	.LFB14:
+ 460:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_temp_trlhd_src_t status;
+ 1287              		.loc 1 460 1 is_stmt 1 view -0
+ 1288              		.cfi_startproc
+ 1289              		@ args = 0, pretend = 0, frame = 8
+ 1290              		@ frame_needed = 0, uses_anonymous_args = 0
+ 460:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_temp_trlhd_src_t status;
+ 1291              		.loc 1 460 1 is_stmt 0 view .LVU319
+ 1292 0000 30B5     		push	{r4, r5, lr}
+ 1293              	.LCFI35:
+ 1294              		.cfi_def_cfa_offset 12
+ 1295              		.cfi_offset 4, -12
+ 1296              		.cfi_offset 5, -8
+ARM GAS  /tmp/ccXCx1Bj.s 			page 39
+
+
+ 1297              		.cfi_offset 14, -4
+ 1298 0002 83B0     		sub	sp, sp, #12
+ 1299              	.LCFI36:
+ 1300              		.cfi_def_cfa_offset 24
+ 1301 0004 0D46     		mov	r5, r1
+ 1302 0006 1446     		mov	r4, r2
+ 461:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1303              		.loc 1 461 3 is_stmt 1 view .LVU320
+ 464:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1304              		.loc 1 464 3 view .LVU321
+ 464:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1305              		.loc 1 464 7 is_stmt 0 view .LVU322
+ 1306 0008 01A9     		add	r1, sp, #4
+ 1307              	.LVL98:
+ 464:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1308              		.loc 1 464 7 view .LVU323
+ 1309 000a 2030     		adds	r0, r0, #32
+ 1310              	.LVL99:
+ 464:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1311              		.loc 1 464 7 view .LVU324
+ 1312 000c FFF7FEFF 		bl	stts22h_temp_trshld_src_get
+ 1313              	.LVL100:
+ 464:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1314              		.loc 1 464 6 discriminator 1 view .LVU325
+ 1315 0010 68B9     		cbnz	r0, .L124
+ 469:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1316              		.loc 1 469 3 is_stmt 1 view .LVU326
+ 469:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1317              		.loc 1 469 6 is_stmt 0 view .LVU327
+ 1318 0012 25B1     		cbz	r5, .L123
+ 471:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1319              		.loc 1 471 5 is_stmt 1 view .LVU328
+ 471:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1320              		.loc 1 471 24 is_stmt 0 view .LVU329
+ 1321 0014 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+ 1322 0018 C3F34003 		ubfx	r3, r3, #1, #1
+ 471:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1323              		.loc 1 471 16 view .LVU330
+ 1324 001c 2B70     		strb	r3, [r5]
+ 1325              	.L123:
+ 474:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1326              		.loc 1 474 3 is_stmt 1 view .LVU331
+ 474:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1327              		.loc 1 474 6 is_stmt 0 view .LVU332
+ 1328 001e 24B1     		cbz	r4, .L121
+ 476:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1329              		.loc 1 476 5 is_stmt 1 view .LVU333
+ 476:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1330              		.loc 1 476 23 is_stmt 0 view .LVU334
+ 1331 0020 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+ 1332 0024 C3F30003 		ubfx	r3, r3, #0, #1
+ 476:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1333              		.loc 1 476 15 view .LVU335
+ 1334 0028 2370     		strb	r3, [r4]
+ 1335              	.L121:
+ 480:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1336              		.loc 1 480 1 view .LVU336
+ARM GAS  /tmp/ccXCx1Bj.s 			page 40
+
+
+ 1337 002a 03B0     		add	sp, sp, #12
+ 1338              	.LCFI37:
+ 1339              		.cfi_remember_state
+ 1340              		.cfi_def_cfa_offset 12
+ 1341              		@ sp needed
+ 1342 002c 30BD     		pop	{r4, r5, pc}
+ 1343              	.LVL101:
+ 1344              	.L124:
+ 1345              	.LCFI38:
+ 1346              		.cfi_restore_state
+ 466:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1347              		.loc 1 466 12 view .LVU337
+ 1348 002e 4FF0FF30 		mov	r0, #-1
+ 1349 0032 FAE7     		b	.L121
+ 1350              		.cfi_endproc
+ 1351              	.LFE14:
+ 1353              		.section	.text.STTS22H_Read_Reg,"ax",%progbits
+ 1354              		.align	1
+ 1355              		.global	STTS22H_Read_Reg
+ 1356              		.syntax unified
+ 1357              		.thumb
+ 1358              		.thumb_func
+ 1360              	STTS22H_Read_Reg:
+ 1361              	.LVL102:
+ 1362              	.LFB15:
+ 490:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_read_reg(&(pObj->Ctx), Reg, Data, 1) != STTS22H_OK)
+ 1363              		.loc 1 490 1 is_stmt 1 view -0
+ 1364              		.cfi_startproc
+ 1365              		@ args = 0, pretend = 0, frame = 0
+ 1366              		@ frame_needed = 0, uses_anonymous_args = 0
+ 490:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_read_reg(&(pObj->Ctx), Reg, Data, 1) != STTS22H_OK)
+ 1367              		.loc 1 490 1 is_stmt 0 view .LVU339
+ 1368 0000 08B5     		push	{r3, lr}
+ 1369              	.LCFI39:
+ 1370              		.cfi_def_cfa_offset 8
+ 1371              		.cfi_offset 3, -8
+ 1372              		.cfi_offset 14, -4
+ 491:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1373              		.loc 1 491 3 is_stmt 1 view .LVU340
+ 491:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1374              		.loc 1 491 7 is_stmt 0 view .LVU341
+ 1375 0002 0123     		movs	r3, #1
+ 1376 0004 2030     		adds	r0, r0, #32
+ 1377              	.LVL103:
+ 491:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1378              		.loc 1 491 7 view .LVU342
+ 1379 0006 FFF7FEFF 		bl	stts22h_read_reg
+ 1380              	.LVL104:
+ 491:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1381              		.loc 1 491 6 discriminator 1 view .LVU343
+ 1382 000a 00B9     		cbnz	r0, .L130
+ 1383              	.L126:
+ 497:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1384              		.loc 1 497 1 view .LVU344
+ 1385 000c 08BD     		pop	{r3, pc}
+ 1386              	.L130:
+ 493:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ARM GAS  /tmp/ccXCx1Bj.s 			page 41
+
+
+ 1387              		.loc 1 493 12 view .LVU345
+ 1388 000e 4FF0FF30 		mov	r0, #-1
+ 1389 0012 FBE7     		b	.L126
+ 1390              		.cfi_endproc
+ 1391              	.LFE15:
+ 1393              		.section	.text.STTS22H_Write_Reg,"ax",%progbits
+ 1394              		.align	1
+ 1395              		.global	STTS22H_Write_Reg
+ 1396              		.syntax unified
+ 1397              		.thumb
+ 1398              		.thumb_func
+ 1400              	STTS22H_Write_Reg:
+ 1401              	.LVL105:
+ 1402              	.LFB16:
+ 507:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_write_reg(&(pObj->Ctx), Reg, &Data, 1) != STTS22H_OK)
+ 1403              		.loc 1 507 1 is_stmt 1 view -0
+ 1404              		.cfi_startproc
+ 1405              		@ args = 0, pretend = 0, frame = 8
+ 1406              		@ frame_needed = 0, uses_anonymous_args = 0
+ 507:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_write_reg(&(pObj->Ctx), Reg, &Data, 1) != STTS22H_OK)
+ 1407              		.loc 1 507 1 is_stmt 0 view .LVU347
+ 1408 0000 00B5     		push	{lr}
+ 1409              	.LCFI40:
+ 1410              		.cfi_def_cfa_offset 4
+ 1411              		.cfi_offset 14, -4
+ 1412 0002 83B0     		sub	sp, sp, #12
+ 1413              	.LCFI41:
+ 1414              		.cfi_def_cfa_offset 16
+ 1415 0004 8DF80720 		strb	r2, [sp, #7]
+ 508:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1416              		.loc 1 508 3 is_stmt 1 view .LVU348
+ 508:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1417              		.loc 1 508 7 is_stmt 0 view .LVU349
+ 1418 0008 0123     		movs	r3, #1
+ 1419 000a 0DF10702 		add	r2, sp, #7
+ 1420              	.LVL106:
+ 508:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1421              		.loc 1 508 7 view .LVU350
+ 1422 000e 2030     		adds	r0, r0, #32
+ 1423              	.LVL107:
+ 508:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1424              		.loc 1 508 7 view .LVU351
+ 1425 0010 FFF7FEFF 		bl	stts22h_write_reg
+ 1426              	.LVL108:
+ 508:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1427              		.loc 1 508 6 discriminator 1 view .LVU352
+ 1428 0014 10B9     		cbnz	r0, .L135
+ 1429              	.L131:
+ 514:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1430              		.loc 1 514 1 view .LVU353
+ 1431 0016 03B0     		add	sp, sp, #12
+ 1432              	.LCFI42:
+ 1433              		.cfi_remember_state
+ 1434              		.cfi_def_cfa_offset 4
+ 1435              		@ sp needed
+ 1436 0018 5DF804FB 		ldr	pc, [sp], #4
+ 1437              	.L135:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 42
+
+
+ 1438              	.LCFI43:
+ 1439              		.cfi_restore_state
+ 510:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1440              		.loc 1 510 12 view .LVU354
+ 1441 001c 4FF0FF30 		mov	r0, #-1
+ 1442 0020 F9E7     		b	.L131
+ 1443              		.cfi_endproc
+ 1444              	.LFE16:
+ 1446              		.section	.text.STTS22H_Set_One_Shot,"ax",%progbits
+ 1447              		.align	1
+ 1448              		.global	STTS22H_Set_One_Shot
+ 1449              		.syntax unified
+ 1450              		.thumb
+ 1451              		.thumb_func
+ 1453              	STTS22H_Set_One_Shot:
+ 1454              	.LVL109:
+ 1455              	.LFB17:
+ 522:Drivers/Sensors/STTS22H/stts22h.c ****   /* Start One Shot Measurement */
+ 1456              		.loc 1 522 1 is_stmt 1 view -0
+ 1457              		.cfi_startproc
+ 1458              		@ args = 0, pretend = 0, frame = 0
+ 1459              		@ frame_needed = 0, uses_anonymous_args = 0
+ 522:Drivers/Sensors/STTS22H/stts22h.c ****   /* Start One Shot Measurement */
+ 1460              		.loc 1 522 1 is_stmt 0 view .LVU356
+ 1461 0000 08B5     		push	{r3, lr}
+ 1462              	.LCFI44:
+ 1463              		.cfi_def_cfa_offset 8
+ 1464              		.cfi_offset 3, -8
+ 1465              		.cfi_offset 14, -4
+ 524:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1466              		.loc 1 524 3 is_stmt 1 view .LVU357
+ 524:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1467              		.loc 1 524 7 is_stmt 0 view .LVU358
+ 1468 0002 0121     		movs	r1, #1
+ 1469 0004 2030     		adds	r0, r0, #32
+ 1470              	.LVL110:
+ 524:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1471              		.loc 1 524 7 view .LVU359
+ 1472 0006 FFF7FEFF 		bl	stts22h_temp_data_rate_set
+ 1473              	.LVL111:
+ 524:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1474              		.loc 1 524 6 discriminator 1 view .LVU360
+ 1475 000a 00B9     		cbnz	r0, .L140
+ 1476              	.L136:
+ 530:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1477              		.loc 1 530 1 view .LVU361
+ 1478 000c 08BD     		pop	{r3, pc}
+ 1479              	.L140:
+ 526:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1480              		.loc 1 526 12 view .LVU362
+ 1481 000e 4FF0FF30 		mov	r0, #-1
+ 1482 0012 FBE7     		b	.L136
+ 1483              		.cfi_endproc
+ 1484              	.LFE17:
+ 1486              		.section	.text.STTS22H_Get_One_Shot_Status,"ax",%progbits
+ 1487              		.align	1
+ 1488              		.global	STTS22H_Get_One_Shot_Status
+ARM GAS  /tmp/ccXCx1Bj.s 			page 43
+
+
+ 1489              		.syntax unified
+ 1490              		.thumb
+ 1491              		.thumb_func
+ 1493              	STTS22H_Get_One_Shot_Status:
+ 1494              	.LVL112:
+ 1495              	.LFB18:
+ 539:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_dev_status_t status;
+ 1496              		.loc 1 539 1 is_stmt 1 view -0
+ 1497              		.cfi_startproc
+ 1498              		@ args = 0, pretend = 0, frame = 8
+ 1499              		@ frame_needed = 0, uses_anonymous_args = 0
+ 539:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_dev_status_t status;
+ 1500              		.loc 1 539 1 is_stmt 0 view .LVU364
+ 1501 0000 10B5     		push	{r4, lr}
+ 1502              	.LCFI45:
+ 1503              		.cfi_def_cfa_offset 8
+ 1504              		.cfi_offset 4, -8
+ 1505              		.cfi_offset 14, -4
+ 1506 0002 82B0     		sub	sp, sp, #8
+ 1507              	.LCFI46:
+ 1508              		.cfi_def_cfa_offset 16
+ 1509 0004 0C46     		mov	r4, r1
+ 540:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1510              		.loc 1 540 3 is_stmt 1 view .LVU365
+ 543:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1511              		.loc 1 543 3 view .LVU366
+ 543:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1512              		.loc 1 543 7 is_stmt 0 view .LVU367
+ 1513 0006 01A9     		add	r1, sp, #4
+ 1514              	.LVL113:
+ 543:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1515              		.loc 1 543 7 view .LVU368
+ 1516 0008 2030     		adds	r0, r0, #32
+ 1517              	.LVL114:
+ 543:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1518              		.loc 1 543 7 view .LVU369
+ 1519 000a FFF7FEFF 		bl	stts22h_dev_status_get
+ 1520              	.LVL115:
+ 543:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1521              		.loc 1 543 6 discriminator 1 view .LVU370
+ 1522 000e 58B9     		cbnz	r0, .L144
+ 548:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1523              		.loc 1 548 3 is_stmt 1 view .LVU371
+ 548:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1524              		.loc 1 548 7 is_stmt 0 view .LVU372
+ 1525 0010 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+ 548:Drivers/Sensors/STTS22H/stts22h.c ****   {
+ 1526              		.loc 1 548 6 view .LVU373
+ 1527 0014 13F0010F 		tst	r3, #1
+ 1528 0018 03D0     		beq	.L143
+ 550:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1529              		.loc 1 550 5 is_stmt 1 view .LVU374
+ 550:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1530              		.loc 1 550 13 is_stmt 0 view .LVU375
+ 1531 001a 0023     		movs	r3, #0
+ 1532 001c 2370     		strb	r3, [r4]
+ 1533              	.L141:
+ARM GAS  /tmp/ccXCx1Bj.s 			page 44
+
+
+ 558:Drivers/Sensors/STTS22H/stts22h.c **** 
+ 1534              		.loc 1 558 1 view .LVU376
+ 1535 001e 02B0     		add	sp, sp, #8
+ 1536              	.LCFI47:
+ 1537              		.cfi_remember_state
+ 1538              		.cfi_def_cfa_offset 8
+ 1539              		@ sp needed
+ 1540 0020 10BD     		pop	{r4, pc}
+ 1541              	.LVL116:
+ 1542              	.L143:
+ 1543              	.LCFI48:
+ 1544              		.cfi_restore_state
+ 554:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1545              		.loc 1 554 5 is_stmt 1 view .LVU377
+ 554:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1546              		.loc 1 554 13 is_stmt 0 view .LVU378
+ 1547 0022 0123     		movs	r3, #1
+ 1548 0024 2370     		strb	r3, [r4]
+ 1549 0026 FAE7     		b	.L141
+ 1550              	.L144:
+ 545:Drivers/Sensors/STTS22H/stts22h.c ****   }
+ 1551              		.loc 1 545 12 view .LVU379
+ 1552 0028 4FF0FF30 		mov	r0, #-1
+ 1553 002c F7E7     		b	.L141
+ 1554              		.cfi_endproc
+ 1555              	.LFE18:
+ 1557              		.global	STTS22H_TEMP_Driver
+ 1558              		.section	.data.STTS22H_TEMP_Driver,"aw"
+ 1559              		.align	2
+ 1562              	STTS22H_TEMP_Driver:
+ 1563 0000 00000000 		.word	STTS22H_TEMP_Enable
+ 1564 0004 00000000 		.word	STTS22H_TEMP_Disable
+ 1565 0008 00000000 		.word	STTS22H_TEMP_GetOutputDataRate
+ 1566 000c 00000000 		.word	STTS22H_TEMP_SetOutputDataRate
+ 1567 0010 00000000 		.word	STTS22H_TEMP_GetTemperature
+ 1568              		.global	STTS22H_COMMON_Driver
+ 1569              		.section	.data.STTS22H_COMMON_Driver,"aw"
+ 1570              		.align	2
+ 1573              	STTS22H_COMMON_Driver:
+ 1574 0000 00000000 		.word	STTS22H_Init
+ 1575 0004 00000000 		.word	STTS22H_DeInit
+ 1576 0008 00000000 		.word	STTS22H_ReadID
+ 1577 000c 00000000 		.word	STTS22H_GetCapabilities
+ 1578              		.text
+ 1579              	.Letext0:
+ 1580              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 1581              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 1582              		.file 4 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/math.h"
+ 1583              		.file 5 "Drivers/Sensors/STTS22H/stts22h_reg.h"
+ 1584              		.file 6 "Drivers/Sensors/STTS22H/stts22h.h"
+ARM GAS  /tmp/ccXCx1Bj.s 			page 45
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stts22h.c
+     /tmp/ccXCx1Bj.s:22     .text.STTS22H_GetCapabilities:00000000 $t
+     /tmp/ccXCx1Bj.s:28     .text.STTS22H_GetCapabilities:00000000 STTS22H_GetCapabilities
+     /tmp/ccXCx1Bj.s:76     .text.STTS22H_GetCapabilities:0000001c $d
+     /tmp/ccXCx1Bj.s:81     .text.ReadRegWrap:00000000 $t
+     /tmp/ccXCx1Bj.s:86     .text.ReadRegWrap:00000000 ReadRegWrap
+     /tmp/ccXCx1Bj.s:172    .text.WriteRegWrap:00000000 $t
+     /tmp/ccXCx1Bj.s:177    .text.WriteRegWrap:00000000 WriteRegWrap
+     /tmp/ccXCx1Bj.s:263    .text.STTS22H_Init:00000000 $t
+     /tmp/ccXCx1Bj.s:269    .text.STTS22H_Init:00000000 STTS22H_Init
+     /tmp/ccXCx1Bj.s:351    .text.STTS22H_TEMP_SetOutputDataRate:00000000 $t
+     /tmp/ccXCx1Bj.s:357    .text.STTS22H_TEMP_SetOutputDataRate:00000000 STTS22H_TEMP_SetOutputDataRate
+     /tmp/ccXCx1Bj.s:433    .text.STTS22H_TEMP_SetOutputDataRate:0000005c $d
+     /tmp/ccXCx1Bj.s:439    .text.STTS22H_TEMP_Enable:00000000 $t
+     /tmp/ccXCx1Bj.s:445    .text.STTS22H_TEMP_Enable:00000000 STTS22H_TEMP_Enable
+     /tmp/ccXCx1Bj.s:504    .text.STTS22H_ReadID:00000000 $t
+     /tmp/ccXCx1Bj.s:510    .text.STTS22H_ReadID:00000000 STTS22H_ReadID
+     /tmp/ccXCx1Bj.s:564    .text.STTS22H_TEMP_GetOutputDataRate:00000000 $t
+     /tmp/ccXCx1Bj.s:570    .text.STTS22H_TEMP_GetOutputDataRate:00000000 STTS22H_TEMP_GetOutputDataRate
+     /tmp/ccXCx1Bj.s:609    .text.STTS22H_TEMP_GetOutputDataRate:00000020 $d
+     /tmp/ccXCx1Bj.s:723    .text.STTS22H_TEMP_GetOutputDataRate:00000088 $d
+     /tmp/ccXCx1Bj.s:731    .text.STTS22H_TEMP_Disable:00000000 $t
+     /tmp/ccXCx1Bj.s:737    .text.STTS22H_TEMP_Disable:00000000 STTS22H_TEMP_Disable
+     /tmp/ccXCx1Bj.s:798    .text.STTS22H_DeInit:00000000 $t
+     /tmp/ccXCx1Bj.s:804    .text.STTS22H_DeInit:00000000 STTS22H_DeInit
+     /tmp/ccXCx1Bj.s:850    .text.STTS22H_TEMP_GetTemperature:00000000 $t
+     /tmp/ccXCx1Bj.s:856    .text.STTS22H_TEMP_GetTemperature:00000000 STTS22H_TEMP_GetTemperature
+     /tmp/ccXCx1Bj.s:916    .text.STTS22H_RegisterBusIO:00000000 $t
+     /tmp/ccXCx1Bj.s:922    .text.STTS22H_RegisterBusIO:00000000 STTS22H_RegisterBusIO
+     /tmp/ccXCx1Bj.s:1029   .text.STTS22H_RegisterBusIO:00000044 $d
+     /tmp/ccXCx1Bj.s:1035   .text.STTS22H_Get_Init_Status:00000000 $t
+     /tmp/ccXCx1Bj.s:1041   .text.STTS22H_Get_Init_Status:00000000 STTS22H_Get_Init_Status
+     /tmp/ccXCx1Bj.s:1074   .text.STTS22H_TEMP_Get_DRDY_Status:00000000 $t
+     /tmp/ccXCx1Bj.s:1080   .text.STTS22H_TEMP_Get_DRDY_Status:00000000 STTS22H_TEMP_Get_DRDY_Status
+     /tmp/ccXCx1Bj.s:1144   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000000 $t
+     /tmp/ccXCx1Bj.s:1150   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000000 STTS22H_TEMP_SetHighTemperatureThreshold
+     /tmp/ccXCx1Bj.s:1205   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000034 $d
+     /tmp/ccXCx1Bj.s:1211   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000000 $t
+     /tmp/ccXCx1Bj.s:1217   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000000 STTS22H_TEMP_SetLowTemperatureThreshold
+     /tmp/ccXCx1Bj.s:1272   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000034 $d
+     /tmp/ccXCx1Bj.s:1278   .text.STTS22H_TEMP_GetTemperatureLimitStatus:00000000 $t
+     /tmp/ccXCx1Bj.s:1284   .text.STTS22H_TEMP_GetTemperatureLimitStatus:00000000 STTS22H_TEMP_GetTemperatureLimitStatus
+     /tmp/ccXCx1Bj.s:1354   .text.STTS22H_Read_Reg:00000000 $t
+     /tmp/ccXCx1Bj.s:1360   .text.STTS22H_Read_Reg:00000000 STTS22H_Read_Reg
+     /tmp/ccXCx1Bj.s:1394   .text.STTS22H_Write_Reg:00000000 $t
+     /tmp/ccXCx1Bj.s:1400   .text.STTS22H_Write_Reg:00000000 STTS22H_Write_Reg
+     /tmp/ccXCx1Bj.s:1447   .text.STTS22H_Set_One_Shot:00000000 $t
+     /tmp/ccXCx1Bj.s:1453   .text.STTS22H_Set_One_Shot:00000000 STTS22H_Set_One_Shot
+     /tmp/ccXCx1Bj.s:1487   .text.STTS22H_Get_One_Shot_Status:00000000 $t
+     /tmp/ccXCx1Bj.s:1493   .text.STTS22H_Get_One_Shot_Status:00000000 STTS22H_Get_One_Shot_Status
+     /tmp/ccXCx1Bj.s:1562   .data.STTS22H_TEMP_Driver:00000000 STTS22H_TEMP_Driver
+     /tmp/ccXCx1Bj.s:1559   .data.STTS22H_TEMP_Driver:00000000 $d
+     /tmp/ccXCx1Bj.s:1573   .data.STTS22H_COMMON_Driver:00000000 STTS22H_COMMON_Driver
+     /tmp/ccXCx1Bj.s:1570   .data.STTS22H_COMMON_Driver:00000000 $d
+     /tmp/ccXCx1Bj.s:660    .text.STTS22H_TEMP_GetOutputDataRate:00000053 $d
+     /tmp/ccXCx1Bj.s:660    .text.STTS22H_TEMP_GetOutputDataRate:00000054 $t
+ARM GAS  /tmp/ccXCx1Bj.s 			page 46
+
+
+
+UNDEFINED SYMBOLS
+stts22h_block_data_update_set
+stts22h_auto_increment_set
+stts22h_temp_data_rate_set
+stts22h_dev_id_get
+stts22h_temp_data_rate_get
+stts22h_temperature_raw_get
+stts22h_from_lsb_to_celsius
+stts22h_temp_flag_data_ready_get
+stts22h_temp_trshld_high_set
+stts22h_temp_trshld_low_set
+stts22h_temp_trshld_src_get
+stts22h_read_reg
+stts22h_write_reg
+stts22h_dev_status_get
