@@ -35,118 +35,78 @@
 #include <string.h>
 
 #include "app_x-cube-ai.h"
-
-/* Entry points --------------------------------------------------------------*/
-
 #include "network.h"
 #include "network_data.h"
 
-static ai_handle network = AI_HANDLE_NULL;
-static ai_u8 activations[AI_NETWORK_DATA_ACTIVATION_1_SIZE];
-static ai_buffer ai_input[AI_NETWORK_IN_NUM];
-static ai_buffer ai_output[AI_NETWORK_OUT_NUM];
+/* Network runtime objects --------------------------------------------------*/
+ai_handle network = AI_HANDLE_NULL;
+AI_ALIGNED(4) static ai_u8 data_activations[AI_NETWORK_DATA_ACTIVATIONS_SIZE];
+ai_handle data_activations0[] = { data_activations };
+AI_ALIGNED(4) static ai_i8 in_data[AI_NETWORK_IN_1_SIZE_BYTES];
+AI_ALIGNED(4) static ai_i8 out_data[AI_NETWORK_OUT_1_SIZE_BYTES];
+
+ai_i8* data_ins[AI_NETWORK_IN_NUM] = { in_data };
+ai_i8* data_outs[AI_NETWORK_OUT_NUM] = { out_data };
+
+static ai_buffer* ai_input = NULL;
+static ai_buffer* ai_output = NULL;
+static uint8_t ai_is_initialized = 0;
+
+static void ai_log_error(void)
+{
+  ai_error err = ai_network_get_error(network);
+  printf("AI error type=%d code=%d\r\n", err.type, err.code);
+}
+
+/* Entry points --------------------------------------------------------------*/
 
 void MX_X_CUBE_AI_Init(void)
 {
-    ai_error err;
+  ai_error err;
 
-    /* Create and initialize the network */
-    const ai_handle acts[] = { activations };
-    err = ai_network_create_and_init(&network, acts, NULL);
-    if (err.type != AI_ERROR_NONE) {
-        printf("AI network initialization error\r\n");
-        return;
-    }
+  err = ai_network_create_and_init(&network, data_activations0, NULL);
+  if (err.type != AI_ERROR_NONE)
+  {
+    printf("AI init failed\r\n");
+    ai_log_error();
+    return;
+  }
 
-    ai_input[0] = ai_network_inputs_get(network, NULL)[0];
-    ai_output[0] = ai_network_outputs_get(network, NULL)[0];
+  ai_input = ai_network_inputs_get(network, NULL);
+  ai_output = ai_network_outputs_get(network, NULL);
+  if ((ai_input == NULL) || (ai_output == NULL))
+  {
+    printf("AI IO buffer fetch failed\r\n");
+    return;
+  }
+
+  ai_input[0].data = AI_HANDLE_PTR(data_ins[0]);
+  ai_output[0].data = AI_HANDLE_PTR(data_outs[0]);
+  ai_is_initialized = 1;
 }
 
-const char* CLASSES_FR[] = {
-    "Clair / ensoleille",
-    "Peu nuageux",
-    "Partiellement nuageux",
-    "Nuageux / couvert",
-    "Pluie",
-    "Averses",
-    "Neige",
-    "Neige legere / averses de neige",
-    "Pluie et neige melees",
-    "Orage",
-    "Brouillard / brume",
-    "Vent fort",
-    "Orage violent",
-};
-
-static float prev_pressure = 0.0f;
-static float prev_temperature = 0.0f;
-static float prev_humidity = 0.0f;
-static int is_first_reading = 1;
-
-void MX_X_CUBE_AI_Process(float pressure, float temperature, float humidity,
-                          uint8_t *out_class_idx, uint8_t *out_confidence_pct)
+void MX_X_CUBE_AI_Process(void)
 {
-    if (is_first_reading) {
-        prev_pressure = pressure;
-        prev_temperature = temperature;
-        prev_humidity = humidity;
-        is_first_reading = 0;
-    }
+    (void)MX_X_CUBE_AI_Run();
+}
 
-    float dew_point = temperature - (100.0f - humidity) / 5.0f;
+int MX_X_CUBE_AI_Run(void)
+{
+  ai_i32 n_batch;
 
-    float x_in[10];
-    x_in[0] = pressure;
-    x_in[1] = temperature;
-    x_in[2] = humidity;
-    x_in[3] = dew_point;
-    x_in[4] = pressure - prev_pressure;
-    x_in[5] = temperature - prev_temperature;
-    x_in[6] = humidity - prev_humidity;
-    x_in[7] = prev_pressure;
-    x_in[8] = prev_temperature;
-    x_in[9] = prev_humidity;
+  if (!ai_is_initialized)
+  {
+    return 0;
+  }
 
-    const float X_min[10] = {980.4f, -5.5f, 19.0f, -11.299999f, -9.799988f, -5.000001f, -27.0f, 980.4f, -5.5f, 19.0f};
-    const float X_max[10] = {1043.1f, 34.8f, 100.0f, 21.800001f, 5.5f, 7.6000004f, 30.0f, 1043.1f, 34.8f, 100.0f};
+  n_batch = ai_network_run(network, ai_input, ai_output);
+  if (n_batch != 1)
+  {
+    ai_log_error();
+    return 0;
+  }
 
-    for (int i=0; i<10; i++) {
-        float denom = X_max[i] - X_min[i];
-        if (denom == 0.0f) denom = 1.0f;
-        x_in[i] = (x_in[i] - X_min[i]) / denom;
-    }
-
-    float out_data[13] = {0};
-    
-    ai_input[0].data = AI_HANDLE_PTR(x_in);
-    ai_output[0].data = AI_HANDLE_PTR(out_data);
-
-    ai_i32 n_batch = ai_network_run(network, &ai_input[0], &ai_output[0]);
-    if (n_batch != 1) {
-        printf("Error running network\r\n");
-        if (out_class_idx)     *out_class_idx     = 0xFF;
-        if (out_confidence_pct) *out_confidence_pct = 0;
-        return;
-    }
-
-    int class_idx = 0;
-    float max_prob = out_data[0];
-    for (int i=1; i<13; i++) {
-        if (out_data[i] > max_prob) {
-            max_prob = out_data[i];
-            class_idx = i;
-        }
-    }
-
-    printf("Prevision meteo: %s (Confiance: %.1f %%)\r\n", CLASSES_FR[class_idx], max_prob * 100.0f);
-
-    if (out_class_idx)      *out_class_idx      = (uint8_t)class_idx;
-    if (out_confidence_pct) *out_confidence_pct = (uint8_t)(max_prob * 100.0f);
-    
-    // Update history
-    prev_pressure = pressure;
-    prev_temperature = temperature;
-    prev_humidity = humidity;
+  return 1;
 }
 #ifdef __cplusplus
 }

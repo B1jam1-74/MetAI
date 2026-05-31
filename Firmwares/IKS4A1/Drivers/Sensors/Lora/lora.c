@@ -116,7 +116,7 @@ void config_Lora(void) {
   HAL_Delay(1000);
 
   // Set the power
-  lora_SendCommand("AT+POWER=14\r\n");
+  lora_SendCommand("AT+POWER=8\r\n");
   HAL_Delay(1000);
 
   // Send the AppEUI (replace with your actual AppEUI)

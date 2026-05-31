@@ -29,7 +29,8 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/BSP/STM32U5xx_Nucleo/stm32u5xx_nucleo.h \
  Core/Inc/stm32u5xx_nucleo_conf.h \
  Drivers/BSP/STM32U5xx_Nucleo/stm32u5xx_nucleo_errno.h \
- X-CUBE-AI/App/app_x-cube-ai.h Drivers/Sensors/LPS22DF/lps22df_app.h \
+ X-CUBE-AI/App/app_x-cube-ai.h Middlewares/ST/AI/Inc/ai_platform.h \
+ Core/Inc/metai_v2_config.h Drivers/Sensors/LPS22DF/lps22df_app.h \
  Drivers/Sensors/LPS22DF/lps22df_reg.h \
  Drivers/Sensors/SHT4/sht40x_driver_interface.h \
  Drivers/Sensors/SHT4/sht40x_driver.h \
@@ -71,6 +72,8 @@ Drivers/BSP/STM32U5xx_Nucleo/stm32u5xx_nucleo.h:
 Core/Inc/stm32u5xx_nucleo_conf.h:
 Drivers/BSP/STM32U5xx_Nucleo/stm32u5xx_nucleo_errno.h:
 X-CUBE-AI/App/app_x-cube-ai.h:
+Middlewares/ST/AI/Inc/ai_platform.h:
+Core/Inc/metai_v2_config.h:
 Drivers/Sensors/LPS22DF/lps22df_app.h:
 Drivers/Sensors/LPS22DF/lps22df_reg.h:
 Drivers/Sensors/SHT4/sht40x_driver_interface.h:

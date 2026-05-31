@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccgWn4TH.s 			page 1
+ARM GAS  /tmp/ccTbp1vM.s 			page 1
 
 
    1              		.cpu cortex-m33
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
   43 0006 D369     		ldr	r3, [r2, #28]
   44              		.loc 1 13 8 view .LVU4
   45 0008 13F0080F 		tst	r3, #8
-ARM GAS  /tmp/ccgWn4TH.s 			page 2
+ARM GAS  /tmp/ccTbp1vM.s 			page 2
 
 
   46 000c 0BD1     		bne	.L2
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
   84 0038 019B     		ldr	r3, [sp, #4]
   85              	.L4:
   24:Drivers/Sensors/Lora/lora.c ****         dummy = (uint8_t)(hlpuart1.Instance->RDR); 
-ARM GAS  /tmp/ccgWn4TH.s 			page 3
+ARM GAS  /tmp/ccTbp1vM.s 			page 3
 
 
   86              		.loc 1 24 12 view .LVU22
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  123              		.cfi_def_cfa_offset 112
   46:Drivers/Sensors/Lora/lora.c ****     // show the answer of the module on uart2
   47:Drivers/Sensors/Lora/lora.c ****     uint8_t rx_buffer[100] = {0}; 
-ARM GAS  /tmp/ccgWn4TH.s 			page 4
+ARM GAS  /tmp/ccTbp1vM.s 			page 4
 
 
  124              		.loc 1 47 5 view .LVU25
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  175              		.loc 1 32 40 is_stmt 1 view -0
  176              		.cfi_startproc
  177              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/ccgWn4TH.s 			page 5
+ARM GAS  /tmp/ccTbp1vM.s 			page 5
 
 
  178              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  222              		.syntax unified
  223              		.thumb
  224              		.thumb_func
-ARM GAS  /tmp/ccgWn4TH.s 			page 6
+ARM GAS  /tmp/ccTbp1vM.s 			page 6
 
 
  226              	lora_Sleep:
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  268              	.LCFI7:
  269              		.cfi_def_cfa_offset 4
  270              		.cfi_offset 14, -4
-ARM GAS  /tmp/ccgWn4TH.s 			page 7
+ARM GAS  /tmp/ccTbp1vM.s 			page 7
 
 
  271 0002 83B0     		sub	sp, sp, #12
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  318              	lora_envoi_data:
  319              	.LVL14:
  320              	.LFB165:
-ARM GAS  /tmp/ccgWn4TH.s 			page 8
+ARM GAS  /tmp/ccTbp1vM.s 			page 8
 
 
   70:Drivers/Sensors/Lora/lora.c **** 
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  354              		.loc 1 90 28 is_stmt 0 view .LVU62
  355 0024 10EE903A 		vmov	r3, s1	@ int
  356 0028 9BB2     		uxth	r3, r3
-ARM GAS  /tmp/ccgWn4TH.s 			page 9
+ARM GAS  /tmp/ccTbp1vM.s 			page 9
 
 
   88:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint8_t)temp_raw,
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
   97:Drivers/Sensors/Lora/lora.c **** 
   98:Drivers/Sensors/Lora/lora.c **** // Configure le module LoRa avec les paramètres de base
   99:Drivers/Sensors/Lora/lora.c **** void config_Lora(void) {
-ARM GAS  /tmp/ccgWn4TH.s 			page 10
+ARM GAS  /tmp/ccTbp1vM.s 			page 10
 
 
  100:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT\r\n");
@@ -560,7 +560,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  116:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
  117:Drivers/Sensors/Lora/lora.c **** 
  118:Drivers/Sensors/Lora/lora.c ****   // Set the power
- 119:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+POWER=14\r\n");
+ 119:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+POWER=8\r\n");
  120:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
  121:Drivers/Sensors/Lora/lora.c **** 
  122:Drivers/Sensors/Lora/lora.c ****   // Send the AppEUI (replace with your actual AppEUI)
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  410              		.cfi_def_cfa_offset 24
  411              		.cfi_offset 4, -24
  412              		.cfi_offset 5, -20
-ARM GAS  /tmp/ccgWn4TH.s 			page 11
+ARM GAS  /tmp/ccTbp1vM.s 			page 11
 
 
  413              		.cfi_offset 6, -16
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  156:Drivers/Sensors/Lora/lora.c **** 
  157:Drivers/Sensors/Lora/lora.c ****     uint16_t received = 0;
  458              		.loc 1 157 5 is_stmt 1 view .LVU82
-ARM GAS  /tmp/ccgWn4TH.s 			page 12
+ARM GAS  /tmp/ccTbp1vM.s 			page 12
 
 
  158:Drivers/Sensors/Lora/lora.c ****     if (status == HAL_OK || status == HAL_TIMEOUT) {
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  501 006a FFF7FEFF 		bl	HAL_UART_Transmit
  502              	.LVL40:
  503 006e F4E7     		b	.L31
-ARM GAS  /tmp/ccgWn4TH.s 			page 13
+ARM GAS  /tmp/ccTbp1vM.s 			page 13
 
 
  504              	.L36:
@@ -749,11 +749,11 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  521      0A00
  522 002e 0000     		.align	2
  523              	.LC6:
- 524 0030 41542B50 		.ascii	"AT+POWER=14\015\012\000"
+ 524 0030 41542B50 		.ascii	"AT+POWER=8\015\012\000"
  524      4F574552 
- 524      3D31340D 
- 524      0A00
- 525 003e 0000     		.align	2
+ 524      3D380D0A 
+ 524      00
+ 525 003d 000000   		.align	2
  526              	.LC7:
  527 0040 41542B49 		.ascii	"AT+ID=APPEUI,7474747474747474\015\012\000"
  527      443D4150 
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  535              		.align	2
  536              	.LC10:
  537 00b4 41542B4A 		.ascii	"AT+JOIN\015\012\000"
-ARM GAS  /tmp/ccgWn4TH.s 			page 14
+ARM GAS  /tmp/ccTbp1vM.s 			page 14
 
 
  537      4F494E0D 
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  583              		.loc 1 115 3 view .LVU105
  584 002e 1C48     		ldr	r0, .L39+12
  585 0030 FFF7FEFF 		bl	lora_SendCommand
-ARM GAS  /tmp/ccgWn4TH.s 			page 15
+ARM GAS  /tmp/ccTbp1vM.s 			page 15
 
 
  586              	.LVL47:
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  629 007c FFF7FEFF 		bl	memset
  630              	.LVL57:
  141:Drivers/Sensors/Lora/lora.c **** }
-ARM GAS  /tmp/ccgWn4TH.s 			page 16
+ARM GAS  /tmp/ccTbp1vM.s 			page 16
 
 
  631              		.loc 1 141 3 is_stmt 1 view .LVU117
@@ -944,39 +944,39 @@ ARM GAS  /tmp/ccgWn4TH.s 			page 1
  671              		.file 12 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
  672              		.file 13 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal.h"
  673              		.file 14 "<built-in>"
-ARM GAS  /tmp/ccgWn4TH.s 			page 17
+ARM GAS  /tmp/ccTbp1vM.s 			page 17
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 lora.c
-     /tmp/ccgWn4TH.s:22     .text.lora_flush_rx:00000000 $t
-     /tmp/ccgWn4TH.s:28     .text.lora_flush_rx:00000000 lora_flush_rx
-     /tmp/ccgWn4TH.s:99     .text.lora_flush_rx:00000048 $d
-     /tmp/ccgWn4TH.s:104    .text.lora_ShowResponse:00000000 $t
-     /tmp/ccgWn4TH.s:110    .text.lora_ShowResponse:00000000 lora_ShowResponse
-     /tmp/ccgWn4TH.s:160    .text.lora_ShowResponse:00000038 $d
-     /tmp/ccgWn4TH.s:166    .text.lora_SendCommand:00000000 $t
-     /tmp/ccgWn4TH.s:172    .text.lora_SendCommand:00000000 lora_SendCommand
-     /tmp/ccgWn4TH.s:211    .text.lora_SendCommand:00000024 $d
-     /tmp/ccgWn4TH.s:216    .rodata.lora_Sleep.str1.4:00000000 $d
-     /tmp/ccgWn4TH.s:220    .text.lora_Sleep:00000000 $t
-     /tmp/ccgWn4TH.s:226    .text.lora_Sleep:00000000 lora_Sleep
-     /tmp/ccgWn4TH.s:246    .text.lora_Sleep:0000000c $d
-     /tmp/ccgWn4TH.s:251    .rodata.lora_WakeUp.str1.4:00000000 $d
-     /tmp/ccgWn4TH.s:255    .text.lora_WakeUp:00000000 $t
-     /tmp/ccgWn4TH.s:261    .text.lora_WakeUp:00000000 lora_WakeUp
-     /tmp/ccgWn4TH.s:302    .text.lora_WakeUp:0000002c $d
-     /tmp/ccgWn4TH.s:308    .rodata.lora_envoi_data.str1.4:00000000 $d
-     /tmp/ccgWn4TH.s:312    .text.lora_envoi_data:00000000 $t
-     /tmp/ccgWn4TH.s:318    .text.lora_envoi_data:00000000 lora_envoi_data
-     /tmp/ccgWn4TH.s:389    .text.lora_envoi_data:0000004c $d
-     /tmp/ccgWn4TH.s:394    .text.send_at_command:00000000 $t
-     /tmp/ccgWn4TH.s:400    .text.send_at_command:00000000 send_at_command
-     /tmp/ccgWn4TH.s:507    .text.send_at_command:00000070 $d
-     /tmp/ccgWn4TH.s:513    .rodata.config_Lora.str1.4:00000000 $d
-     /tmp/ccgWn4TH.s:539    .text.config_Lora:00000000 $t
-     /tmp/ccgWn4TH.s:545    .text.config_Lora:00000000 config_Lora
-     /tmp/ccgWn4TH.s:647    .text.config_Lora:00000094 $d
+     /tmp/ccTbp1vM.s:22     .text.lora_flush_rx:00000000 $t
+     /tmp/ccTbp1vM.s:28     .text.lora_flush_rx:00000000 lora_flush_rx
+     /tmp/ccTbp1vM.s:99     .text.lora_flush_rx:00000048 $d
+     /tmp/ccTbp1vM.s:104    .text.lora_ShowResponse:00000000 $t
+     /tmp/ccTbp1vM.s:110    .text.lora_ShowResponse:00000000 lora_ShowResponse
+     /tmp/ccTbp1vM.s:160    .text.lora_ShowResponse:00000038 $d
+     /tmp/ccTbp1vM.s:166    .text.lora_SendCommand:00000000 $t
+     /tmp/ccTbp1vM.s:172    .text.lora_SendCommand:00000000 lora_SendCommand
+     /tmp/ccTbp1vM.s:211    .text.lora_SendCommand:00000024 $d
+     /tmp/ccTbp1vM.s:216    .rodata.lora_Sleep.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:220    .text.lora_Sleep:00000000 $t
+     /tmp/ccTbp1vM.s:226    .text.lora_Sleep:00000000 lora_Sleep
+     /tmp/ccTbp1vM.s:246    .text.lora_Sleep:0000000c $d
+     /tmp/ccTbp1vM.s:251    .rodata.lora_WakeUp.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:255    .text.lora_WakeUp:00000000 $t
+     /tmp/ccTbp1vM.s:261    .text.lora_WakeUp:00000000 lora_WakeUp
+     /tmp/ccTbp1vM.s:302    .text.lora_WakeUp:0000002c $d
+     /tmp/ccTbp1vM.s:308    .rodata.lora_envoi_data.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:312    .text.lora_envoi_data:00000000 $t
+     /tmp/ccTbp1vM.s:318    .text.lora_envoi_data:00000000 lora_envoi_data
+     /tmp/ccTbp1vM.s:389    .text.lora_envoi_data:0000004c $d
+     /tmp/ccTbp1vM.s:394    .text.send_at_command:00000000 $t
+     /tmp/ccTbp1vM.s:400    .text.send_at_command:00000000 send_at_command
+     /tmp/ccTbp1vM.s:507    .text.send_at_command:00000070 $d
+     /tmp/ccTbp1vM.s:513    .rodata.config_Lora.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:539    .text.config_Lora:00000000 $t
+     /tmp/ccTbp1vM.s:545    .text.config_Lora:00000000 config_Lora
+     /tmp/ccTbp1vM.s:647    .text.config_Lora:00000094 $d
 
 UNDEFINED SYMBOLS
 hlpuart1
