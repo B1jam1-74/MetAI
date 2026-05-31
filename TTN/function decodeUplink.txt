@@ -1,55 +1,51 @@
 function decodeUplink(input) {
-  var classesFr = [
-    "Clair / ensoleille",
+  var bytes = input.bytes;
+
+  // Byte 0 : température (int8, signé)
+  var temperature = (bytes[0] & 0x80) ? bytes[0] - 256 : bytes[0];
+
+  // Bytes 1-2 : pression (int16 big-endian, x10) → hPa
+  var pressure_raw = (bytes[1] << 8) | bytes[2];
+  if (pressure_raw & 0x8000) pressure_raw -= 65536;
+  var pressure = pressure_raw / 10.0;
+
+  // Byte 3 : humidité (uint8, %)
+  var humidity = bytes[3];
+
+  // Byte 4 : classe prédite (0-12)
+  var class_idx = bytes[4];
+
+  // Byte 5 : confiance (0-100 %)
+  var confidence = bytes[5];
+
+  var classes = [
+    "Clair / ensoleillé",
     "Peu nuageux",
     "Partiellement nuageux",
     "Nuageux / couvert",
     "Pluie",
     "Averses",
     "Neige",
-    "Neige legere / averses de neige",
-    "Pluie et neige melees",
+    "Neige légère / averses de neige",
+    "Pluie et neige mêlées",
     "Orage",
     "Brouillard / brume",
     "Vent fort",
     "Orage violent"
   ];
 
-  var text = "";
-  for (var i = 0; i < input.bytes.length; i++) {
-    text += String.fromCharCode(input.bytes[i]);
-  }
-
-  var data = {};
-  var parts = text.split(",");
-
-  for (var j = 0; j < parts.length; j++) {
-    var kv = parts[j].split("=");
-    if (kv.length !== 2) continue;
-
-    var key = kv[0].trim();
-    var raw = kv[1].trim();
-
-    if (key === "C") {
-      var cls = parseInt(raw, 10);
-      if (!isNaN(cls)) {
-        data.predicted_class = cls;
-        data.prediction_fr =
-          (cls >= 0 && cls < classesFr.length) ? classesFr[cls] : "Classe inconnue";
-      }
-      continue;
-    }
-
-    var val = parseFloat(raw);
-    if (isNaN(val)) continue;
-
-    if (key === "P") data.pressure_hpa = val;
-    else if (key === "H") data.humidity_percent = val;
-    else if (key === "T") data.temperature_deg_c = val;
-    else data[key] = val;
-  }
+  var weather = (class_idx < classes.length) ? classes[class_idx] : "Inconnu";
 
   return {
-    data: data
+    data: {
+      temperature_C:    temperature,
+      pressure_hPa:     pressure,
+      humidity_pct:     humidity,
+      weather_class:    class_idx,
+      weather_label:    weather,
+      confidence_pct:   confidence
+    },
+    warnings: [],
+    errors: []
   };
 }
