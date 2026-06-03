@@ -42,8 +42,18 @@ export default function App() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
+    
+    const eventSource = new EventSource(`${API_URL}/events`);
+    
+    eventSource.onmessage = (event) => {
+      if (event.data === 'update') {
+        fetchData();
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, [fetchData]);
 
   if (loading || uplinks.length === 0) {
@@ -218,7 +228,7 @@ export default function App() {
       </div>
 
       <footer className="text-center text-slate-500 text-sm py-4 border-t border-slate-800">
-        Auto-actualisation toutes les 30s · Source : TTN LoRaWAN + Open-Meteo API
+        Actualisation en temps réel (Server-Sent Events) · Source : TTN LoRaWAN + Open-Meteo API
       </footer>
     </div>
   );

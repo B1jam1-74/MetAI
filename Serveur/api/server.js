@@ -18,6 +18,15 @@ const INFLUX_URL = process.env.INFLUX_URL || 'http://192.168.0.79:8181/api/v3/wr
 const LAT = 46.366;
 const LON = 6.4791;
 
+// Server-Sent Events (SSE) clients
+const sseClients = new Set();
+
+const broadcastUpdate = () => {
+  sseClients.forEach(client => {
+    client.write('data: update\n\n');
+  });
+};
+
 const WMO_FR = {
   0: "Ciel dégagé", 1: "Peu nuageux", 2: "Partiellement nuageux", 3: "Couvert",
   45: "Brouillard", 48: "Brouillard givrant", 51: "Bruine légère", 53: "Bruine modérée",
@@ -181,6 +190,8 @@ app.post('/uplink', async (req, res) => {
     prediction_fr: finalPredFr
   };
   writeInflux(influxData, { real_temp: finalRealTemp, real_condition: finalRealCond }, match);
+  
+  broadcastUpdate();
 
   res.json({ status: 'ok', real_weather: { real_temp: finalRealTemp, real_condition: finalRealCond }, match: Boolean(match) });
 });
@@ -251,6 +262,8 @@ app.post('/prediction', async (req, res) => {
     );
   }
 
+  broadcastUpdate();
+
   res.json({ status: 'ok', match: Boolean(match) });
 });
 
@@ -284,6 +297,18 @@ app.get('/influx_history', async (req, res) => {
   } catch (e) {
     res.json({ error: e.message });
   }
+});
+
+app.get('/events', (req, res) => {
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+  
+  sseClients.add(res);
+  req.on('close', () => {
+    sseClients.delete(res);
+  });
 });
 
 const PORT = process.env.PORT || 8000;
