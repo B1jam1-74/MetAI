@@ -113,7 +113,20 @@ app.post('/uplink', async (req, res) => {
     return res.json({ status: 'ignored', reason: 'unknown device' });
   }
 
-  const existing = db.prepare('SELECT * FROM uplinks WHERE device_id = ? AND received_at = ?').get(data.device_id, data.received_at);
+  const exactMatch = db.prepare('SELECT * FROM uplinks WHERE device_id = ? AND received_at = ?').get(data.device_id, data.received_at);
+  
+  let existing = exactMatch;
+  if (!exactMatch) {
+    existing = db.prepare(`
+      SELECT * FROM uplinks 
+      WHERE device_id = ? 
+        AND temperature IS NULL
+        AND ABS((JULIANDAY(?) - JULIANDAY(received_at)) * 86400) < 15
+      ORDER BY received_at DESC 
+      LIMIT 1
+    `).get(data.device_id, data.received_at);
+  }
+
   const real = await fetchRealWeather();
 
   const finalTemp = data.temperature_deg_c;
@@ -141,7 +154,8 @@ app.post('/uplink', async (req, res) => {
     db.prepare(`
       UPDATE uplinks SET 
         temperature = ?, humidity = ?, pressure = ?, 
-        predicted_class = ?, prediction_fr = ?, 
+        predicted_class = COALESCE(?, predicted_class), 
+        prediction_fr = COALESCE(?, prediction_fr),
         real_temp = ?, real_humidity = ?, real_pressure = ?, real_wmo_code = ?, real_condition = ?, match = ?
       WHERE id = ?
     `).run(finalTemp, finalHum, finalPress, finalPredClass, finalPredFr, finalRealTemp, finalRealHum, finalRealPress, finalRealWmo, finalRealCond, match, existing.id);
@@ -177,7 +191,19 @@ app.post('/prediction', async (req, res) => {
     return res.json({ status: 'ignored', reason: 'unknown device' });
   }
 
-  const existing = db.prepare('SELECT * FROM uplinks WHERE device_id = ? AND received_at = ?').get(data.device_id, data.received_at);
+  const exactMatch = db.prepare('SELECT * FROM uplinks WHERE device_id = ? AND received_at = ?').get(data.device_id, data.received_at);
+  
+  let existing = exactMatch;
+  if (!exactMatch) {
+    existing = db.prepare(`
+      SELECT * FROM uplinks 
+      WHERE device_id = ? 
+        AND predicted_class IS NULL
+        AND ABS((JULIANDAY(?) - JULIANDAY(received_at)) * 86400) < 15
+      ORDER BY received_at DESC 
+      LIMIT 1
+    `).get(data.device_id, data.received_at);
+  }
   
   // If sensors arrived first, use their real weather. Otherwise, fetch it now.
   const real = (existing && existing.real_condition) ? {
