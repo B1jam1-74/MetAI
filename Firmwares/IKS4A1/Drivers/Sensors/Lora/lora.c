@@ -68,33 +68,6 @@ void lora_WakeUp(void) {
     lora_SendCommand("AT\r\n");
 }
 
-
-// Envoie les données avec le lora
-void lora_envoi_data(float temperature, float pressure, float humidity,
-                     uint8_t class_idx, uint8_t confidence_pct) {
-    char lora_cmd[40];
-
-    // Packe les valeurs dans 6 octets:
-    // 1 byte  temp (int8)
-    // 2 bytes pression (int16, x10)
-    // 1 byte  humidite (uint8)
-    // 1 byte  classe predite (uint8, 0-12)
-    // 1 byte  confiance en % (uint8, 0-100)
-    int8_t temp_raw = (int8_t)temperature;
-    int16_t pressure_raw = (int16_t)(pressure * 10.0f);
-    uint8_t humidity_raw = (uint8_t)humidity;
-
-    // AT+MSGHEX envoie directement les octets hexadécimaux sur le réseau.
-    snprintf(lora_cmd, sizeof(lora_cmd), "AT+MSGHEX=%02X%04X%02X%02X%02X\r\n",
-             (unsigned int)(uint8_t)temp_raw,
-             (unsigned int)(uint16_t)pressure_raw,
-             (unsigned int)humidity_raw,
-             (unsigned int)class_idx,
-             (unsigned int)confidence_pct);
-    lora_SendCommand(lora_cmd);
-}
-
-
 // Configure le module LoRa avec les paramètres de base
 void config_Lora(void) {
   lora_SendCommand("AT\r\n");
@@ -117,6 +90,10 @@ void config_Lora(void) {
 
   // Set the power
   lora_SendCommand("AT+POWER=8\r\n");
+  HAL_Delay(1000);
+
+  // Set the port to 1 for uplink
+  lora_SendCommand("AT+PORT=1\r\n");
   HAL_Delay(1000);
 
   // Send the AppEUI (replace with your actual AppEUI)
@@ -143,24 +120,165 @@ void config_Lora(void) {
 
 
 // Version modifiée qui retourne le buffer
-uint16_t send_at_command(const char *cmd, uint8_t *rx_buf, uint16_t rx_buf_size, uint32_t timeout_ms) {
-    // Purge les octets/erreurs résiduels avant l'échange.
-    lora_flush_rx();
-
-    HAL_UART_Transmit(&hlpuart1, (uint8_t *)cmd, strlen(cmd), HAL_MAX_DELAY);
-
-    memset(rx_buf, 0, rx_buf_size);
-    uint16_t to_receive = rx_buf_size - 1;
-
-    HAL_StatusTypeDef status = HAL_UART_Receive(&hlpuart1, rx_buf, to_receive, timeout_ms);
-
-    uint16_t received = 0;
-    if (status == HAL_OK || status == HAL_TIMEOUT) {
-        received = to_receive - hlpuart1.RxXferCount;
-        if (received > 0) {
-            HAL_UART_Transmit(&huart1, rx_buf, received, HAL_MAX_DELAY);
-        }
-    }
-    return received;
+uint16_t send_at_command(const char *cmd, uint8_t *rx_buf,
+                          uint16_t rx_buf_size, uint32_t timeout_ms)
+{
+    return send_at_command_until(cmd, rx_buf, rx_buf_size, NULL, timeout_ms);
 }
 
+
+// Buffer statique partagé pour la réponse du dernier uplink
+static uint8_t  s_last_uplink_response[512] = {0};
+static uint16_t s_last_uplink_response_len  = 0;
+
+// Envoie les données avec le lora 
+void lora_envoi_data(float temperature, float pressure, float humidity)
+{
+    char lora_cmd[40];
+
+    int8_t  temp_raw     = (int8_t)temperature;
+    int16_t pressure_raw = (int16_t)(pressure * 10.0f);
+    uint8_t humidity_raw = (uint8_t)humidity;
+
+    snprintf(lora_cmd, sizeof(lora_cmd), "AT+MSGHEX=%02X%04X%02X\r\n",
+             (unsigned int)(uint8_t)temp_raw,
+             (unsigned int)(uint16_t)pressure_raw,
+             (unsigned int)humidity_raw);
+
+    /* Lire jusqu'à "Done" — s'arrête dès que la réponse est complète */
+    s_last_uplink_response_len = send_at_command_until(
+        lora_cmd,
+        s_last_uplink_response,
+        sizeof(s_last_uplink_response),
+        "+MSGHEX: Done",   /* marqueur de fin */
+        8000               /* timeout de sécurité */
+    );
+}
+
+// Décode le downlink depuis la réponse déjà capturée par lora_envoi_data()
+uint8_t lora_ReceiveDownlink(metai_downlink_t *out)
+{
+    if (s_last_uplink_response_len == 0) return 0;
+
+    // Chercher "PORT:11; RX: " dans la réponse capturée
+    char *rx_marker = strstr((char *)s_last_uplink_response, "RX: \"");
+    if (rx_marker == NULL) return 0;
+
+    char *hex_start = rx_marker + 5;  // saute 'RX: "'
+
+    // Extraire les 12 octets (24 hex chars, espaces éventuels ignorés)
+    uint8_t payload[12] = {0};
+    uint8_t nb_bytes = 0;
+    char    hex_byte[3] = {0};
+
+    while (nb_bytes < 12 && *hex_start != '"' && *hex_start != '\0')
+    {
+        // Sauter les espaces éventuels entre octets
+        if (*hex_start == ' ') { hex_start++; continue; }
+
+        hex_byte[0] = hex_start[0];
+        hex_byte[1] = hex_start[1];
+        hex_byte[2] = '\0';
+        payload[nb_bytes++] = (uint8_t)strtol(hex_byte, NULL, 16);
+        hex_start += 2;
+    }
+
+    if (nb_bytes < 12) return 0;
+
+    // Décoder 6 × int16 big-endian, scale /100
+    int16_t raw[6];
+    for (uint8_t i = 0; i < 6; i++) {
+        raw[i] = (int16_t)((payload[i * 2] << 8) | payload[i * 2 + 1]);
+    }
+
+    out->temp_3h = raw[0] / 100.0f;
+    out->hum_3h  = raw[1] / 100.0f;
+    out->pres_3h = (raw[2] / 10.0f) + 800.0f;
+    out->temp_6h = raw[3] / 100.0f;
+    out->hum_6h  = raw[4] / 100.0f;
+    out->pres_6h = (raw[5] / 10.0f) + 800.0f;
+
+    return 1;
+}
+
+/**
+ * @brief  Envoie une commande AT et lit la réponse jusqu'à un marqueur de fin
+ *         ou timeout. Évite de bloquer inutilement toute la durée du timeout.
+ *
+ * @param  cmd          Commande AT à envoyer (peut être "" pour lecture seule)
+ * @param  rx_buf       Buffer de réception
+ * @param  rx_buf_size  Taille du buffer
+ * @param  end_marker   Chaîne marquant la fin de réponse (ex: "Done\r\n")
+ * @param  timeout_ms   Timeout global en ms
+ * @retval Nombre d'octets reçus
+ */
+uint16_t send_at_command_until(const char *cmd,
+                                uint8_t    *rx_buf,
+                                uint16_t    rx_buf_size,
+                                const char *end_marker,
+                                uint32_t    timeout_ms)
+{
+    lora_flush_rx();
+
+    if (strlen(cmd) > 0) {
+        HAL_UART_Transmit(&hlpuart1, (uint8_t *)cmd, strlen(cmd), HAL_MAX_DELAY);
+    }
+
+    memset(rx_buf, 0, rx_buf_size);
+    uint16_t idx        = 0;
+    uint32_t t_start    = HAL_GetTick();
+    uint8_t  byte       = 0;
+
+    while ((HAL_GetTick() - t_start) < timeout_ms && idx < (rx_buf_size - 1))
+    {
+        if (HAL_UART_Receive(&hlpuart1, &byte, 1, 10) == HAL_OK)
+        {
+            rx_buf[idx++] = byte;
+
+            /* Vérifier si le marqueur de fin est présent dans le buffer */
+            if (end_marker != NULL && idx >= strlen(end_marker))
+            {
+                if (strstr((char *)rx_buf, end_marker) != NULL) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /* Afficher sur UART debug */
+    if (idx > 0) {
+        HAL_UART_Transmit(&huart1, rx_buf, idx, HAL_MAX_DELAY);
+    }
+
+    return idx;
+}
+
+
+// Envoie la prédiction du modele avec le lora 
+// AT+MSGHEX envoie sur fport 1 par défaut
+// Pour fport 12 : AT+PORT=12 avant l'envoi
+void lora_envoi_prediction(uint8_t predicted_class, uint8_t confidence_pct)
+{
+    char lora_cmd[32];
+
+    // Changer le port d'émission
+    send_at_command_until("AT+PORT=12\r\n",
+                          s_last_uplink_response,
+                          sizeof(s_last_uplink_response),
+                          "+PORT:", 2000);
+
+    // 2 octets : classe + confiance %
+    snprintf(lora_cmd, sizeof(lora_cmd), "AT+MSGHEX=%02X%02X\r\n",
+             predicted_class, confidence_pct);
+
+    s_last_uplink_response_len = send_at_command_until(
+        lora_cmd, s_last_uplink_response,
+        sizeof(s_last_uplink_response),
+        "+MSGHEX: Done", 8000);
+
+    // Remettre le port par défaut pour les données capteurs
+    send_at_command_until("AT+PORT=1\r\n",
+                          s_last_uplink_response,
+                          sizeof(s_last_uplink_response),
+                          "+PORT:", 2000);
+}

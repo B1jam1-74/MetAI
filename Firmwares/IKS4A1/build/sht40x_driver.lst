@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccQQw2lF.s 			page 1
+ARM GAS  /tmp/ccJZTjmg.s 			page 1
 
 
    1              		.cpu cortex-m33
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
   26:Drivers/Sensors/SHT4/sht40x_driver.c ****  */
   27:Drivers/Sensors/SHT4/sht40x_driver.c **** 
   28:Drivers/Sensors/SHT4/sht40x_driver.c **** #include "sht40x_driver.h"
-ARM GAS  /tmp/ccQQw2lF.s 			page 2
+ARM GAS  /tmp/ccJZTjmg.s 			page 2
 
 
   29:Drivers/Sensors/SHT4/sht40x_driver.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
   54              		.loc 1 59 5 view .LVU6
   55 0010 007E     		ldrb	r0, [r0, #24]	@ zero_extendqisi2
   56              	.LVL4:
-ARM GAS  /tmp/ccQQw2lF.s 			page 3
+ARM GAS  /tmp/ccJZTjmg.s 			page 3
 
 
   57              		.loc 1 59 5 view .LVU7
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
   92              		@ frame_needed = 0, uses_anonymous_args = 0
   93              		.loc 1 79 1 is_stmt 0 view .LVU12
   94 0000 10B5     		push	{r4, lr}
-ARM GAS  /tmp/ccQQw2lF.s 			page 4
+ARM GAS  /tmp/ccJZTjmg.s 			page 4
 
 
   95              	.LCFI4:
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
   87:Drivers/Sensors/SHT4/sht40x_driver.c **** /**
   88:Drivers/Sensors/SHT4/sht40x_driver.c **** * @brief This function prints the error message
   89:Drivers/Sensors/SHT4/sht40x_driver.c **** * @param[in] *pHandle points to sht40x handle structure
-ARM GAS  /tmp/ccQQw2lF.s 			page 5
+ARM GAS  /tmp/ccJZTjmg.s 			page 5
 
 
   90:Drivers/Sensors/SHT4/sht40x_driver.c **** * @param[in] *pBuffer point to the string to be printed
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  176 0038 73687434 		.ascii	"sht40x: i2c_deinit is null\015\012\000"
  176      30783A20 
  176      6932635F 
-ARM GAS  /tmp/ccQQw2lF.s 			page 6
+ARM GAS  /tmp/ccJZTjmg.s 			page 6
 
 
  176      6465696E 
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  203              		.loc 1 112 1 view .LVU31
  204 0002 10B5     		push	{r4, lr}
  205              	.LCFI6:
-ARM GAS  /tmp/ccQQw2lF.s 			page 7
+ARM GAS  /tmp/ccJZTjmg.s 			page 7
 
 
  206              		.cfi_def_cfa_offset 8
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  231              		.loc 1 143 15 is_stmt 0 view .LVU45
  232 0016 8168     		ldr	r1, [r0, #8]
  233              		.loc 1 143 7 view .LVU46
-ARM GAS  /tmp/ccQQw2lF.s 			page 8
+ARM GAS  /tmp/ccJZTjmg.s 			page 8
 
 
  234 0018 91B1     		cbz	r1, .L32
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  262              		.loc 1 124 9 is_stmt 1 view .LVU59
  124:Drivers/Sensors/SHT4/sht40x_driver.c ****     }
  263              		.loc 1 124 16 is_stmt 0 view .LVU60
-ARM GAS  /tmp/ccQQw2lF.s 			page 9
+ARM GAS  /tmp/ccJZTjmg.s 			page 9
 
 
  264 002c 0320     		movs	r0, #3
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  305 0048 0A48     		ldr	r0, .L35+16
  306              	.LVL29:
  154:Drivers/Sensors/SHT4/sht40x_driver.c **** #endif // SHT40X_DEBUG_MODE
-ARM GAS  /tmp/ccQQw2lF.s 			page 10
+ARM GAS  /tmp/ccJZTjmg.s 			page 10
 
 
  307              		.loc 1 154 9 is_stmt 0 view .LVU74
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  353 0074 74000000 		.word	.LC5
  354 0078 90000000 		.word	.LC6
  355              		.cfi_endproc
-ARM GAS  /tmp/ccQQw2lF.s 			page 11
+ARM GAS  /tmp/ccJZTjmg.s 			page 11
 
 
  356              	.LFE6:
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  391              		.loc 1 182 7 view .LVU90
  392 0008 012D     		cmp	r5, #1
  393 000a 0DD1     		bne	.L41
-ARM GAS  /tmp/ccQQw2lF.s 			page 12
+ARM GAS  /tmp/ccJZTjmg.s 			page 12
 
 
  183:Drivers/Sensors/SHT4/sht40x_driver.c ****         return 3;      /**< return failed error */
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  434              	.LVL42:
  435              	.L41:
  436              	.LCFI11:
-ARM GAS  /tmp/ccQQw2lF.s 			page 13
+ARM GAS  /tmp/ccJZTjmg.s 			page 13
 
 
  437              		.cfi_def_cfa_offset 16
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  474 0002 827E     		ldrb	r2, [r0, #26]	@ zero_extendqisi2
  475              		.loc 1 209 7 view .LVU111
  476 0004 012A     		cmp	r2, #1
-ARM GAS  /tmp/ccQQw2lF.s 			page 14
+ARM GAS  /tmp/ccJZTjmg.s 			page 14
 
 
  477 0006 05D1     		bne	.L52
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  224:Drivers/Sensors/SHT4/sht40x_driver.c ****  * @param[in] *pHandle points to sht40x pHandle structure
  225:Drivers/Sensors/SHT4/sht40x_driver.c ****  * @param[out] pI2c_address point to the chip i2c address
  226:Drivers/Sensors/SHT4/sht40x_driver.c ****  * @return  status code
-ARM GAS  /tmp/ccQQw2lF.s 			page 15
+ARM GAS  /tmp/ccJZTjmg.s 			page 15
 
 
  227:Drivers/Sensors/SHT4/sht40x_driver.c ****  *            - 0 success
@@ -898,7 +898,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  548              	.LVL54:
  549              	.L56:
  238:Drivers/Sensors/SHT4/sht40x_driver.c **** 
-ARM GAS  /tmp/ccQQw2lF.s 			page 16
+ARM GAS  /tmp/ccJZTjmg.s 			page 16
 
 
  550              		.loc 1 238 16 view .LVU136
@@ -958,7 +958,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  584 0008 4176     		strb	r1, [r0, #25]
  269:Drivers/Sensors/SHT4/sht40x_driver.c ****     if(pHandle->variant != variant)
  585              		.loc 1 269 5 is_stmt 1 view .LVU146
-ARM GAS  /tmp/ccQQw2lF.s 			page 17
+ARM GAS  /tmp/ccJZTjmg.s 			page 17
 
 
  270:Drivers/Sensors/SHT4/sht40x_driver.c ****     {
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  602              		.loc 1 307 12 is_stmt 0 view .LVU151
  603 001a 0846     		mov	r0, r1
  604              	.LVL57:
-ARM GAS  /tmp/ccQQw2lF.s 			page 18
+ARM GAS  /tmp/ccJZTjmg.s 			page 18
 
 
  281:Drivers/Sensors/SHT4/sht40x_driver.c ****             break;
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  645              		.loc 1 264 16 view .LVU168
  646 0036 0220     		movs	r0, #2
  647              	.LVL65:
-ARM GAS  /tmp/ccQQw2lF.s 			page 19
+ARM GAS  /tmp/ccJZTjmg.s 			page 19
 
 
  264:Drivers/Sensors/SHT4/sht40x_driver.c ****     if(pHandle->inited != 1)
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  683              		.loc 1 324 7 is_stmt 0 view .LVU176
  684 0000 30B1     		cbz	r0, .L69
  325:Drivers/Sensors/SHT4/sht40x_driver.c ****         return 2;     /**< return failed error */
-ARM GAS  /tmp/ccQQw2lF.s 			page 20
+ARM GAS  /tmp/ccJZTjmg.s 			page 20
 
 
  326:Drivers/Sensors/SHT4/sht40x_driver.c ****     if(pHandle->inited != 1)
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  722      6E642068 
  722      756D6964 
  723              		.align	2
-ARM GAS  /tmp/ccQQw2lF.s 			page 21
+ARM GAS  /tmp/ccJZTjmg.s 			page 21
 
 
  724              	.LC9:
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  355:Drivers/Sensors/SHT4/sht40x_driver.c **** 
  356:Drivers/Sensors/SHT4/sht40x_driver.c ****     if(pHandle == NULL)
  758              		.loc 1 356 5 view .LVU194
-ARM GAS  /tmp/ccQQw2lF.s 			page 22
+ARM GAS  /tmp/ccJZTjmg.s 			page 22
 
 
  759              		.loc 1 356 7 is_stmt 0 view .LVU195
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  779              		.cfi_def_cfa_offset 16
  780              		@ sp needed
  781 001a 70BD     		pop	{r4, r5, r6, pc}
-ARM GAS  /tmp/ccQQw2lF.s 			page 23
+ARM GAS  /tmp/ccJZTjmg.s 			page 23
 
 
  782              	.LVL78:
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  371:Drivers/Sensors/SHT4/sht40x_driver.c ****     {
  823              		.loc 1 371 5 is_stmt 1 view .LVU214
  371:Drivers/Sensors/SHT4/sht40x_driver.c ****     {
-ARM GAS  /tmp/ccQQw2lF.s 			page 24
+ARM GAS  /tmp/ccJZTjmg.s 			page 24
 
 
  824              		.loc 1 371 7 is_stmt 0 view .LVU215
@@ -1438,7 +1438,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  378:Drivers/Sensors/SHT4/sht40x_driver.c **** 
  866              		.loc 1 378 5 is_stmt 1 view .LVU228
  378:Drivers/Sensors/SHT4/sht40x_driver.c **** 
-ARM GAS  /tmp/ccQQw2lF.s 			page 25
+ARM GAS  /tmp/ccJZTjmg.s 			page 25
 
 
  867              		.loc 1 378 50 is_stmt 0 view .LVU229
@@ -1498,7 +1498,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  908              	.LVL95:
  909 00e4 FFF7FEFF 		bl	__aeabi_d2f
  910              	.LVL96:
-ARM GAS  /tmp/ccQQw2lF.s 			page 26
+ARM GAS  /tmp/ccJZTjmg.s 			page 26
 
 
  911 00e8 07EE900A 		vmov	s15, r0
@@ -1558,7 +1558,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  365:Drivers/Sensors/SHT4/sht40x_driver.c ****     }
  951              		.loc 1 365 16 is_stmt 0 view .LVU257
  952 0126 76E7     		b	.L72
-ARM GAS  /tmp/ccQQw2lF.s 			page 27
+ARM GAS  /tmp/ccJZTjmg.s 			page 27
 
 
  953              	.LVL100:
@@ -1618,7 +1618,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  999 0010 67657420 		.ascii	"get UID\000"
  999      55494400 
  1000              		.section	.text.sht40x_get_serial_number,"ax",%progbits
-ARM GAS  /tmp/ccQQw2lF.s 			page 28
+ARM GAS  /tmp/ccJZTjmg.s 			page 28
 
 
  1001              		.align	1
@@ -1678,7 +1678,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1035 0008 0C46     		mov	r4, r1
  1036 000a 0546     		mov	r5, r0
  412:Drivers/Sensors/SHT4/sht40x_driver.c ****         return 2;     /**< return failed error */
-ARM GAS  /tmp/ccQQw2lF.s 			page 29
+ARM GAS  /tmp/ccJZTjmg.s 			page 29
 
 
  413:Drivers/Sensors/SHT4/sht40x_driver.c ****     if(pHandle->inited != 1)
@@ -1738,7 +1738,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1057              	.LCFI19:
  1058              		.cfi_restore_state
  416:Drivers/Sensors/SHT4/sht40x_driver.c **** 
-ARM GAS  /tmp/ccQQw2lF.s 			page 30
+ARM GAS  /tmp/ccJZTjmg.s 			page 30
 
 
  1059              		.loc 1 416 5 is_stmt 1 view .LVU278
@@ -1798,7 +1798,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  434:Drivers/Sensors/SHT4/sht40x_driver.c **** 	temp_data[3] = temp_data[4];
  1098              		.loc 1 434 15 view .LVU294
  1099 0044 8DF80630 		strb	r3, [sp, #6]
-ARM GAS  /tmp/ccQQw2lF.s 			page 31
+ARM GAS  /tmp/ccJZTjmg.s 			page 31
 
 
  435:Drivers/Sensors/SHT4/sht40x_driver.c **** 
@@ -1858,7 +1858,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  439:Drivers/Sensors/SHT4/sht40x_driver.c ****         count--;
  1139              		.loc 1 439 9 is_stmt 1 view .LVU310
  439:Drivers/Sensors/SHT4/sht40x_driver.c ****         count--;
-ARM GAS  /tmp/ccQQw2lF.s 			page 32
+ARM GAS  /tmp/ccJZTjmg.s 			page 32
 
 
  1140              		.loc 1 439 35 is_stmt 0 view .LVU311
@@ -1918,7 +1918,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1180 0094 BEE7     		b	.L91
  1181              	.L103:
  1182 0096 00BF     		.align	2
-ARM GAS  /tmp/ccQQw2lF.s 			page 33
+ARM GAS  /tmp/ccJZTjmg.s 			page 33
 
 
  1183              	.L102:
@@ -1978,7 +1978,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  462:Drivers/Sensors/SHT4/sht40x_driver.c **** 
  463:Drivers/Sensors/SHT4/sht40x_driver.c ****     uint8_t err;
  1220              		.loc 1 463 5 is_stmt 1 view .LVU328
-ARM GAS  /tmp/ccQQw2lF.s 			page 34
+ARM GAS  /tmp/ccJZTjmg.s 			page 34
 
 
  464:Drivers/Sensors/SHT4/sht40x_driver.c ****     uint8_t pStatus[RESPONSE_LENGTH];
@@ -2038,7 +2038,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  500:Drivers/Sensors/SHT4/sht40x_driver.c **** 
  501:Drivers/Sensors/SHT4/sht40x_driver.c ****     pData->humidity =  pData->humidity > HUMIDITY_MAX ? HUMIDITY_MAX: pData->humidity;             
  502:Drivers/Sensors/SHT4/sht40x_driver.c ****     pData->humidity =  pData->humidity < HUMIDITY_MIN ? HUMIDITY_MIN:  pData->humidity;            
-ARM GAS  /tmp/ccQQw2lF.s 			page 35
+ARM GAS  /tmp/ccJZTjmg.s 			page 35
 
 
  503:Drivers/Sensors/SHT4/sht40x_driver.c **** 
@@ -2098,7 +2098,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1280              	.LVL133:
  479:Drivers/Sensors/SHT4/sht40x_driver.c ****     else
  1281              		.loc 1 479 9 view .LVU347
-ARM GAS  /tmp/ccQQw2lF.s 			page 36
+ARM GAS  /tmp/ccJZTjmg.s 			page 36
 
 
  1282 0046 9847     		blx	r3
@@ -2158,7 +2158,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1322 0084 36A3     		adr	r3, .L123+8
  1323 0086 D3E90023 		ldrd	r2, [r3]
  1324 008a FFF7FEFF 		bl	__aeabi_dmul
-ARM GAS  /tmp/ccQQw2lF.s 			page 37
+ARM GAS  /tmp/ccJZTjmg.s 			page 37
 
 
  1325              	.LVL139:
@@ -2218,7 +2218,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1364              		.loc 1 495 40 view .LVU376
  1365 00dc 1EA3     		adr	r3, .L123
  1366 00de D3E90023 		ldrd	r2, [r3]
-ARM GAS  /tmp/ccQQw2lF.s 			page 38
+ARM GAS  /tmp/ccJZTjmg.s 			page 38
 
 
  1367 00e2 FFF7FEFF 		bl	__aeabi_ddiv
@@ -2278,7 +2278,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  504:Drivers/Sensors/SHT4/sht40x_driver.c **** }
  1409              		.loc 1 504 12 is_stmt 0 view .LVU389
  1410 012e 73E7     		b	.L105
-ARM GAS  /tmp/ccQQw2lF.s 			page 39
+ARM GAS  /tmp/ccJZTjmg.s 			page 39
 
 
  1411              	.LVL147:
@@ -2338,7 +2338,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1452              	.L114:
  467:Drivers/Sensors/SHT4/sht40x_driver.c ****     if(pHandle->inited != 1)
  1453              		.loc 1 467 16 view .LVU403
-ARM GAS  /tmp/ccQQw2lF.s 			page 40
+ARM GAS  /tmp/ccJZTjmg.s 			page 40
 
 
  1454 0152 0227     		movs	r7, #2
@@ -2398,7 +2398,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1495              	.LCFI24:
  1496              		.cfi_def_cfa_offset 16
  1497              		.cfi_offset 3, -16
-ARM GAS  /tmp/ccQQw2lF.s 			page 41
+ARM GAS  /tmp/ccJZTjmg.s 			page 41
 
 
  1498              		.cfi_offset 4, -12
@@ -2458,7 +2458,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1532 0020 F5D0     		beq	.L126
  529:Drivers/Sensors/SHT4/sht40x_driver.c ****         return err;     /**< failed */
  1533              		.loc 1 529 9 is_stmt 1 view .LVU418
-ARM GAS  /tmp/ccQQw2lF.s 			page 42
+ARM GAS  /tmp/ccJZTjmg.s 			page 42
 
 
  1534 0022 0349     		ldr	r1, .L131
@@ -2518,7 +2518,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  543:Drivers/Sensors/SHT4/sht40x_driver.c ****  * @note       none
  544:Drivers/Sensors/SHT4/sht40x_driver.c ****  */
  545:Drivers/Sensors/SHT4/sht40x_driver.c **** uint8_t sht40x_info(sht40x_info_t *const pInfo)
-ARM GAS  /tmp/ccQQw2lF.s 			page 43
+ARM GAS  /tmp/ccJZTjmg.s 			page 43
 
 
  546:Drivers/Sensors/SHT4/sht40x_driver.c **** {
@@ -2578,7 +2578,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1617              		.loc 1 556 33 is_stmt 0 view .LVU434
  1618 0034 0D4B     		ldr	r3, .L140+16
  1619 0036 A362     		str	r3, [r4, #40]	@ float
-ARM GAS  /tmp/ccQQw2lF.s 			page 44
+ARM GAS  /tmp/ccJZTjmg.s 			page 44
 
 
  557:Drivers/Sensors/SHT4/sht40x_driver.c ****     pInfo->max_current_ma = MAX_CURRENT;                             /**< set maximum current */
@@ -2638,7 +2638,7 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1664 0060 08000000 		.word	.LC15
  1665 0064 0C000000 		.word	.LC16
  1666 0068 66666640 		.word	1080452710
-ARM GAS  /tmp/ccQQw2lF.s 			page 45
+ARM GAS  /tmp/ccJZTjmg.s 			page 45
 
 
  1667 006c 6666E63F 		.word	1072064102
@@ -2669,67 +2669,67 @@ ARM GAS  /tmp/ccQQw2lF.s 			page 1
  1698              		.file 5 "Drivers/Sensors/SHT4/sht40x_driver.h"
  1699              		.file 6 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/string.h"
  1700              		.file 7 "<built-in>"
-ARM GAS  /tmp/ccQQw2lF.s 			page 46
+ARM GAS  /tmp/ccJZTjmg.s 			page 46
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 sht40x_driver.c
-     /tmp/ccQQw2lF.s:22     .text.a_sht40x_i2c_write:00000000 $t
-     /tmp/ccQQw2lF.s:28     .text.a_sht40x_i2c_write:00000000 a_sht40x_i2c_write
-     /tmp/ccQQw2lF.s:80     .text.a_sht40x_i2c_read:00000000 $t
-     /tmp/ccQQw2lF.s:86     .text.a_sht40x_i2c_read:00000000 a_sht40x_i2c_read
-     /tmp/ccQQw2lF.s:126    .rodata.a_sht40x_print_error_msg.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:130    .text.a_sht40x_print_error_msg:00000000 $t
-     /tmp/ccQQw2lF.s:136    .text.a_sht40x_print_error_msg:00000000 a_sht40x_print_error_msg
-     /tmp/ccQQw2lF.s:163    .text.a_sht40x_print_error_msg:0000000c $d
-     /tmp/ccQQw2lF.s:168    .rodata.sht40x_init.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:187    .text.sht40x_init:00000000 $t
-     /tmp/ccQQw2lF.s:193    .text.sht40x_init:00000000 sht40x_init
-     /tmp/ccQQw2lF.s:349    .text.sht40x_init:00000064 $d
-     /tmp/ccQQw2lF.s:359    .rodata.sht40x_deinit.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:363    .text.sht40x_deinit:00000000 $t
-     /tmp/ccQQw2lF.s:369    .text.sht40x_deinit:00000000 sht40x_deinit
-     /tmp/ccQQw2lF.s:450    .text.sht40x_deinit:0000002c $d
-     /tmp/ccQQw2lF.s:455    .text.sht40x_set_addr:00000000 $t
-     /tmp/ccQQw2lF.s:461    .text.sht40x_set_addr:00000000 sht40x_set_addr
-     /tmp/ccQQw2lF.s:507    .text.sht40x_get_addr:00000000 $t
-     /tmp/ccQQw2lF.s:513    .text.sht40x_get_addr:00000000 sht40x_get_addr
-     /tmp/ccQQw2lF.s:559    .text.sht40x_set_variant:00000000 $t
-     /tmp/ccQQw2lF.s:565    .text.sht40x_set_variant:00000000 sht40x_set_variant
-     /tmp/ccQQw2lF.s:591    .text.sht40x_set_variant:00000012 $d
-     /tmp/ccQQw2lF.s:595    .text.sht40x_set_variant:00000016 $t
-     /tmp/ccQQw2lF.s:668    .text.sht40x_get_variant:00000000 $t
-     /tmp/ccQQw2lF.s:674    .text.sht40x_get_variant:00000000 sht40x_get_variant
-     /tmp/ccQQw2lF.s:720    .rodata.sht40x_get_temp_rh.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:732    .text.sht40x_get_temp_rh:00000000 $t
-     /tmp/ccQQw2lF.s:738    .text.sht40x_get_temp_rh:00000000 sht40x_get_temp_rh
-     /tmp/ccQQw2lF.s:977    .text.sht40x_get_temp_rh:00000140 $d
-     /tmp/ccQQw2lF.s:1691   .rodata.READ_PRECISION:00000000 READ_PRECISION
-     /tmp/ccQQw2lF.s:994    .rodata.sht40x_get_serial_number.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:1001   .text.sht40x_get_serial_number:00000000 $t
-     /tmp/ccQQw2lF.s:1007   .text.sht40x_get_serial_number:00000000 sht40x_get_serial_number
-     /tmp/ccQQw2lF.s:1184   .text.sht40x_get_serial_number:00000098 $d
-     /tmp/ccQQw2lF.s:1679   .bss.serial:00000000 serial
-     /tmp/ccQQw2lF.s:1191   .rodata.sht40x_activate_heater.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:1195   .text.sht40x_activate_heater:00000000 $t
-     /tmp/ccQQw2lF.s:1201   .text.sht40x_activate_heater:00000000 sht40x_activate_heater
-     /tmp/ccQQw2lF.s:1459   .text.sht40x_activate_heater:00000158 $d
-     /tmp/ccQQw2lF.s:1685   .rodata.HEATER_POWER:00000000 HEATER_POWER
-     /tmp/ccQQw2lF.s:1476   .rodata.sht40x_soft_reset.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:1480   .text.sht40x_soft_reset:00000000 $t
-     /tmp/ccQQw2lF.s:1486   .text.sht40x_soft_reset:00000000 sht40x_soft_reset
-     /tmp/ccQQw2lF.s:1551   .text.sht40x_soft_reset:00000030 $d
-     /tmp/ccQQw2lF.s:1556   .rodata.sht40x_info.str1.4:00000000 $d
-     /tmp/ccQQw2lF.s:1566   .text.sht40x_info:00000000 $t
-     /tmp/ccQQw2lF.s:1572   .text.sht40x_info:00000000 sht40x_info
-     /tmp/ccQQw2lF.s:1663   .text.sht40x_info:0000005c $d
-     /tmp/ccQQw2lF.s:1676   .bss.serial:00000000 $d
-     /tmp/ccQQw2lF.s:1682   .rodata.HEATER_POWER:00000000 $d
-     /tmp/ccQQw2lF.s:1688   .rodata.READ_PRECISION:00000000 $d
+     /tmp/ccJZTjmg.s:22     .text.a_sht40x_i2c_write:00000000 $t
+     /tmp/ccJZTjmg.s:28     .text.a_sht40x_i2c_write:00000000 a_sht40x_i2c_write
+     /tmp/ccJZTjmg.s:80     .text.a_sht40x_i2c_read:00000000 $t
+     /tmp/ccJZTjmg.s:86     .text.a_sht40x_i2c_read:00000000 a_sht40x_i2c_read
+     /tmp/ccJZTjmg.s:126    .rodata.a_sht40x_print_error_msg.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:130    .text.a_sht40x_print_error_msg:00000000 $t
+     /tmp/ccJZTjmg.s:136    .text.a_sht40x_print_error_msg:00000000 a_sht40x_print_error_msg
+     /tmp/ccJZTjmg.s:163    .text.a_sht40x_print_error_msg:0000000c $d
+     /tmp/ccJZTjmg.s:168    .rodata.sht40x_init.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:187    .text.sht40x_init:00000000 $t
+     /tmp/ccJZTjmg.s:193    .text.sht40x_init:00000000 sht40x_init
+     /tmp/ccJZTjmg.s:349    .text.sht40x_init:00000064 $d
+     /tmp/ccJZTjmg.s:359    .rodata.sht40x_deinit.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:363    .text.sht40x_deinit:00000000 $t
+     /tmp/ccJZTjmg.s:369    .text.sht40x_deinit:00000000 sht40x_deinit
+     /tmp/ccJZTjmg.s:450    .text.sht40x_deinit:0000002c $d
+     /tmp/ccJZTjmg.s:455    .text.sht40x_set_addr:00000000 $t
+     /tmp/ccJZTjmg.s:461    .text.sht40x_set_addr:00000000 sht40x_set_addr
+     /tmp/ccJZTjmg.s:507    .text.sht40x_get_addr:00000000 $t
+     /tmp/ccJZTjmg.s:513    .text.sht40x_get_addr:00000000 sht40x_get_addr
+     /tmp/ccJZTjmg.s:559    .text.sht40x_set_variant:00000000 $t
+     /tmp/ccJZTjmg.s:565    .text.sht40x_set_variant:00000000 sht40x_set_variant
+     /tmp/ccJZTjmg.s:591    .text.sht40x_set_variant:00000012 $d
+     /tmp/ccJZTjmg.s:595    .text.sht40x_set_variant:00000016 $t
+     /tmp/ccJZTjmg.s:668    .text.sht40x_get_variant:00000000 $t
+     /tmp/ccJZTjmg.s:674    .text.sht40x_get_variant:00000000 sht40x_get_variant
+     /tmp/ccJZTjmg.s:720    .rodata.sht40x_get_temp_rh.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:732    .text.sht40x_get_temp_rh:00000000 $t
+     /tmp/ccJZTjmg.s:738    .text.sht40x_get_temp_rh:00000000 sht40x_get_temp_rh
+     /tmp/ccJZTjmg.s:977    .text.sht40x_get_temp_rh:00000140 $d
+     /tmp/ccJZTjmg.s:1691   .rodata.READ_PRECISION:00000000 READ_PRECISION
+     /tmp/ccJZTjmg.s:994    .rodata.sht40x_get_serial_number.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:1001   .text.sht40x_get_serial_number:00000000 $t
+     /tmp/ccJZTjmg.s:1007   .text.sht40x_get_serial_number:00000000 sht40x_get_serial_number
+     /tmp/ccJZTjmg.s:1184   .text.sht40x_get_serial_number:00000098 $d
+     /tmp/ccJZTjmg.s:1679   .bss.serial:00000000 serial
+     /tmp/ccJZTjmg.s:1191   .rodata.sht40x_activate_heater.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:1195   .text.sht40x_activate_heater:00000000 $t
+     /tmp/ccJZTjmg.s:1201   .text.sht40x_activate_heater:00000000 sht40x_activate_heater
+     /tmp/ccJZTjmg.s:1459   .text.sht40x_activate_heater:00000158 $d
+     /tmp/ccJZTjmg.s:1685   .rodata.HEATER_POWER:00000000 HEATER_POWER
+     /tmp/ccJZTjmg.s:1476   .rodata.sht40x_soft_reset.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:1480   .text.sht40x_soft_reset:00000000 $t
+     /tmp/ccJZTjmg.s:1486   .text.sht40x_soft_reset:00000000 sht40x_soft_reset
+     /tmp/ccJZTjmg.s:1551   .text.sht40x_soft_reset:00000030 $d
+     /tmp/ccJZTjmg.s:1556   .rodata.sht40x_info.str1.4:00000000 $d
+     /tmp/ccJZTjmg.s:1566   .text.sht40x_info:00000000 $t
+     /tmp/ccJZTjmg.s:1572   .text.sht40x_info:00000000 sht40x_info
+     /tmp/ccJZTjmg.s:1663   .text.sht40x_info:0000005c $d
+     /tmp/ccJZTjmg.s:1676   .bss.serial:00000000 $d
+     /tmp/ccJZTjmg.s:1682   .rodata.HEATER_POWER:00000000 $d
+     /tmp/ccJZTjmg.s:1688   .rodata.READ_PRECISION:00000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_f2d
-ARM GAS  /tmp/ccQQw2lF.s 			page 47
+ARM GAS  /tmp/ccJZTjmg.s 			page 47
 
 
 __aeabi_ddiv

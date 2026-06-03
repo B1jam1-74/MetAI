@@ -23,7 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <math.h>
-#include "metai_v2_config.h"
+#include "metai_v3_config.h"
 #include "lps22df_app.h"
 #include "sht40x_driver_interface.h"
 #include "stts22h_app.h"
@@ -32,13 +32,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef struct
-{
-  float temp;
-  float pres;
-  float rhum;
-  uint32_t tick_ms;
-} metai_sample_t;
 
 /* USER CODE END PTD */
 
@@ -62,13 +55,12 @@ UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-static metai_sample_t metai_hist[3] = {0};
-static uint8_t metai_hist_count = 0;
-static uint32_t metai_next_sample_tick = 0U;
-static uint8_t metai_sampling_started = 0U;
 
-#define METAI_SAMPLE_INTERVAL_MS 120000UL
-#define METAI_POLL_DELAY_MS 5000UL
+static uint8_t s_downlink_ready = 0;
+
+// Initialize the parameters of the model
+uint32_t predicted_class = 0;
+float confidence = 0.0f;
 
 /* USER CODE END PV */
 
@@ -81,119 +73,11 @@ static void MX_I2C1_Init(void);
 static void MX_LPUART1_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
-static float metai_clipf(float x, float lo, float hi);
-static void metai_push_sample(float temp, float pres, float rhum, uint32_t tick_ms);
-static uint8_t metai_sample_due(uint32_t now_ms);
-static void metai_build_raw_features(float raw[METAI_NUM_FEATURES]);
-static void metai_normalize_and_quantize(const float raw[METAI_NUM_FEATURES], int8_t qin[METAI_NUM_FEATURES]);
-static void metai_decode_output(const int8_t out_i8[METAI_NUM_CLASSES], uint8_t* class_idx, uint8_t* confidence_pct);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static float metai_clipf(float x, float lo, float hi)
-{
-  if (x < lo)
-  {
-    return lo;
-  }
-  if (x > hi)
-  {
-    return hi;
-  }
-  return x;
-}
-
-static void metai_push_sample(float temp, float pres, float rhum, uint32_t tick_ms)
-{
-  metai_hist[2] = metai_hist[1];
-  metai_hist[1] = metai_hist[0];
-  metai_hist[0].temp = temp;
-  metai_hist[0].pres = pres;
-  metai_hist[0].rhum = rhum;
-  metai_hist[0].tick_ms = tick_ms;
-
-  if (metai_hist_count < 3U)
-  {
-    metai_hist_count++;
-  }
-}
-
-static uint8_t metai_sample_due(uint32_t now_ms)
-{
-  if (!metai_sampling_started)
-  {
-    return 1U;
-  }
-
-  return ((int32_t)(now_ms - metai_next_sample_tick) >= 0) ? 1U : 0U;
-}
-
-static void metai_build_raw_features(float raw[METAI_NUM_FEATURES])
-{
-  const metai_sample_t* t0 = &metai_hist[0];
-  const metai_sample_t* t3 = &metai_hist[1];
-  const metai_sample_t* t6 = &metai_hist[2];
-
-  const float dew = t0->temp - (100.0f - t0->rhum) / 5.0f;
-  const float hour = (float)((t0->tick_ms / 3600000UL) % 24UL);
-  const float hour_sin = sinf(2.0f * 3.14159265359f * hour / 24.0f);
-  const float hour_cos = cosf(2.0f * 3.14159265359f * hour / 24.0f);
-
-  raw[0] = t0->temp;
-  raw[1] = t0->pres;
-  raw[2] = t0->rhum;
-
-  raw[3] = t3->temp;
-  raw[4] = t3->pres;
-  raw[5] = t3->rhum;
-
-  raw[6] = t6->temp;
-  raw[7] = t6->pres;
-  raw[8] = t6->rhum;
-
-  raw[9] = t0->temp - t3->temp;
-  raw[10] = t0->pres - t3->pres;
-  raw[11] = t0->rhum - t3->rhum;
-
-  raw[12] = t0->temp - t6->temp;
-  raw[13] = t0->pres - t6->pres;
-  raw[14] = t0->rhum - t6->rhum;
-
-  raw[15] = dew;
-  raw[16] = hour_sin;
-  raw[17] = hour_cos;
-}
-
-static void metai_normalize_and_quantize(const float raw[METAI_NUM_FEATURES], int8_t qin[METAI_NUM_FEATURES])
-{
-  float norm[METAI_NUM_FEATURES];
-  METAI_normalize(raw, norm);
-  METAI_quantize_input(norm, qin);
-}
-
-static void metai_decode_output(const int8_t out_i8[METAI_NUM_CLASSES], uint8_t* class_idx, uint8_t* confidence_pct)
-{
-  uint8_t best_idx = 0U;
-  int8_t best_raw = out_i8[0];
-
-  for (uint8_t i = 1U; i < METAI_NUM_CLASSES; i++)
-  {
-    if (out_i8[i] > best_raw)
-    {
-      best_raw = out_i8[i];
-      best_idx = i;
-    }
-  }
-
-  {
-    float prob = ((float)best_raw - (float)METAI_OUTPUT_ZERO_POINT) * METAI_OUTPUT_SCALE;
-    prob = metai_clipf(prob, 0.0f, 1.0f);
-    *class_idx = best_idx;
-    *confidence_pct = (uint8_t)lroundf(prob * 100.0f);
-  }
-}
 
 /* USER CODE END 0 */
 
@@ -294,93 +178,110 @@ int main(void)
 
   while (1)
   {
-    const uint32_t now_ms = HAL_GetTick();
-    if (metai_sample_due(now_ms) != 0U)
+    
+    // Switch on the LED to indicate that we are about to read the sensors
+    BSP_LED_On(LED_GREEN);
+
+    // Reveille le lora
+    lora_WakeUp();
+    HAL_Delay(100); // Wait for the LoRa module to wake up before sending AT commands
+
+    // Read temperature from the STTS22H sensor and print it
+    float temperature;
+    Temperature_Read(&stts22h_obj, &temperature);
+
+    // Read pressure and temperature from the LPS22DF sensor and store them
+    float pressure, temperature_lps22df;
+    Pressure_Read(lps22df_data, &pressure, &temperature_lps22df);
+
+    // Read temperature and humidity from the SHT40 sensor and print them
+    float temperature_sht40x, humidity;
+    Humidity_Temperature_Read(&sht40x_data, &temperature_sht40x, &humidity);
+
+    // Print the sensor readings
+    printf("############################################################\r \n");
+    printf("STTS22H Temperature: %.2f C\r \n", temperature);
+    printf("LPS22DF Pressure: %.2f hPa\r \n", pressure);
+    printf("SHT40 Humidity: %.2f %%\r \n", humidity);
+    printf("############################################################\r \n");
+    printf("\r \n");
+
+    /* Uplink */
+    lora_envoi_data(temperature, pressure, humidity); // uplink + capture réponse
+
+    // Pas de délai supplémentaire : le timeout de 8s dans lora_envoi_data()
+    // a déjà attendu les fenêtres RX1 et RX2
+
+    metai_downlink_t dl = {0};
+    /* --- Alimentation du modèle MetAI --- */
+    // Convert Absolute Pressure to Mean Sea Level Pressure (MSLP) for 420m altitude
+    float altitude_m = 420.0f;
+    float pressure_mslp = pressure * powf(1.0f - (0.0065f * altitude_m) / (temperature + 0.0065f * altitude_m + 273.15f), -5.257f);
+
+    MetAI_PushSample(temperature, pressure_mslp, humidity);
+
+    if (lora_ReceiveDownlink(&dl))
     {
-      // Switch on the LED to indicate that we are about to read the sensors
-      BSP_LED_On(LED_GREEN);
+        // Convert historical absolute pressures to MSLP using their respective temperatures
+        float pres_3h_mslp = dl.pres_3h * powf(1.0f - (0.0065f * altitude_m) / (dl.temp_3h + 0.0065f * altitude_m + 273.15f), -5.257f);
+        float pres_6h_mslp = dl.pres_6h * powf(1.0f - (0.0065f * altitude_m) / (dl.temp_6h + 0.0065f * altitude_m + 273.15f), -5.257f);
 
-      // Reveille le lora
-      lora_WakeUp();
-      HAL_Delay(100); // Wait for the LoRa module to wake up before sending AT commands
+        metai_sample_t t0  = { temperature, pressure_mslp, humidity,  HAL_GetTick() };
+        metai_sample_t t3h = { dl.temp_3h,  pres_3h_mslp, dl.hum_3h, 0 };
+        metai_sample_t t6h = { dl.temp_6h,  pres_6h_mslp, dl.hum_6h, 0 };
 
-      // Read temperature from the STTS22H sensor and print it
-      float temperature;
-      Temperature_Read(&stts22h_obj, &temperature);
+        MetAI_SeedHistory(t0, t3h, t6h);
+        s_downlink_ready = 1;
 
-      // Read pressure and temperature from the LPS22DF sensor and store them
-      float pressure, temperature_lps22df;
-      Pressure_Read(lps22df_data, &pressure, &temperature_lps22df);
-
-      // Read temperature and humidity from the SHT40 sensor and print them
-      float temperature_sht40x, humidity;
-      Humidity_Temperature_Read(&sht40x_data, &temperature_sht40x, &humidity);
-
-      // Print the sensor readings
-      printf("############################################################\r \n");
-      printf("STTS22H Temperature: %.2f C\r \n", temperature);
-      printf("LPS22DF Pressure: %.2f hPa\r \n", pressure);
-      printf("SHT40 Humidity: %.2f %%\r \n", humidity);
-      printf("############################################################\r \n");
-      printf("\r \n");
-
-      metai_push_sample(temperature, pressure, humidity, now_ms);
-      metai_sampling_started = 1U;
-      metai_next_sample_tick = now_ms + METAI_SAMPLE_INTERVAL_MS; // 2 min pour test
-
-      if (metai_hist_count >= 3U)
-      {
-        uint8_t ai_class = 0, ai_confidence = 0;
-        float metai_raw[METAI_NUM_FEATURES] = {0.0f};
-        int8_t metai_qin[METAI_NUM_FEATURES] = {0};
-        int8_t metai_out[METAI_NUM_CLASSES] = {0};
-
-        metai_build_raw_features(metai_raw);
-        metai_normalize_and_quantize(metai_raw, metai_qin);
-
-        for (uint32_t i = 0; i < METAI_NUM_FEATURES; i++)
-        {
-          data_ins[0][i] = metai_qin[i];
-        }
-
-        if (MX_X_CUBE_AI_Run() != 0)
-        {
-          for (uint32_t i = 0; i < METAI_NUM_CLASSES; i++)
-          {
-            metai_out[i] = (int8_t)data_outs[0][i];
-          }
-          metai_decode_output(metai_out, &ai_class, &ai_confidence);
-          printf("AI Prediction: %u (%s), confidence=%u%%\r\n",
-                 ai_class,
-                 METAI_CLASS_NAMES[ai_class],
-                 ai_confidence);
-
-          // Send the sensor readings and AI prediction over LoRa
-          lora_envoi_data(temperature, pressure, humidity, ai_class, ai_confidence);
-          HAL_Delay(1000); // Wait for 1 second to ensure the data is sent before sleeping the LoRa module
-        }
-        else
-        {
-          printf("AI inference failed\r\n");
-        }
-      }
-      else
-      {
-        printf("Waiting for 2min history: %u/3 samples ready\r\n", metai_hist_count);
-      }
-
-      // Met le lora en sleep
-      lora_Sleep();
-
-      // Switch off the LED to indicate that we have finished reading the sensors
-      BSP_LED_Off(LED_GREEN);
+        printf("=== Downlink recu (fport 11) ===\r\n");
+        printf("  t0  : %.2f C  %.2f hPa  %.2f %%\r\n", t0.temp,  t0.pres,  t0.rhum);
+        printf("  t3h : %.2f C  %.2f hPa  %.2f %%\r\n", t3h.temp, t3h.pres, t3h.rhum);
+        printf("  t6h : %.2f C  %.2f hPa  %.2f %%\r\n", t6h.temp, t6h.pres, t6h.rhum);
     }
+    else if (!s_downlink_ready)
+    {
+        printf("=== Downlink non recu : attente des valeurs t-3h/t-6h ===\r\n");
+
+        /*
+        // If the database is empty do this to verify the model is working
+        printf("=== Utilisation de valeurs arbitraires === \r \n");
+
+        // Convert historical absolute pressures to MSLP using their respective temperatures
+        float pres_3h_mslp = dl.pres_3h * powf(1.0f - (0.0065f * altitude_m) / (dl.temp_3h + 0.0065f * altitude_m + 273.15f), -5.257f);
+        float pres_6h_mslp = dl.pres_6h * powf(1.0f - (0.0065f * altitude_m) / (dl.temp_6h + 0.0065f * altitude_m + 273.15f), -5.257f);
+
+        metai_sample_t t0  = { temperature, pressure_mslp, humidity,  HAL_GetTick() };
+        metai_sample_t t3h = { dl.temp_3h,  pres_3h_mslp, dl.hum_3h, 0 };
+        metai_sample_t t6h = { dl.temp_6h,  pres_6h_mslp, dl.hum_6h, 0 };
+        metai_sample_t t3h = { 22,  968, 40, 0 };
+        metai_sample_t t6h = { 26,  968, 27, 0 };
+
+        MetAI_SeedHistory(t0, t3h, t6h);
+        s_downlink_ready = 1;
+
+        printf("  t0  : %.2f C  %.2f hPa  %.2f %%\r\n", t0.temp,  t0.pres,  t0.rhum);
+        printf("  t3h : %.2f C  %.2f hPa  %.2f %%\r\n", t3h.temp, t3h.pres, t3h.rhum);
+        printf("  t6h : %.2f C  %.2f hPa  %.2f %%\r\n", t6h.temp, t6h.pres, t6h.rhum);
+        */
+    }
+
+    /* Inférence — no-op tant que l'historique n'est pas prêt */
+    MX_X_CUBE_AI_Process();
+
+    // Envoie la prédiction du modele avec le lora
+    lora_envoi_prediction(g_metai_class, (uint8_t)(g_metai_confidence * 100.0f));
+
+    // Met le lora en sleep
+    lora_Sleep(); 
+
+    // Switch off the LED to indicate that we have finished reading the sensors
+    BSP_LED_Off(LED_GREEN);
+
+    HAL_Delay(20000); 
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-    HAL_Delay(METAI_POLL_DELAY_MS); // Poll every 5 seconds for the next sample window
   }
   /* USER CODE END 3 */
 }

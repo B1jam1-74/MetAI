@@ -1,10 +1,12 @@
 /**
- * @file   metai_v2_config.h
- * @brief  Configuration MetAI v2 pour STM32U545RE-Q
- *         Genere automatiquement par le notebook MetAI_v2.
+ * @file   metai_v3_config.h
+ * @brief  Configuration MetAI v3 pour STM32U545RE-Q
+ *         9 features : temp/pres/rhum a t0, t-3h, t-6h
+ *         Aligne avec le downlink LoRa (hum_3h, pres_3h, temp_3h, ...)
+ *         Genere automatiquement par le notebook MetAI_v3.
  *
  * Workflow firmware :
- *   1. Charger metai_v2_int8.tflite dans CubeAI / STEdgeAI
+ *   1. Charger metai_v3_int8.tflite dans CubeAI / STEdgeAI
  *   2. Inclure ce header dans Core/Inc/
  *   3. Appeler METAI_normalize() puis METAI_quantize_input()
  *      avant chaque appel ai_run().
@@ -14,27 +16,27 @@
 #include <math.h>
 
 /* -- Dimensions ---------------------------------------------------- */
-#define METAI_NUM_FEATURES  18
-#define METAI_NUM_CLASSES   9
+#define METAI_NUM_FEATURES  9  /* 9 : temp/pres/rhum x (t0, t-3h, t-6h) */
+#define METAI_NUM_CLASSES   7
+
+/* -- Ordre des features -------------------------------------------- */
+/* raw[0]=temp_t0  raw[1]=pres_t0  raw[2]=rhum_t0                     */
+/* raw[3]=temp_t3  raw[4]=pres_t3  raw[5]=rhum_t3  (downlink t-3h)   */
+/* raw[6]=temp_t6  raw[7]=pres_t6  raw[8]=rhum_t6  (downlink t-6h)   */
 
 /* -- Normalisation min-max ----------------------------------------- */
-/* x_norm[i] = (x_raw[i] - X_MIN[i]) / X_RANGE[i]  resultat dans [0,1] */
-static const float METAI_X_MIN[18] = {-9.1000004f, 980.4000244f, 18.0000000f, -9.1000004f, 980.4000244f, 18.0000000f, -9.1000004f, 980.4000244f, 18.0000000f, -11.8999996f, -11.0000000f, -45.0000000f, -12.7000008f, -15.0999756f, -57.0000000f, -18.0000000f, -1.0000000f, -1.0000000f};
-static const float METAI_X_RANGE[18] = {44.1999969f, 62.7999268f, 82.0000000f, 44.1999969f, 62.7999268f, 82.0000000f, 44.1999969f, 62.7999268f, 82.0000000f, 20.7999992f, 19.5000000f, 99.0000000f, 26.0000000f, 30.5000000f, 117.0000000f, 40.5999985f, 2.0000000f, 2.0000000f};
+static const float METAI_X_MIN[9] = {-9.1000004f, 980.4000244f, 18.0000000f, -9.1000004f, 980.4000244f, 18.0000000f, -9.1000004f, 980.4000244f, 18.0000000f};
+static const float METAI_X_RANGE[9] = {44.1999969f, 62.7999268f, 82.0000000f, 44.1999969f, 62.7999268f, 82.0000000f, 44.1999969f, 62.7999268f, 82.0000000f};
 
 /* -- Quantification INT8 ------------------------------------------ */
-/* Entree : quant[i] = roundf(norm[i] / INPUT_SCALE + INPUT_ZP)       */
-/* Sortie : prob[i]  = (out_i8[i] - OUTPUT_ZP) * OUTPUT_SCALE         */
 #define METAI_INPUT_SCALE       0.00392157f
 #define METAI_INPUT_ZERO_POINT  -128
 #define METAI_OUTPUT_SCALE      0.00390625f
 #define METAI_OUTPUT_ZERO_POINT -128
 
 /* -- Noms des classes (UART debug) --------------------------------- */
-static const char* const METAI_CLASS_NAMES[9] = {
+static const char* const METAI_CLASS_NAMES[7] = {
   "Clair / Ensoleille",
-  "Peu nuageux",
-  "Partiellement nuageux",
   "Nuageux / Couvert",
   "Pluie",
   "Averses",
@@ -44,7 +46,7 @@ static const char* const METAI_CLASS_NAMES[9] = {
 };
 
 /* -- Noms des features (UART debug) -------------------------------- */
-static const char* const METAI_FEAT_NAMES[18] = {
+static const char* const METAI_FEAT_NAMES[9] = {
   "temp_t0",
   "pres_t0",
   "rhum_t0",
@@ -53,16 +55,7 @@ static const char* const METAI_FEAT_NAMES[18] = {
   "rhum_t3",
   "temp_t6",
   "pres_t6",
-  "rhum_t6",
-  "dtemp_3h",
-  "dpres_3h",
-  "drhum_3h",
-  "dtemp_6h",
-  "dpres_6h",
-  "drhum_6h",
-  "dew_point",
-  "hour_sin",
-  "hour_cos"
+  "rhum_t6"
 };
 
 /* -- Normalisation inline ------------------------------------------ */
@@ -86,7 +79,6 @@ static inline void METAI_quantize_input(const float* norm, int8_t* quant) {
 }
 
 /* -- Decodage sortie inline ---------------------------------------- */
-/* Retourne l indice de la classe la plus probable                     */
 static inline uint8_t METAI_decode_output(const int8_t* out_i8) {
   uint8_t best = 0;
   int8_t  bval = out_i8[0];

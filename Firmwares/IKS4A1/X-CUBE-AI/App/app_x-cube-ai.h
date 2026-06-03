@@ -23,18 +23,31 @@ extern "C" {
   ******************************************************************************
   */
 
-  #include "ai_platform.h"
-
 /* IO buffers ----------------------------------------------------------------*/
 
-extern ai_i8* data_ins[];
-extern ai_i8* data_outs[];
+#include <stdint.h>
 
-extern ai_handle data_activations0[];
+/* Symboles publics à ajouter dans app_x-cube-ai.h */
 
-void MX_X_CUBE_AI_Init(void);
-void MX_X_CUBE_AI_Process(void);
-int MX_X_CUBE_AI_Run(void);
+void    MX_X_CUBE_AI_Init(void);
+void    MX_X_CUBE_AI_Process(void);
+void    MetAI_PushSample(float temp, float pres, float rhum);
+
+extern volatile uint8_t  g_metai_class;
+extern volatile float    g_metai_confidence;
+
+/* app_x-cube-ai.h — ajouter */
+typedef struct {
+    float    temp;
+    float    pres;
+    float    rhum;
+    uint32_t tick_ms;
+} metai_sample_t;
+
+void MetAI_SeedHistory(metai_sample_t t0,
+                       metai_sample_t t3h,
+                       metai_sample_t t6h);
+
 #ifdef __cplusplus
 }
 #endif

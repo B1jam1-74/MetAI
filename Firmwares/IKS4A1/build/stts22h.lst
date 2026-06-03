@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cczRj3VZ.s 			page 1
+ARM GAS  /tmp/ccBqBt3d.s 			page 1
 
 
    1              		.cpu cortex-m33
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
   26:Drivers/Sensors/STTS22H/stts22h.c **** /** @addtogroup Component Component
   27:Drivers/Sensors/STTS22H/stts22h.c ****   * @{
   28:Drivers/Sensors/STTS22H/stts22h.c ****   */
-ARM GAS  /tmp/cczRj3VZ.s 			page 2
+ARM GAS  /tmp/ccBqBt3d.s 			page 2
 
 
   29:Drivers/Sensors/STTS22H/stts22h.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
   83:Drivers/Sensors/STTS22H/stts22h.c ****   if (pObj == NULL)
   84:Drivers/Sensors/STTS22H/stts22h.c ****   {
   85:Drivers/Sensors/STTS22H/stts22h.c ****     ret = STTS22H_ERROR;
-ARM GAS  /tmp/cczRj3VZ.s 			page 3
+ARM GAS  /tmp/ccBqBt3d.s 			page 3
 
 
   86:Drivers/Sensors/STTS22H/stts22h.c ****   }
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  140:Drivers/Sensors/STTS22H/stts22h.c ****     if (stts22h_temp_data_rate_set(&(pObj->Ctx), STTS22H_POWER_DOWN) != STTS22H_OK)
  141:Drivers/Sensors/STTS22H/stts22h.c ****     {
  142:Drivers/Sensors/STTS22H/stts22h.c ****       return STTS22H_ERROR;
-ARM GAS  /tmp/cczRj3VZ.s 			page 4
+ARM GAS  /tmp/ccBqBt3d.s 			page 4
 
 
  143:Drivers/Sensors/STTS22H/stts22h.c ****     }
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  197:Drivers/Sensors/STTS22H/stts22h.c ****   */
  198:Drivers/Sensors/STTS22H/stts22h.c **** int32_t STTS22H_GetCapabilities(STTS22H_Object_t *pObj, STTS22H_Capabilities_t *Capabilities)
  199:Drivers/Sensors/STTS22H/stts22h.c **** {
-ARM GAS  /tmp/cczRj3VZ.s 			page 5
+ARM GAS  /tmp/ccBqBt3d.s 			page 5
 
 
   31              		.loc 1 199 1 view -0
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
   71              		.loc 1 213 1 is_stmt 0 view .LVU22
   72 001a 7047     		bx	lr
   73              	.L3:
-ARM GAS  /tmp/cczRj3VZ.s 			page 6
+ARM GAS  /tmp/ccBqBt3d.s 			page 6
 
 
   74              		.align	2
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  255:Drivers/Sensors/STTS22H/stts22h.c **** }
  256:Drivers/Sensors/STTS22H/stts22h.c **** 
  257:Drivers/Sensors/STTS22H/stts22h.c **** /**
-ARM GAS  /tmp/cczRj3VZ.s 			page 7
+ARM GAS  /tmp/ccBqBt3d.s 			page 7
 
 
  258:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Disable the STTS22H temperature sensor
@@ -418,7 +418,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  312:Drivers/Sensors/STTS22H/stts22h.c ****       break;
  313:Drivers/Sensors/STTS22H/stts22h.c **** 
  314:Drivers/Sensors/STTS22H/stts22h.c ****     case STTS22H_25Hz:
-ARM GAS  /tmp/cczRj3VZ.s 			page 8
+ARM GAS  /tmp/ccBqBt3d.s 			page 8
 
 
  315:Drivers/Sensors/STTS22H/stts22h.c ****       *Odr = 25.0f;
@@ -478,7 +478,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  369:Drivers/Sensors/STTS22H/stts22h.c **** {
  370:Drivers/Sensors/STTS22H/stts22h.c ****   int16_t raw_value;
  371:Drivers/Sensors/STTS22H/stts22h.c **** 
-ARM GAS  /tmp/cczRj3VZ.s 			page 9
+ARM GAS  /tmp/ccBqBt3d.s 			page 9
 
 
  372:Drivers/Sensors/STTS22H/stts22h.c ****   /* Get the temperature */
@@ -538,7 +538,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  426:Drivers/Sensors/STTS22H/stts22h.c ****   }
  427:Drivers/Sensors/STTS22H/stts22h.c **** 
  428:Drivers/Sensors/STTS22H/stts22h.c ****   return STTS22H_OK;
-ARM GAS  /tmp/cczRj3VZ.s 			page 10
+ARM GAS  /tmp/ccBqBt3d.s 			page 10
 
 
  429:Drivers/Sensors/STTS22H/stts22h.c **** }
@@ -598,7 +598,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  483:Drivers/Sensors/STTS22H/stts22h.c ****   * @brief  Get the STTS22H register value
  484:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  pObj the device pObj
  485:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Reg address to be read
-ARM GAS  /tmp/cczRj3VZ.s 			page 11
+ARM GAS  /tmp/ccBqBt3d.s 			page 11
 
 
  486:Drivers/Sensors/STTS22H/stts22h.c ****   * @param  Data pointer where the value is written
@@ -658,7 +658,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  540:Drivers/Sensors/STTS22H/stts22h.c ****   stts22h_dev_status_t status;
  541:Drivers/Sensors/STTS22H/stts22h.c **** 
  542:Drivers/Sensors/STTS22H/stts22h.c ****   /* Get Busy flag */
-ARM GAS  /tmp/cczRj3VZ.s 			page 12
+ARM GAS  /tmp/ccBqBt3d.s 			page 12
 
 
  543:Drivers/Sensors/STTS22H/stts22h.c ****   if (stts22h_dev_status_get(&(pObj->Ctx), &status) != STTS22H_OK)
@@ -718,7 +718,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  579:Drivers/Sensors/STTS22H/stts22h.c ****   int32_t ret = STTS22H_OK;
  107              		.loc 1 579 3 view .LVU26
  108              	.LVL3:
-ARM GAS  /tmp/cczRj3VZ.s 			page 13
+ARM GAS  /tmp/ccBqBt3d.s 			page 13
 
 
  580:Drivers/Sensors/STTS22H/stts22h.c ****   STTS22H_Object_t *pObj = (STTS22H_Object_t *)Handle;
@@ -778,7 +778,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  140              		.loc 1 586 13 view .LVU38
  141 0020 08EB0402 		add	r2, r8, r4
  142 0024 89B2     		uxth	r1, r1
-ARM GAS  /tmp/cczRj3VZ.s 			page 14
+ARM GAS  /tmp/ccBqBt3d.s 			page 14
 
 
  143 0026 287B     		ldrb	r0, [r5, #12]	@ zero_extendqisi2
@@ -838,7 +838,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  181              		.cfi_startproc
  182              		@ args = 0, pretend = 0, frame = 0
  183              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /tmp/cczRj3VZ.s 			page 15
+ARM GAS  /tmp/ccBqBt3d.s 			page 15
 
 
  184              		.loc 1 606 1 is_stmt 0 view .LVU47
@@ -898,7 +898,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  218              	.LVL18:
  613:Drivers/Sensors/STTS22H/stts22h.c ****     {
  219              		.loc 1 613 30 is_stmt 0 discriminator 2 view .LVU57
-ARM GAS  /tmp/cczRj3VZ.s 			page 16
+ARM GAS  /tmp/ccBqBt3d.s 			page 16
 
 
  220 0014 A4B2     		uxth	r4, r4
@@ -958,7 +958,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  264              		.global	STTS22H_Init
  265              		.syntax unified
  266              		.thumb
-ARM GAS  /tmp/cczRj3VZ.s 			page 17
+ARM GAS  /tmp/ccBqBt3d.s 			page 17
 
 
  267              		.thumb_func
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  128:Drivers/Sensors/STTS22H/stts22h.c ****     {
  309              		.loc 1 128 9 is_stmt 0 view .LVU82
  310 001a 00F12005 		add	r5, r0, #32
-ARM GAS  /tmp/cczRj3VZ.s 			page 18
+ARM GAS  /tmp/ccBqBt3d.s 			page 18
 
 
  311 001e 0121     		movs	r1, #1
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  355              		.thumb_func
  357              	STTS22H_TEMP_SetOutputDataRate:
  358              	.LVL31:
-ARM GAS  /tmp/cczRj3VZ.s 			page 19
+ARM GAS  /tmp/ccBqBt3d.s 			page 19
 
 
  359              	.LFB9:
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  401              		.loc 1 354 7 is_stmt 0 view .LVU105
  402 0040 2030     		adds	r0, r0, #32
  403              	.LVL33:
-ARM GAS  /tmp/cczRj3VZ.s 			page 20
+ARM GAS  /tmp/ccBqBt3d.s 			page 20
 
 
  354:Drivers/Sensors/STTS22H/stts22h.c ****   {
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  241:Drivers/Sensors/STTS22H/stts22h.c ****   {
  452              		.loc 1 241 3 view .LVU114
  241:Drivers/Sensors/STTS22H/stts22h.c ****   {
-ARM GAS  /tmp/cczRj3VZ.s 			page 21
+ARM GAS  /tmp/ccBqBt3d.s 			page 21
 
 
  453              		.loc 1 241 11 is_stmt 0 view .LVU115
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  496              		.cfi_offset 14, -4
  249:Drivers/Sensors/STTS22H/stts22h.c ****   }
  497              		.loc 1 249 12 view .LVU127
-ARM GAS  /tmp/cczRj3VZ.s 			page 22
+ARM GAS  /tmp/ccBqBt3d.s 			page 22
 
 
  498 0022 4FF0FF30 		mov	r0, #-1
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  189:Drivers/Sensors/STTS22H/stts22h.c **** }
  544              		.loc 1 189 3 is_stmt 1 view .LVU138
  545              	.L51:
-ARM GAS  /tmp/cczRj3VZ.s 			page 23
+ARM GAS  /tmp/ccBqBt3d.s 			page 23
 
 
  190:Drivers/Sensors/STTS22H/stts22h.c **** 
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  298:Drivers/Sensors/STTS22H/stts22h.c ****   {
  594              		.loc 1 298 7 view .LVU147
  595 000a 2030     		adds	r0, r0, #32
-ARM GAS  /tmp/cczRj3VZ.s 			page 24
+ARM GAS  /tmp/ccBqBt3d.s 			page 24
 
 
  596              	.LVL50:
@@ -1438,7 +1438,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  647 0046 30       		.byte	(.L65-.L58)/2
  648 0047 30       		.byte	(.L65-.L58)/2
  649 0048 30       		.byte	(.L65-.L58)/2
-ARM GAS  /tmp/cczRj3VZ.s 			page 25
+ARM GAS  /tmp/ccBqBt3d.s 			page 25
 
 
  650 0049 30       		.byte	(.L65-.L58)/2
@@ -1498,7 +1498,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  323:Drivers/Sensors/STTS22H/stts22h.c ****       break;
  691              		.loc 1 323 12 is_stmt 0 view .LVU164
  692 006e 084B     		ldr	r3, .L67+8
-ARM GAS  /tmp/cczRj3VZ.s 			page 26
+ARM GAS  /tmp/ccBqBt3d.s 			page 26
 
 
  693 0070 2360     		str	r3, [r4]	@ float
@@ -1558,7 +1558,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  740              		.loc 1 263 1 is_stmt 1 view -0
  741              		.cfi_startproc
  742              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/cczRj3VZ.s 			page 27
+ARM GAS  /tmp/ccBqBt3d.s 			page 27
 
 
  743              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -1618,7 +1618,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  782              	.L69:
  285:Drivers/Sensors/STTS22H/stts22h.c **** 
  783              		.loc 1 285 1 is_stmt 0 view .LVU189
-ARM GAS  /tmp/cczRj3VZ.s 			page 28
+ARM GAS  /tmp/ccBqBt3d.s 			page 28
 
 
  784 0028 10BD     		pop	{r4, pc}
@@ -1678,7 +1678,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  830              		.loc 1 169 3 is_stmt 1 view .LVU199
  831              	.L79:
  170:Drivers/Sensors/STTS22H/stts22h.c **** 
-ARM GAS  /tmp/cczRj3VZ.s 			page 29
+ARM GAS  /tmp/ccBqBt3d.s 			page 29
 
 
  832              		.loc 1 170 1 is_stmt 0 view .LVU200
@@ -1738,7 +1738,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  373:Drivers/Sensors/STTS22H/stts22h.c ****   {
  879              		.loc 1 373 7 view .LVU210
  880 000a 2030     		adds	r0, r0, #32
-ARM GAS  /tmp/cczRj3VZ.s 			page 30
+ARM GAS  /tmp/ccBqBt3d.s 			page 30
 
 
  881              	.LVL66:
@@ -1798,7 +1798,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  928              		@ frame_needed = 0, uses_anonymous_args = 0
   81:Drivers/Sensors/STTS22H/stts22h.c **** 
  929              		.loc 1 81 3 view .LVU220
-ARM GAS  /tmp/cczRj3VZ.s 			page 31
+ARM GAS  /tmp/ccBqBt3d.s 			page 31
 
 
   83:Drivers/Sensors/STTS22H/stts22h.c ****   {
@@ -1858,7 +1858,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
   94:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.GetTick   = pIO->GetTick;
  966              		.loc 1 94 5 is_stmt 1 view .LVU239
   94:Drivers/Sensors/STTS22H/stts22h.c ****     pObj->IO.GetTick   = pIO->GetTick;
-ARM GAS  /tmp/cczRj3VZ.s 			page 32
+ARM GAS  /tmp/ccBqBt3d.s 			page 32
 
 
  967              		.loc 1 94 29 is_stmt 0 view .LVU240
@@ -1918,7 +1918,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1003              	.LVL74:
  1004              	.L91:
  1005              	.LCFI21:
-ARM GAS  /tmp/cczRj3VZ.s 			page 33
+ARM GAS  /tmp/ccBqBt3d.s 			page 33
 
 
  1006              		.cfi_def_cfa_offset 0
@@ -1978,7 +1978,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  228:Drivers/Sensors/STTS22H/stts22h.c **** 
  1053              		.loc 1 228 17 is_stmt 0 view .LVU268
  1054 0002 90F83030 		ldrb	r3, [r0, #48]	@ zero_extendqisi2
-ARM GAS  /tmp/cczRj3VZ.s 			page 34
+ARM GAS  /tmp/ccBqBt3d.s 			page 34
 
 
  228:Drivers/Sensors/STTS22H/stts22h.c **** 
@@ -2038,7 +2038,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1100 0006 0DF10701 		add	r1, sp, #7
  1101              	.LVL83:
  393:Drivers/Sensors/STTS22H/stts22h.c ****   {
-ARM GAS  /tmp/cczRj3VZ.s 			page 35
+ARM GAS  /tmp/ccBqBt3d.s 			page 35
 
 
  1102              		.loc 1 393 7 view .LVU280
@@ -2098,7 +2098,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1146              		.syntax unified
  1147              		.thumb
  1148              		.thumb_func
-ARM GAS  /tmp/cczRj3VZ.s 			page 36
+ARM GAS  /tmp/ccBqBt3d.s 			page 36
 
 
  1150              	STTS22H_TEMP_SetHighTemperatureThreshold:
@@ -2158,7 +2158,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1192              		.cfi_def_cfa_offset 4
  1193              		@ sp needed
  1194 002a 5DF804FB 		ldr	pc, [sp], #4
-ARM GAS  /tmp/cczRj3VZ.s 			page 37
+ARM GAS  /tmp/ccBqBt3d.s 			page 37
 
 
  1195              	.LVL91:
@@ -2218,7 +2218,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1243              	.LVL93:
  444:Drivers/Sensors/STTS22H/stts22h.c ****   {
  1244              		.loc 1 444 3 is_stmt 1 view .LVU312
-ARM GAS  /tmp/cczRj3VZ.s 			page 38
+ARM GAS  /tmp/ccBqBt3d.s 			page 38
 
 
  444:Drivers/Sensors/STTS22H/stts22h.c ****   {
@@ -2278,7 +2278,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1294              		.cfi_def_cfa_offset 12
  1295              		.cfi_offset 4, -12
  1296              		.cfi_offset 5, -8
-ARM GAS  /tmp/cczRj3VZ.s 			page 39
+ARM GAS  /tmp/ccBqBt3d.s 			page 39
 
 
  1297              		.cfi_offset 14, -4
@@ -2338,7 +2338,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1335              	.L121:
  480:Drivers/Sensors/STTS22H/stts22h.c **** 
  1336              		.loc 1 480 1 view .LVU336
-ARM GAS  /tmp/cczRj3VZ.s 			page 40
+ARM GAS  /tmp/ccBqBt3d.s 			page 40
 
 
  1337 002a 03B0     		add	sp, sp, #12
@@ -2398,7 +2398,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1385 000c 08BD     		pop	{r3, pc}
  1386              	.L130:
  493:Drivers/Sensors/STTS22H/stts22h.c ****   }
-ARM GAS  /tmp/cczRj3VZ.s 			page 41
+ARM GAS  /tmp/ccBqBt3d.s 			page 41
 
 
  1387              		.loc 1 493 12 view .LVU345
@@ -2458,7 +2458,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1435              		@ sp needed
  1436 0018 5DF804FB 		ldr	pc, [sp], #4
  1437              	.L135:
-ARM GAS  /tmp/cczRj3VZ.s 			page 42
+ARM GAS  /tmp/ccBqBt3d.s 			page 42
 
 
  1438              	.LCFI43:
@@ -2518,7 +2518,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1486              		.section	.text.STTS22H_Get_One_Shot_Status,"ax",%progbits
  1487              		.align	1
  1488              		.global	STTS22H_Get_One_Shot_Status
-ARM GAS  /tmp/cczRj3VZ.s 			page 43
+ARM GAS  /tmp/ccBqBt3d.s 			page 43
 
 
  1489              		.syntax unified
@@ -2578,7 +2578,7 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1531 001a 0023     		movs	r3, #0
  1532 001c 2370     		strb	r3, [r4]
  1533              	.L141:
-ARM GAS  /tmp/cczRj3VZ.s 			page 44
+ARM GAS  /tmp/ccBqBt3d.s 			page 44
 
 
  558:Drivers/Sensors/STTS22H/stts22h.c **** 
@@ -2631,67 +2631,67 @@ ARM GAS  /tmp/cczRj3VZ.s 			page 1
  1582              		.file 4 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/math.h"
  1583              		.file 5 "Drivers/Sensors/STTS22H/stts22h_reg.h"
  1584              		.file 6 "Drivers/Sensors/STTS22H/stts22h.h"
-ARM GAS  /tmp/cczRj3VZ.s 			page 45
+ARM GAS  /tmp/ccBqBt3d.s 			page 45
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 stts22h.c
-     /tmp/cczRj3VZ.s:22     .text.STTS22H_GetCapabilities:00000000 $t
-     /tmp/cczRj3VZ.s:28     .text.STTS22H_GetCapabilities:00000000 STTS22H_GetCapabilities
-     /tmp/cczRj3VZ.s:76     .text.STTS22H_GetCapabilities:0000001c $d
-     /tmp/cczRj3VZ.s:81     .text.ReadRegWrap:00000000 $t
-     /tmp/cczRj3VZ.s:86     .text.ReadRegWrap:00000000 ReadRegWrap
-     /tmp/cczRj3VZ.s:172    .text.WriteRegWrap:00000000 $t
-     /tmp/cczRj3VZ.s:177    .text.WriteRegWrap:00000000 WriteRegWrap
-     /tmp/cczRj3VZ.s:263    .text.STTS22H_Init:00000000 $t
-     /tmp/cczRj3VZ.s:269    .text.STTS22H_Init:00000000 STTS22H_Init
-     /tmp/cczRj3VZ.s:351    .text.STTS22H_TEMP_SetOutputDataRate:00000000 $t
-     /tmp/cczRj3VZ.s:357    .text.STTS22H_TEMP_SetOutputDataRate:00000000 STTS22H_TEMP_SetOutputDataRate
-     /tmp/cczRj3VZ.s:433    .text.STTS22H_TEMP_SetOutputDataRate:0000005c $d
-     /tmp/cczRj3VZ.s:439    .text.STTS22H_TEMP_Enable:00000000 $t
-     /tmp/cczRj3VZ.s:445    .text.STTS22H_TEMP_Enable:00000000 STTS22H_TEMP_Enable
-     /tmp/cczRj3VZ.s:504    .text.STTS22H_ReadID:00000000 $t
-     /tmp/cczRj3VZ.s:510    .text.STTS22H_ReadID:00000000 STTS22H_ReadID
-     /tmp/cczRj3VZ.s:564    .text.STTS22H_TEMP_GetOutputDataRate:00000000 $t
-     /tmp/cczRj3VZ.s:570    .text.STTS22H_TEMP_GetOutputDataRate:00000000 STTS22H_TEMP_GetOutputDataRate
-     /tmp/cczRj3VZ.s:609    .text.STTS22H_TEMP_GetOutputDataRate:00000020 $d
-     /tmp/cczRj3VZ.s:723    .text.STTS22H_TEMP_GetOutputDataRate:00000088 $d
-     /tmp/cczRj3VZ.s:731    .text.STTS22H_TEMP_Disable:00000000 $t
-     /tmp/cczRj3VZ.s:737    .text.STTS22H_TEMP_Disable:00000000 STTS22H_TEMP_Disable
-     /tmp/cczRj3VZ.s:798    .text.STTS22H_DeInit:00000000 $t
-     /tmp/cczRj3VZ.s:804    .text.STTS22H_DeInit:00000000 STTS22H_DeInit
-     /tmp/cczRj3VZ.s:850    .text.STTS22H_TEMP_GetTemperature:00000000 $t
-     /tmp/cczRj3VZ.s:856    .text.STTS22H_TEMP_GetTemperature:00000000 STTS22H_TEMP_GetTemperature
-     /tmp/cczRj3VZ.s:916    .text.STTS22H_RegisterBusIO:00000000 $t
-     /tmp/cczRj3VZ.s:922    .text.STTS22H_RegisterBusIO:00000000 STTS22H_RegisterBusIO
-     /tmp/cczRj3VZ.s:1029   .text.STTS22H_RegisterBusIO:00000044 $d
-     /tmp/cczRj3VZ.s:1035   .text.STTS22H_Get_Init_Status:00000000 $t
-     /tmp/cczRj3VZ.s:1041   .text.STTS22H_Get_Init_Status:00000000 STTS22H_Get_Init_Status
-     /tmp/cczRj3VZ.s:1074   .text.STTS22H_TEMP_Get_DRDY_Status:00000000 $t
-     /tmp/cczRj3VZ.s:1080   .text.STTS22H_TEMP_Get_DRDY_Status:00000000 STTS22H_TEMP_Get_DRDY_Status
-     /tmp/cczRj3VZ.s:1144   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000000 $t
-     /tmp/cczRj3VZ.s:1150   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000000 STTS22H_TEMP_SetHighTemperatureThreshold
-     /tmp/cczRj3VZ.s:1205   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000034 $d
-     /tmp/cczRj3VZ.s:1211   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000000 $t
-     /tmp/cczRj3VZ.s:1217   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000000 STTS22H_TEMP_SetLowTemperatureThreshold
-     /tmp/cczRj3VZ.s:1272   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000034 $d
-     /tmp/cczRj3VZ.s:1278   .text.STTS22H_TEMP_GetTemperatureLimitStatus:00000000 $t
-     /tmp/cczRj3VZ.s:1284   .text.STTS22H_TEMP_GetTemperatureLimitStatus:00000000 STTS22H_TEMP_GetTemperatureLimitStatus
-     /tmp/cczRj3VZ.s:1354   .text.STTS22H_Read_Reg:00000000 $t
-     /tmp/cczRj3VZ.s:1360   .text.STTS22H_Read_Reg:00000000 STTS22H_Read_Reg
-     /tmp/cczRj3VZ.s:1394   .text.STTS22H_Write_Reg:00000000 $t
-     /tmp/cczRj3VZ.s:1400   .text.STTS22H_Write_Reg:00000000 STTS22H_Write_Reg
-     /tmp/cczRj3VZ.s:1447   .text.STTS22H_Set_One_Shot:00000000 $t
-     /tmp/cczRj3VZ.s:1453   .text.STTS22H_Set_One_Shot:00000000 STTS22H_Set_One_Shot
-     /tmp/cczRj3VZ.s:1487   .text.STTS22H_Get_One_Shot_Status:00000000 $t
-     /tmp/cczRj3VZ.s:1493   .text.STTS22H_Get_One_Shot_Status:00000000 STTS22H_Get_One_Shot_Status
-     /tmp/cczRj3VZ.s:1562   .data.STTS22H_TEMP_Driver:00000000 STTS22H_TEMP_Driver
-     /tmp/cczRj3VZ.s:1559   .data.STTS22H_TEMP_Driver:00000000 $d
-     /tmp/cczRj3VZ.s:1573   .data.STTS22H_COMMON_Driver:00000000 STTS22H_COMMON_Driver
-     /tmp/cczRj3VZ.s:1570   .data.STTS22H_COMMON_Driver:00000000 $d
-     /tmp/cczRj3VZ.s:660    .text.STTS22H_TEMP_GetOutputDataRate:00000053 $d
-     /tmp/cczRj3VZ.s:660    .text.STTS22H_TEMP_GetOutputDataRate:00000054 $t
-ARM GAS  /tmp/cczRj3VZ.s 			page 46
+     /tmp/ccBqBt3d.s:22     .text.STTS22H_GetCapabilities:00000000 $t
+     /tmp/ccBqBt3d.s:28     .text.STTS22H_GetCapabilities:00000000 STTS22H_GetCapabilities
+     /tmp/ccBqBt3d.s:76     .text.STTS22H_GetCapabilities:0000001c $d
+     /tmp/ccBqBt3d.s:81     .text.ReadRegWrap:00000000 $t
+     /tmp/ccBqBt3d.s:86     .text.ReadRegWrap:00000000 ReadRegWrap
+     /tmp/ccBqBt3d.s:172    .text.WriteRegWrap:00000000 $t
+     /tmp/ccBqBt3d.s:177    .text.WriteRegWrap:00000000 WriteRegWrap
+     /tmp/ccBqBt3d.s:263    .text.STTS22H_Init:00000000 $t
+     /tmp/ccBqBt3d.s:269    .text.STTS22H_Init:00000000 STTS22H_Init
+     /tmp/ccBqBt3d.s:351    .text.STTS22H_TEMP_SetOutputDataRate:00000000 $t
+     /tmp/ccBqBt3d.s:357    .text.STTS22H_TEMP_SetOutputDataRate:00000000 STTS22H_TEMP_SetOutputDataRate
+     /tmp/ccBqBt3d.s:433    .text.STTS22H_TEMP_SetOutputDataRate:0000005c $d
+     /tmp/ccBqBt3d.s:439    .text.STTS22H_TEMP_Enable:00000000 $t
+     /tmp/ccBqBt3d.s:445    .text.STTS22H_TEMP_Enable:00000000 STTS22H_TEMP_Enable
+     /tmp/ccBqBt3d.s:504    .text.STTS22H_ReadID:00000000 $t
+     /tmp/ccBqBt3d.s:510    .text.STTS22H_ReadID:00000000 STTS22H_ReadID
+     /tmp/ccBqBt3d.s:564    .text.STTS22H_TEMP_GetOutputDataRate:00000000 $t
+     /tmp/ccBqBt3d.s:570    .text.STTS22H_TEMP_GetOutputDataRate:00000000 STTS22H_TEMP_GetOutputDataRate
+     /tmp/ccBqBt3d.s:609    .text.STTS22H_TEMP_GetOutputDataRate:00000020 $d
+     /tmp/ccBqBt3d.s:723    .text.STTS22H_TEMP_GetOutputDataRate:00000088 $d
+     /tmp/ccBqBt3d.s:731    .text.STTS22H_TEMP_Disable:00000000 $t
+     /tmp/ccBqBt3d.s:737    .text.STTS22H_TEMP_Disable:00000000 STTS22H_TEMP_Disable
+     /tmp/ccBqBt3d.s:798    .text.STTS22H_DeInit:00000000 $t
+     /tmp/ccBqBt3d.s:804    .text.STTS22H_DeInit:00000000 STTS22H_DeInit
+     /tmp/ccBqBt3d.s:850    .text.STTS22H_TEMP_GetTemperature:00000000 $t
+     /tmp/ccBqBt3d.s:856    .text.STTS22H_TEMP_GetTemperature:00000000 STTS22H_TEMP_GetTemperature
+     /tmp/ccBqBt3d.s:916    .text.STTS22H_RegisterBusIO:00000000 $t
+     /tmp/ccBqBt3d.s:922    .text.STTS22H_RegisterBusIO:00000000 STTS22H_RegisterBusIO
+     /tmp/ccBqBt3d.s:1029   .text.STTS22H_RegisterBusIO:00000044 $d
+     /tmp/ccBqBt3d.s:1035   .text.STTS22H_Get_Init_Status:00000000 $t
+     /tmp/ccBqBt3d.s:1041   .text.STTS22H_Get_Init_Status:00000000 STTS22H_Get_Init_Status
+     /tmp/ccBqBt3d.s:1074   .text.STTS22H_TEMP_Get_DRDY_Status:00000000 $t
+     /tmp/ccBqBt3d.s:1080   .text.STTS22H_TEMP_Get_DRDY_Status:00000000 STTS22H_TEMP_Get_DRDY_Status
+     /tmp/ccBqBt3d.s:1144   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000000 $t
+     /tmp/ccBqBt3d.s:1150   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000000 STTS22H_TEMP_SetHighTemperatureThreshold
+     /tmp/ccBqBt3d.s:1205   .text.STTS22H_TEMP_SetHighTemperatureThreshold:00000034 $d
+     /tmp/ccBqBt3d.s:1211   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000000 $t
+     /tmp/ccBqBt3d.s:1217   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000000 STTS22H_TEMP_SetLowTemperatureThreshold
+     /tmp/ccBqBt3d.s:1272   .text.STTS22H_TEMP_SetLowTemperatureThreshold:00000034 $d
+     /tmp/ccBqBt3d.s:1278   .text.STTS22H_TEMP_GetTemperatureLimitStatus:00000000 $t
+     /tmp/ccBqBt3d.s:1284   .text.STTS22H_TEMP_GetTemperatureLimitStatus:00000000 STTS22H_TEMP_GetTemperatureLimitStatus
+     /tmp/ccBqBt3d.s:1354   .text.STTS22H_Read_Reg:00000000 $t
+     /tmp/ccBqBt3d.s:1360   .text.STTS22H_Read_Reg:00000000 STTS22H_Read_Reg
+     /tmp/ccBqBt3d.s:1394   .text.STTS22H_Write_Reg:00000000 $t
+     /tmp/ccBqBt3d.s:1400   .text.STTS22H_Write_Reg:00000000 STTS22H_Write_Reg
+     /tmp/ccBqBt3d.s:1447   .text.STTS22H_Set_One_Shot:00000000 $t
+     /tmp/ccBqBt3d.s:1453   .text.STTS22H_Set_One_Shot:00000000 STTS22H_Set_One_Shot
+     /tmp/ccBqBt3d.s:1487   .text.STTS22H_Get_One_Shot_Status:00000000 $t
+     /tmp/ccBqBt3d.s:1493   .text.STTS22H_Get_One_Shot_Status:00000000 STTS22H_Get_One_Shot_Status
+     /tmp/ccBqBt3d.s:1562   .data.STTS22H_TEMP_Driver:00000000 STTS22H_TEMP_Driver
+     /tmp/ccBqBt3d.s:1559   .data.STTS22H_TEMP_Driver:00000000 $d
+     /tmp/ccBqBt3d.s:1573   .data.STTS22H_COMMON_Driver:00000000 STTS22H_COMMON_Driver
+     /tmp/ccBqBt3d.s:1570   .data.STTS22H_COMMON_Driver:00000000 $d
+     /tmp/ccBqBt3d.s:660    .text.STTS22H_TEMP_GetOutputDataRate:00000053 $d
+     /tmp/ccBqBt3d.s:660    .text.STTS22H_TEMP_GetOutputDataRate:00000054 $t
+ARM GAS  /tmp/ccBqBt3d.s 			page 46
 
 
 
