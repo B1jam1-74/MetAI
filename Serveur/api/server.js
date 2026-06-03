@@ -29,6 +29,18 @@ const WMO_FR = {
 
 const wmoToFr = (code) => WMO_FR[code] || WMO_FR[Object.keys(WMO_FR).reduce((prev, curr) => Math.abs(curr - code) < Math.abs(prev - code) ? curr : prev)];
 
+const logRecord = (receivedAt, temp, hum, press, pred, act, match) => {
+  const timeStr = new Date(receivedAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const t = temp !== null && temp !== undefined ? Number(temp).toFixed(1) : 'N/A';
+  const h = hum !== null && hum !== undefined ? Number(hum).toFixed(1) : 'N/A';
+  const p = press !== null && press !== undefined ? Number(press).toFixed(1) : 'N/A';
+  const prediction = pred || 'Inconnu';
+  const actual = act || 'Inconnu';
+  const status = match ? '✅' : '❌';
+  
+  console.log(`${timeStr} | ${t} | ${h} | ${p} | Pred: ${prediction.padEnd(17)} | Act: ${actual} ${status}`);
+};
+
 // Initialize DB
 fs.mkdirSync('/data', { recursive: true });
 const db = new Database(DB_PATH);
@@ -123,6 +135,8 @@ app.post('/uplink', async (req, res) => {
     match = (a.includes(b) || b.includes(a)) ? 1 : 0;
   }
 
+  logRecord(data.received_at, finalTemp, finalHum, finalPress, finalPredFr, finalRealCond, match);
+
   if (existing) {
     db.prepare(`
       UPDATE uplinks SET 
@@ -183,6 +197,12 @@ app.post('/prediction', async (req, res) => {
     const b = real.real_condition.toLowerCase();
     match = (a.includes(b) || b.includes(a)) ? 1 : 0;
   }
+
+  const temp = existing ? existing.temperature : null;
+  const hum = existing ? existing.humidity : null;
+  const press = existing ? existing.pressure : null;
+
+  logRecord(data.received_at, temp, hum, press, finalPredFr, real.real_condition, match);
 
   if (existing) {
     db.prepare(`
