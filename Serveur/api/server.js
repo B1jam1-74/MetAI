@@ -101,8 +101,13 @@ const writeInflux = async (data, real, match) => {
     const tsNs = BigInt(new Date(data.received_at.replace('Z', '+00:00')).getTime()) * 1_000_000n;
     let line = `weather_sensor,device_id=${data.device_id} temperature_C=${data.temperature_deg_c},humidity_pct=${data.humidity_percent},pressure_hPa=${data.pressure_hpa},weather_class=${data.predicted_class},weather_label="${data.prediction_fr}"`;
     
-    if (real.real_temp !== null) {
-      line += `,real_temp=${real.real_temp},real_humidity=${real.real_humidity},real_pressure=${real.real_pressure},real_condition="${real.real_condition}",match=${match}`;
+    if (real.real_temp !== null && real.real_temp !== undefined) {
+      const fields = [`real_temp=${real.real_temp}`];
+      if (real.real_humidity !== undefined) fields.push(`real_humidity=${real.real_humidity}`);
+      if (real.real_pressure !== undefined) fields.push(`real_pressure=${real.real_pressure}`);
+      if (real.real_condition !== undefined) fields.push(`real_condition="${real.real_condition}"`);
+      fields.push(`match=${match}`);
+      line += `,${fields.join(',')}`;
     }
     line += ` ${tsNs}`;
 
@@ -189,7 +194,12 @@ app.post('/uplink', async (req, res) => {
     predicted_class: finalPredClass,
     prediction_fr: finalPredFr
   };
-  writeInflux(influxData, { real_temp: finalRealTemp, real_condition: finalRealCond }, match);
+  writeInflux(influxData, { 
+    real_temp: finalRealTemp, 
+    real_humidity: finalRealHum, 
+    real_pressure: finalRealPress, 
+    real_condition: finalRealCond 
+  }, match);
   
   broadcastUpdate();
 
@@ -303,7 +313,7 @@ app.get('/stats', (req, res) => {
 
 app.get('/influx_history', async (req, res) => {
   const limit = parseInt(req.query.limit, 10) || 200;
-  const query = `SELECT time, temperature_C, humidity_pct, pressure_hPa, weather_label, real_condition FROM weather_sensor ORDER BY time DESC LIMIT ${limit}`;
+  const query = `SELECT time, "temperature_C", humidity_pct, "pressure_hPa", weather_label, real_condition FROM weather_sensor ORDER BY time DESC LIMIT ${limit}`;
   const url = `http://192.168.0.79:8181/api/v3/query_sql?db=metai&q=${encodeURIComponent(query)}`;
   try {
     const response = await axios.get(url, { timeout: 5000 });

@@ -117,16 +117,16 @@ export default function App() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Gauge */}
-        <div className="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700">
-          <h3 className="text-lg font-semibold mb-4 text-center">Précision du Modèle</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <RadialBarChart cx="50%" cy="50%" innerRadius="60%" outerRadius="90%" barSize={20} data={gaugeData} startAngle={180} endAngle={0}>
+        <div className="bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700 flex flex-col justify-center">
+          <h3 className="text-xl font-semibold mb-4 text-center">Précision du Modèle</h3>
+          <ResponsiveContainer width="100%" height={450}>
+            <RadialBarChart cx="50%" cy="50%" innerRadius="60%" outerRadius="90%" barSize={25} data={gaugeData} startAngle={180} endAngle={0}>
               <RadialBar background clockWise dataKey="value" />
               <Tooltip formatter={(value) => `${value}%`} />
-              <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="fill-slate-100 text-2xl font-bold">
+              <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" className="fill-slate-100 text-5xl font-bold">
                 {accuracy}%
               </text>
-              <text x="50%" y="65%" textAnchor="middle" className="fill-slate-400 text-sm">
+              <text x="50%" y="65%" textAnchor="middle" className="fill-slate-400 text-xl">
                 {correct}/{total} corrects
               </text>
             </RadialBarChart>
