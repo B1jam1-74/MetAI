@@ -1,0 +1,618 @@
+ARM GAS  /tmp/cc4i9Y57.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"sht40x_driver_interface.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "Drivers/Sensors/SHT4/sht40x_driver_interface.c"
+  21              		.section	.text.sht40x_interface_i2c_init,"ax",%progbits
+  22              		.align	1
+  23              		.global	sht40x_interface_i2c_init
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	sht40x_interface_i2c_init:
+  29              	.LFB160:
+   1:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+   2:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * The MIT License (MIT)
+   3:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *
+   4:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * Permission is hereby granted, free of charge, to any person obtaining a copy
+   5:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * of this software and associated documentation files (the "Software"), to deal
+   6:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * in the Software without restriction, including without limitation the rights
+   7:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * to use, copy, modify, merge, publish, distribute, sub-license, and/or sell
+   8:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * copies of the Software, and to permit persons to whom the Software is
+   9:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * furnished to do so, subject to the following conditions:
+  10:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *
+  11:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * The above copyright notice and this permission notice shall be included in all
+  12:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * copies or substantial portions of the Software.
+  13:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *
+  14:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  15:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  16:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  17:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  18:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  19:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  20:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * SOFTWARE.
+  21:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *
+  22:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * File:   sht40x_driver_interface.c
+  23:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * Author: Cedric Akilimali
+  24:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *
+  25:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * Created on April 14, 2023, 22:48 PM
+  26:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  */
+  27:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  28:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** #include "main.h"
+  29:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** #include "sht40x_driver_interface.h"
+ARM GAS  /tmp/cc4i9Y57.s 			page 2
+
+
+  30:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  31:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  32:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+  33:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** * @brief  interface i2c bus init
+  34:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** * @return status code
+  35:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** *         - 0 success
+  36:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** *         - 1 i2c init failed
+  37:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** * @note   none
+  38:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** */
+  39:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** uint8_t sht40x_interface_i2c_init(void)
+  40:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+  30              		.loc 1 40 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  41:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*call your i2c initialize function here*/
+  42:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code begin */
+  43:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  44:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code end*/
+  45:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     return 0; /**< success */
+  35              		.loc 1 45 5 view .LVU1
+  46:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }
+  36              		.loc 1 46 1 is_stmt 0 view .LVU2
+  37 0000 0020     		movs	r0, #0
+  38 0002 7047     		bx	lr
+  39              		.cfi_endproc
+  40              	.LFE160:
+  42              		.section	.text.sht40x_interface_i2c_deinit,"ax",%progbits
+  43              		.align	1
+  44              		.global	sht40x_interface_i2c_deinit
+  45              		.syntax unified
+  46              		.thumb
+  47              		.thumb_func
+  49              	sht40x_interface_i2c_deinit:
+  50              	.LFB161:
+  47:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  48:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+  49:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @brief interface i2c bus de-init
+  50:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @return status code
+  51:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *          - 0 success
+  52:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *          - 1 i2c de-init fail
+  53:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  */
+  54:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** uint8_t sht40x_interface_i2c_deinit(void)
+  55:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+  51              		.loc 1 55 1 is_stmt 1 view -0
+  52              		.cfi_startproc
+  53              		@ args = 0, pretend = 0, frame = 0
+  54              		@ frame_needed = 0, uses_anonymous_args = 0
+  55              		@ link register save eliminated.
+  56:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*call your i2c de-initialize function here*/
+  57:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code begin */
+  58:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  59:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code end*/
+  60:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     return 0; /**< success */
+  56              		.loc 1 60 5 view .LVU4
+  61:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }
+ARM GAS  /tmp/cc4i9Y57.s 			page 3
+
+
+  57              		.loc 1 61 1 is_stmt 0 view .LVU5
+  58 0000 0020     		movs	r0, #0
+  59 0002 7047     		bx	lr
+  60              		.cfi_endproc
+  61              	.LFE161:
+  63              		.section	.text.sht40x_interface_i2c_read,"ax",%progbits
+  64              		.align	1
+  65              		.global	sht40x_interface_i2c_read
+  66              		.syntax unified
+  67              		.thumb
+  68              		.thumb_func
+  70              	sht40x_interface_i2c_read:
+  71              	.LVL0:
+  72              	.LFB162:
+  62:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  63:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+  64:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @brief      interface i2c bus read
+  65:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in]  u8Addr is the i2c device address 7 bit
+  66:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[out] *pBuf points to a data buffer
+  67:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in]  u8length is the length of the data buffer
+  68:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @return     status code
+  69:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *             - 0 success
+  70:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *             - 1 read failed
+  71:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @note       none
+  72:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  */
+  73:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** uint8_t sht40x_interface_i2c_read(uint8_t addr, uint8_t *pBuf, uint8_t u8Length)
+  74:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+  73              		.loc 1 74 1 is_stmt 1 view -0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              		.loc 1 74 1 is_stmt 0 view .LVU7
+  78 0000 00B5     		push	{lr}
+  79              	.LCFI0:
+  80              		.cfi_def_cfa_offset 4
+  81              		.cfi_offset 14, -4
+  82 0002 83B0     		sub	sp, sp, #12
+  83              	.LCFI1:
+  84              		.cfi_def_cfa_offset 16
+  85 0004 1346     		mov	r3, r2
+  75:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*call your i2c read function here*/
+  76:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code begin */
+  77:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  78:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     if (HAL_I2C_Master_Receive(&hi2c1, (uint16_t)(addr << 1), pBuf, u8Length, HAL_MAX_DELAY) != HAL
+  86              		.loc 1 78 5 is_stmt 1 view .LVU8
+  87              		.loc 1 78 9 is_stmt 0 view .LVU9
+  88 0006 4FF0FF32 		mov	r2, #-1
+  89              	.LVL1:
+  90              		.loc 1 78 9 view .LVU10
+  91 000a 0092     		str	r2, [sp]
+  92 000c 0A46     		mov	r2, r1
+  93 000e 4100     		lsls	r1, r0, #1
+  94              	.LVL2:
+  95              		.loc 1 78 9 view .LVU11
+  96 0010 0448     		ldr	r0, .L8
+  97              	.LVL3:
+  98              		.loc 1 78 9 view .LVU12
+ARM GAS  /tmp/cc4i9Y57.s 			page 4
+
+
+  99 0012 FFF7FEFF 		bl	HAL_I2C_Master_Receive
+ 100              	.LVL4:
+ 101              		.loc 1 78 8 discriminator 1 view .LVU13
+ 102 0016 10B9     		cbnz	r0, .L7
+ 103              	.L4:
+  79:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     {
+  80:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         return 1;
+  81:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+  82:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  83:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code end*/
+  84:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     return 0; /**< success */
+  85:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }
+ 104              		.loc 1 85 1 view .LVU14
+ 105 0018 03B0     		add	sp, sp, #12
+ 106              	.LCFI2:
+ 107              		.cfi_remember_state
+ 108              		.cfi_def_cfa_offset 4
+ 109              		@ sp needed
+ 110 001a 5DF804FB 		ldr	pc, [sp], #4
+ 111              	.L7:
+ 112              	.LCFI3:
+ 113              		.cfi_restore_state
+  80:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+ 114              		.loc 1 80 16 view .LVU15
+ 115 001e 0120     		movs	r0, #1
+ 116 0020 FAE7     		b	.L4
+ 117              	.L9:
+ 118 0022 00BF     		.align	2
+ 119              	.L8:
+ 120 0024 00000000 		.word	hi2c1
+ 121              		.cfi_endproc
+ 122              	.LFE162:
+ 124              		.section	.text.sht40x_interface_i2c_write,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	sht40x_interface_i2c_write
+ 127              		.syntax unified
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	sht40x_interface_i2c_write:
+ 132              	.LVL5:
+ 133              	.LFB163:
+  86:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+  87:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+  88:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @brief     interface i2c bus write
+  89:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in] u8Addr is the i2c device address 7 bit
+  90:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in] *pBuf points to a data buffer
+  91:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in] u8length is the length of the data buffer
+  92:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @return    status code
+  93:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *            - 0 success
+  94:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  *            - 1 write failed
+  95:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @note      none
+  96:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  */
+  97:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** uint8_t sht40x_interface_i2c_write(uint8_t addr, uint8_t *pBuf, uint8_t u8Length)
+  98:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+ 134              		.loc 1 98 1 is_stmt 1 view -0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/cc4i9Y57.s 			page 5
+
+
+ 137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 138              		.loc 1 98 1 is_stmt 0 view .LVU17
+ 139 0000 00B5     		push	{lr}
+ 140              	.LCFI4:
+ 141              		.cfi_def_cfa_offset 4
+ 142              		.cfi_offset 14, -4
+ 143 0002 83B0     		sub	sp, sp, #12
+ 144              	.LCFI5:
+ 145              		.cfi_def_cfa_offset 16
+ 146 0004 1346     		mov	r3, r2
+  99:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*call your i2c write function here*/
+ 100:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code begin */
+ 101:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 102:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     if (HAL_I2C_Master_Transmit(&hi2c1, (uint16_t)(addr << 1), pBuf, u8Length, HAL_MAX_DELAY) != HA
+ 147              		.loc 1 102 5 is_stmt 1 view .LVU18
+ 148              		.loc 1 102 9 is_stmt 0 view .LVU19
+ 149 0006 4FF0FF32 		mov	r2, #-1
+ 150              	.LVL6:
+ 151              		.loc 1 102 9 view .LVU20
+ 152 000a 0092     		str	r2, [sp]
+ 153 000c 0A46     		mov	r2, r1
+ 154 000e 4100     		lsls	r1, r0, #1
+ 155              	.LVL7:
+ 156              		.loc 1 102 9 view .LVU21
+ 157 0010 0448     		ldr	r0, .L15
+ 158              	.LVL8:
+ 159              		.loc 1 102 9 view .LVU22
+ 160 0012 FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 161              	.LVL9:
+ 162              		.loc 1 102 8 discriminator 1 view .LVU23
+ 163 0016 10B9     		cbnz	r0, .L14
+ 164              	.L11:
+ 103:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     {
+ 104:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         return 1;
+ 105:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+ 106:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 107:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code end*/
+ 108:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     return 0; /**< success */
+ 109:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }
+ 165              		.loc 1 109 1 view .LVU24
+ 166 0018 03B0     		add	sp, sp, #12
+ 167              	.LCFI6:
+ 168              		.cfi_remember_state
+ 169              		.cfi_def_cfa_offset 4
+ 170              		@ sp needed
+ 171 001a 5DF804FB 		ldr	pc, [sp], #4
+ 172              	.L14:
+ 173              	.LCFI7:
+ 174              		.cfi_restore_state
+ 104:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+ 175              		.loc 1 104 16 view .LVU25
+ 176 001e 0120     		movs	r0, #1
+ 177 0020 FAE7     		b	.L11
+ 178              	.L16:
+ 179 0022 00BF     		.align	2
+ 180              	.L15:
+ 181 0024 00000000 		.word	hi2c1
+ARM GAS  /tmp/cc4i9Y57.s 			page 6
+
+
+ 182              		.cfi_endproc
+ 183              	.LFE163:
+ 185              		.section	.text.sht40x_interface_delay_ms,"ax",%progbits
+ 186              		.align	1
+ 187              		.global	sht40x_interface_delay_ms
+ 188              		.syntax unified
+ 189              		.thumb
+ 190              		.thumb_func
+ 192              	sht40x_interface_delay_ms:
+ 193              	.LVL10:
+ 194              	.LFB164:
+ 110:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 111:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+ 112:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @brief     interface delay ms
+ 113:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in] u32Ms is the time in milliseconds
+ 114:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @note      none
+ 115:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  */
+ 116:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** void sht40x_interface_delay_ms(uint32_t u32Ms)
+ 117:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+ 195              		.loc 1 117 1 is_stmt 1 view -0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		.loc 1 117 1 is_stmt 0 view .LVU27
+ 200 0000 08B5     		push	{r3, lr}
+ 201              	.LCFI8:
+ 202              		.cfi_def_cfa_offset 8
+ 203              		.cfi_offset 3, -8
+ 204              		.cfi_offset 14, -4
+ 118:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*call your delay function here*/
+ 119:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code begin */
+ 120:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 121:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     HAL_Delay(u32Ms);
+ 205              		.loc 1 121 5 is_stmt 1 view .LVU28
+ 206 0002 FFF7FEFF 		bl	HAL_Delay
+ 207              	.LVL11:
+ 122:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 123:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code end*/
+ 124:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }
+ 208              		.loc 1 124 1 is_stmt 0 view .LVU29
+ 209 0006 08BD     		pop	{r3, pc}
+ 210              		.cfi_endproc
+ 211              	.LFE164:
+ 213              		.section	.rodata.sht40x_interface_debug_print.str1.4,"aMS",%progbits,1
+ 214              		.align	2
+ 215              	.LC0:
+ 216 0000 257300   		.ascii	"%s\000"
+ 217              		.section	.text.sht40x_interface_debug_print,"ax",%progbits
+ 218              		.align	1
+ 219              		.global	sht40x_interface_debug_print
+ 220              		.syntax unified
+ 221              		.thumb
+ 222              		.thumb_func
+ 224              	sht40x_interface_debug_print:
+ 225              	.LVL12:
+ 226              	.LFB165:
+ 125:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ARM GAS  /tmp/cc4i9Y57.s 			page 7
+
+
+ 126:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** /**
+ 127:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @brief     interface print format data
+ 128:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @param[in] fmt is the format data
+ 129:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  * @note      none
+ 130:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****  */
+ 131:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** void sht40x_interface_debug_print(char *fmt, ...)
+ 132:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+ 227              		.loc 1 132 1 is_stmt 1 view -0
+ 228              		.cfi_startproc
+ 229              		@ args = 4, pretend = 16, frame = 264
+ 230              		@ frame_needed = 0, uses_anonymous_args = 1
+ 231              		.loc 1 132 1 is_stmt 0 view .LVU31
+ 232 0000 0FB4     		push	{r0, r1, r2, r3}
+ 233              	.LCFI9:
+ 234              		.cfi_def_cfa_offset 16
+ 235              		.cfi_offset 0, -16
+ 236              		.cfi_offset 1, -12
+ 237              		.cfi_offset 2, -8
+ 238              		.cfi_offset 3, -4
+ 239 0002 00B5     		push	{lr}
+ 240              	.LCFI10:
+ 241              		.cfi_def_cfa_offset 20
+ 242              		.cfi_offset 14, -20
+ 243 0004 C3B0     		sub	sp, sp, #268
+ 244              	.LCFI11:
+ 245              		.cfi_def_cfa_offset 288
+ 246 0006 44AB     		add	r3, sp, #272
+ 247 0008 53F8042B 		ldr	r2, [r3], #4
+ 133:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*call your call print function here*/
+ 134:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code begin */
+ 135:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     char str[256];
+ 248              		.loc 1 135 5 is_stmt 1 view .LVU32
+ 136:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     va_list args;
+ 249              		.loc 1 136 5 view .LVU33
+ 137:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 138:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     va_start(args, fmt);
+ 250              		.loc 1 138 5 view .LVU34
+ 251 000c 0193     		str	r3, [sp, #4]
+ 139:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     vsnprintf(str, sizeof(str), fmt, args);
+ 252              		.loc 1 139 5 view .LVU35
+ 253 000e 4FF48071 		mov	r1, #256
+ 254 0012 02A8     		add	r0, sp, #8
+ 255 0014 FFF7FEFF 		bl	vsnprintf
+ 256              	.LVL13:
+ 140:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     va_end(args);
+ 257              		.loc 1 140 5 view .LVU36
+ 141:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 142:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     printf("%s", str);
+ 258              		.loc 1 142 5 view .LVU37
+ 259 0018 02A9     		add	r1, sp, #8
+ 260 001a 0448     		ldr	r0, .L21
+ 261 001c FFF7FEFF 		bl	printf
+ 262              	.LVL14:
+ 143:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 144:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     /*user code end*/
+ 145:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }
+ 263              		.loc 1 145 1 is_stmt 0 view .LVU38
+ARM GAS  /tmp/cc4i9Y57.s 			page 8
+
+
+ 264 0020 43B0     		add	sp, sp, #268
+ 265              	.LCFI12:
+ 266              		.cfi_def_cfa_offset 20
+ 267              		@ sp needed
+ 268 0022 5DF804EB 		ldr	lr, [sp], #4
+ 269              	.LCFI13:
+ 270              		.cfi_restore 14
+ 271              		.cfi_def_cfa_offset 16
+ 272 0026 04B0     		add	sp, sp, #16
+ 273              	.LCFI14:
+ 274              		.cfi_restore 3
+ 275              		.cfi_restore 2
+ 276              		.cfi_restore 1
+ 277              		.cfi_restore 0
+ 278              		.cfi_def_cfa_offset 0
+ 279 0028 7047     		bx	lr
+ 280              	.L22:
+ 281 002a 00BF     		.align	2
+ 282              	.L21:
+ 283 002c 00000000 		.word	.LC0
+ 284              		.cfi_endproc
+ 285              	.LFE165:
+ 287              		.section	.rodata.Humidity_Temperature_Read.str1.4,"aMS",%progbits,1
+ 288              		.align	2
+ 289              	.LC1:
+ 290 0000 4661696C 		.ascii	"Failed to read temperature and humidity from SHT40 "
+ 290      65642074 
+ 290      6F207265 
+ 290      61642074 
+ 290      656D7065 
+ 291 0033 73656E73 		.ascii	"sensor\015\000"
+ 291      6F720D00 
+ 292              		.section	.text.Humidity_Temperature_Read,"ax",%progbits
+ 293              		.align	1
+ 294              		.global	Humidity_Temperature_Read
+ 295              		.syntax unified
+ 296              		.thumb
+ 297              		.thumb_func
+ 299              	Humidity_Temperature_Read:
+ 300              	.LVL15:
+ 301              	.LFB166:
+ 146:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 147:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 148:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** void Humidity_Temperature_Read(sht40x_data_t *pData, float *temperature, float *humidity)
+ 149:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** {
+ 302              		.loc 1 149 1 is_stmt 1 view -0
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 150:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     if ((pData == NULL) || (temperature == NULL) || (humidity == NULL))
+ 306              		.loc 1 150 5 view .LVU40
+ 307              		.loc 1 150 8 is_stmt 0 view .LVU41
+ 308 0000 98B1     		cbz	r0, .L27
+ 149:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     if ((pData == NULL) || (temperature == NULL) || (humidity == NULL))
+ 309              		.loc 1 149 1 view .LVU42
+ 310 0002 70B5     		push	{r4, r5, r6, lr}
+ 311              	.LCFI15:
+ARM GAS  /tmp/cc4i9Y57.s 			page 9
+
+
+ 312              		.cfi_def_cfa_offset 16
+ 313              		.cfi_offset 4, -16
+ 314              		.cfi_offset 5, -12
+ 315              		.cfi_offset 6, -8
+ 316              		.cfi_offset 14, -4
+ 317 0004 0C46     		mov	r4, r1
+ 318 0006 1546     		mov	r5, r2
+ 319 0008 0646     		mov	r6, r0
+ 320              		.loc 1 150 25 discriminator 1 view .LVU43
+ 321 000a 49B1     		cbz	r1, .L23
+ 322              		.loc 1 150 50 discriminator 2 view .LVU44
+ 323 000c 42B1     		cbz	r2, .L23
+ 151:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     {
+ 152:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         return;
+ 153:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+ 154:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 155:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     if (sht40x_basic_get_temp_rh(SHT40X_PRECISION_HIGH, pData) == 0)
+ 324              		.loc 1 155 5 is_stmt 1 view .LVU45
+ 325              		.loc 1 155 9 is_stmt 0 view .LVU46
+ 326 000e 0146     		mov	r1, r0
+ 327              	.LVL16:
+ 328              		.loc 1 155 9 view .LVU47
+ 329 0010 0020     		movs	r0, #0
+ 330              	.LVL17:
+ 331              		.loc 1 155 9 view .LVU48
+ 332 0012 FFF7FEFF 		bl	sht40x_basic_get_temp_rh
+ 333              	.LVL18:
+ 334              		.loc 1 155 8 discriminator 1 view .LVU49
+ 335 0016 20B9     		cbnz	r0, .L30
+ 336              	.L25:
+ 156:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     {
+ 157:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         //printf("SHT40 temperature: %.2f C, humidity: %.2f %% \r\n", pData->temperature_C, pData->
+ 158:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+ 159:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     else
+ 160:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     {
+ 161:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         printf("Failed to read temperature and humidity from SHT40 sensor\r\n");
+ 162:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     }
+ 163:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** 
+ 164:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     *temperature = pData->temperature_C;
+ 337              		.loc 1 164 5 is_stmt 1 view .LVU50
+ 338              		.loc 1 164 25 is_stmt 0 view .LVU51
+ 339 0018 3368     		ldr	r3, [r6]	@ float
+ 340              		.loc 1 164 18 view .LVU52
+ 341 001a 2360     		str	r3, [r4]	@ float
+ 165:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****     *humidity = pData->humidity; 
+ 342              		.loc 1 165 5 is_stmt 1 view .LVU53
+ 343              		.loc 1 165 22 is_stmt 0 view .LVU54
+ 344 001c B368     		ldr	r3, [r6, #8]	@ float
+ 345              		.loc 1 165 15 view .LVU55
+ 346 001e 2B60     		str	r3, [r5]	@ float
+ 347              	.L23:
+ 166:Drivers/Sensors/SHT4/sht40x_driver_interface.c **** }...
+ 348              		.loc 1 166 1 view .LVU56
+ 349 0020 70BD     		pop	{r4, r5, r6, pc}
+ 350              	.LVL19:
+ 351              	.L30:
+ 161:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         printf("Failed to read temperature and humidity from SHT40 sensor\r\n");
+ARM GAS  /tmp/cc4i9Y57.s 			page 10
+
+
+ 352              		.loc 1 161 9 is_stmt 1 view .LVU57
+ 353 0022 0248     		ldr	r0, .L31
+ 354 0024 FFF7FEFF 		bl	puts
+ 355              	.LVL20:
+ 356 0028 F6E7     		b	.L25
+ 357              	.LVL21:
+ 358              	.L27:
+ 359              	.LCFI16:
+ 360              		.cfi_def_cfa_offset 0
+ 361              		.cfi_restore 4
+ 362              		.cfi_restore 5
+ 363              		.cfi_restore 6
+ 364              		.cfi_restore 14
+ 161:Drivers/Sensors/SHT4/sht40x_driver_interface.c ****         printf("Failed to read temperature and humidity from SHT40 sensor\r\n");
+ 365              		.loc 1 161 9 is_stmt 0 view .LVU58
+ 366 002a 7047     		bx	lr
+ 367              	.L32:
+ 368              		.align	2
+ 369              	.L31:
+ 370 002c 00000000 		.word	.LC1
+ 371              		.cfi_endproc
+ 372              	.LFE166:
+ 374              		.text
+ 375              	.Letext0:
+ 376              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 377              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 378              		.file 4 "Drivers/CMSIS/Device/ST/STM32U5xx/Include/stm32u545xx.h"
+ 379              		.file 5 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/lib/gcc/arm-none-eabi/13.3.1/include/stdd
+ 380              		.file 6 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_def.h"
+ 381              		.file 7 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_dma.h"
+ 382              		.file 8 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_dma_ex.h"
+ 383              		.file 9 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_i2c.h"
+ 384              		.file 10 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/lib/gcc/arm-none-eabi/13.3.1/include/std
+ 385              		.file 11 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
+ 386              		.file 12 "Drivers/Sensors/SHT4/sht40x_driver.h"
+ 387              		.file 13 "Drivers/Sensors/SHT4/sht40x_driver_interface.h"
+ 388              		.file 14 "Drivers/Sensors/SHT4/sht40x_driver_basic.h"
+ 389              		.file 15 "<built-in>"
+ 390              		.file 16 "Core/Inc/main.h"
+ 391              		.file 17 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal.h"
+ARM GAS  /tmp/cc4i9Y57.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sht40x_driver_interface.c
+     /tmp/cc4i9Y57.s:22     .text.sht40x_interface_i2c_init:00000000 $t
+     /tmp/cc4i9Y57.s:28     .text.sht40x_interface_i2c_init:00000000 sht40x_interface_i2c_init
+     /tmp/cc4i9Y57.s:43     .text.sht40x_interface_i2c_deinit:00000000 $t
+     /tmp/cc4i9Y57.s:49     .text.sht40x_interface_i2c_deinit:00000000 sht40x_interface_i2c_deinit
+     /tmp/cc4i9Y57.s:64     .text.sht40x_interface_i2c_read:00000000 $t
+     /tmp/cc4i9Y57.s:70     .text.sht40x_interface_i2c_read:00000000 sht40x_interface_i2c_read
+     /tmp/cc4i9Y57.s:120    .text.sht40x_interface_i2c_read:00000024 $d
+     /tmp/cc4i9Y57.s:125    .text.sht40x_interface_i2c_write:00000000 $t
+     /tmp/cc4i9Y57.s:131    .text.sht40x_interface_i2c_write:00000000 sht40x_interface_i2c_write
+     /tmp/cc4i9Y57.s:181    .text.sht40x_interface_i2c_write:00000024 $d
+     /tmp/cc4i9Y57.s:186    .text.sht40x_interface_delay_ms:00000000 $t
+     /tmp/cc4i9Y57.s:192    .text.sht40x_interface_delay_ms:00000000 sht40x_interface_delay_ms
+     /tmp/cc4i9Y57.s:214    .rodata.sht40x_interface_debug_print.str1.4:00000000 $d
+     /tmp/cc4i9Y57.s:218    .text.sht40x_interface_debug_print:00000000 $t
+     /tmp/cc4i9Y57.s:224    .text.sht40x_interface_debug_print:00000000 sht40x_interface_debug_print
+     /tmp/cc4i9Y57.s:283    .text.sht40x_interface_debug_print:0000002c $d
+     /tmp/cc4i9Y57.s:288    .rodata.Humidity_Temperature_Read.str1.4:00000000 $d
+     /tmp/cc4i9Y57.s:293    .text.Humidity_Temperature_Read:00000000 $t
+     /tmp/cc4i9Y57.s:299    .text.Humidity_Temperature_Read:00000000 Humidity_Temperature_Read
+     /tmp/cc4i9Y57.s:370    .text.Humidity_Temperature_Read:0000002c $d
+
+UNDEFINED SYMBOLS
+HAL_I2C_Master_Receive
+hi2c1
+HAL_I2C_Master_Transmit
+HAL_Delay
+vsnprintf
+printf
+sht40x_basic_get_temp_rh
+puts

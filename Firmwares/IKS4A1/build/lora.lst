@@ -1,0 +1,989 @@
+ARM GAS  /tmp/ccTbp1vM.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"lora.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "Drivers/Sensors/Lora/lora.c"
+  21              		.section	.text.lora_flush_rx,"ax",%progbits
+  22              		.align	1
+  23              		.global	lora_flush_rx
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	lora_flush_rx:
+  29              	.LFB160:
+   1:Drivers/Sensors/Lora/lora.c **** #include "lora.h"
+   2:Drivers/Sensors/Lora/lora.c **** 
+   3:Drivers/Sensors/Lora/lora.c **** 
+   4:Drivers/Sensors/Lora/lora.c **** // Vide tout octet en attente sur le LPUART1 et efface les flags d'erreur
+   5:Drivers/Sensors/Lora/lora.c **** // (Overrun, Framing, Noise, Parity). Indispensable avant chaque commande AT
+   6:Drivers/Sensors/Lora/lora.c **** // pour empêcher les URCs accumulés (+MSG: Done, +MSG: ACK..., etc.) de
+   7:Drivers/Sensors/Lora/lora.c **** // corrompre la réponse de la commande suivante.
+   8:Drivers/Sensors/Lora/lora.c **** void lora_flush_rx(void) {
+  30              		.loc 1 8 26 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35 0000 82B0     		sub	sp, sp, #8
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+   9:Drivers/Sensors/Lora/lora.c ****     volatile uint32_t dummy;
+  38              		.loc 1 9 5 view .LVU1
+  10:Drivers/Sensors/Lora/lora.c **** 
+  11:Drivers/Sensors/Lora/lora.c ****     // Sur F1, les flags d'erreur (ORE, NE, FE, PE) se clearent
+  12:Drivers/Sensors/Lora/lora.c ****     // par une lecture de SR suivie d'une lecture de DR.
+  13:Drivers/Sensors/Lora/lora.c ****     if (__HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_ORE) ||
+  39              		.loc 1 13 5 view .LVU2
+  40              		.loc 1 13 9 is_stmt 0 view .LVU3
+  41 0002 114B     		ldr	r3, .L7
+  42 0004 1A68     		ldr	r2, [r3]
+  43 0006 D369     		ldr	r3, [r2, #28]
+  44              		.loc 1 13 8 view .LVU4
+  45 0008 13F0080F 		tst	r3, #8
+ARM GAS  /tmp/ccTbp1vM.s 			page 2
+
+
+  46 000c 0BD1     		bne	.L2
+  14:Drivers/Sensors/Lora/lora.c ****         __HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_NE)  ||
+  47              		.loc 1 14 9 view .LVU5
+  48 000e D369     		ldr	r3, [r2, #28]
+  13:Drivers/Sensors/Lora/lora.c ****         __HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_NE)  ||
+  49              		.loc 1 13 55 discriminator 1 view .LVU6
+  50 0010 13F0040F 		tst	r3, #4
+  51 0014 07D1     		bne	.L2
+  15:Drivers/Sensors/Lora/lora.c ****         __HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_FE)  ||
+  52              		.loc 1 15 9 view .LVU7
+  53 0016 D369     		ldr	r3, [r2, #28]
+  14:Drivers/Sensors/Lora/lora.c ****         __HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_NE)  ||
+  54              		.loc 1 14 55 view .LVU8
+  55 0018 13F0020F 		tst	r3, #2
+  56 001c 03D1     		bne	.L2
+  16:Drivers/Sensors/Lora/lora.c ****         __HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_PE))
+  57              		.loc 1 16 9 view .LVU9
+  58 001e D369     		ldr	r3, [r2, #28]
+  15:Drivers/Sensors/Lora/lora.c ****         __HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_FE)  ||
+  59              		.loc 1 15 55 view .LVU10
+  60 0020 13F0010F 		tst	r3, #1
+  61 0024 09D0     		beq	.L4
+  62              	.L2:
+  17:Drivers/Sensors/Lora/lora.c ****     {
+  18:Drivers/Sensors/Lora/lora.c ****         dummy = hlpuart1.Instance->ISR;   // 1. lire SR
+  63              		.loc 1 18 9 is_stmt 1 view .LVU11
+  64              		.loc 1 18 34 is_stmt 0 view .LVU12
+  65 0026 D369     		ldr	r3, [r2, #28]
+  66              		.loc 1 18 15 view .LVU13
+  67 0028 0193     		str	r3, [sp, #4]
+  19:Drivers/Sensors/Lora/lora.c ****         dummy = hlpuart1.Instance->RDR;   // 2. lire DR → clear les flags
+  68              		.loc 1 19 9 is_stmt 1 view .LVU14
+  69              		.loc 1 19 34 is_stmt 0 view .LVU15
+  70 002a 536A     		ldr	r3, [r2, #36]
+  71              		.loc 1 19 15 view .LVU16
+  72 002c 0193     		str	r3, [sp, #4]
+  20:Drivers/Sensors/Lora/lora.c ****         (void)dummy;
+  73              		.loc 1 20 9 is_stmt 1 view .LVU17
+  74 002e 019B     		ldr	r3, [sp, #4]
+  75 0030 03E0     		b	.L4
+  76              	.L5:
+  21:Drivers/Sensors/Lora/lora.c ****     }
+  22:Drivers/Sensors/Lora/lora.c **** 
+  23:Drivers/Sensors/Lora/lora.c ****     // Vider les octets résiduels dans le FIFO RX
+  24:Drivers/Sensors/Lora/lora.c ****     while (__HAL_UART_GET_FLAG(&hlpuart1, UART_FLAG_RXNE)) {
+  25:Drivers/Sensors/Lora/lora.c ****         dummy = (uint8_t)(hlpuart1.Instance->RDR); 
+  77              		.loc 1 25 9 view .LVU18
+  78              		.loc 1 25 44 is_stmt 0 view .LVU19
+  79 0032 536A     		ldr	r3, [r2, #36]
+  80 0034 DBB2     		uxtb	r3, r3
+  81              		.loc 1 25 15 view .LVU20
+  82 0036 0193     		str	r3, [sp, #4]
+  26:Drivers/Sensors/Lora/lora.c ****         (void)dummy;
+  83              		.loc 1 26 9 is_stmt 1 view .LVU21
+  84 0038 019B     		ldr	r3, [sp, #4]
+  85              	.L4:
+  24:Drivers/Sensors/Lora/lora.c ****         dummy = (uint8_t)(hlpuart1.Instance->RDR); 
+ARM GAS  /tmp/ccTbp1vM.s 			page 3
+
+
+  86              		.loc 1 24 12 view .LVU22
+  87 003a D369     		ldr	r3, [r2, #28]
+  88 003c 13F0200F 		tst	r3, #32
+  89 0040 F7D1     		bne	.L5
+  27:Drivers/Sensors/Lora/lora.c ****     }
+  28:Drivers/Sensors/Lora/lora.c **** }
+  90              		.loc 1 28 1 is_stmt 0 view .LVU23
+  91 0042 02B0     		add	sp, sp, #8
+  92              	.LCFI1:
+  93              		.cfi_def_cfa_offset 0
+  94              		@ sp needed
+  95 0044 7047     		bx	lr
+  96              	.L8:
+  97 0046 00BF     		.align	2
+  98              	.L7:
+  99 0048 00000000 		.word	hlpuart1
+ 100              		.cfi_endproc
+ 101              	.LFE160:
+ 103              		.section	.text.lora_ShowResponse,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	lora_ShowResponse
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	lora_ShowResponse:
+ 111              	.LFB162:
+  29:Drivers/Sensors/Lora/lora.c **** 
+  30:Drivers/Sensors/Lora/lora.c **** 
+  31:Drivers/Sensors/Lora/lora.c **** // Envoie une commande AT au lora
+  32:Drivers/Sensors/Lora/lora.c **** void lora_SendCommand(const char* cmd) {
+  33:Drivers/Sensors/Lora/lora.c ****     // Purge les octets/erreurs résiduels avant l'échange.
+  34:Drivers/Sensors/Lora/lora.c ****     lora_flush_rx();
+  35:Drivers/Sensors/Lora/lora.c **** 
+  36:Drivers/Sensors/Lora/lora.c ****     // Send command
+  37:Drivers/Sensors/Lora/lora.c ****     HAL_UART_Transmit(&hlpuart1, (uint8_t*)cmd, strlen(cmd), HAL_MAX_DELAY);
+  38:Drivers/Sensors/Lora/lora.c **** 
+  39:Drivers/Sensors/Lora/lora.c ****     // show the answer of the module on uart2
+  40:Drivers/Sensors/Lora/lora.c ****     lora_ShowResponse();
+  41:Drivers/Sensors/Lora/lora.c **** }
+  42:Drivers/Sensors/Lora/lora.c **** 
+  43:Drivers/Sensors/Lora/lora.c **** 
+  44:Drivers/Sensors/Lora/lora.c **** // Affiche la réponse du module lora sur uart2
+  45:Drivers/Sensors/Lora/lora.c **** void lora_ShowResponse(void) {
+ 112              		.loc 1 45 30 is_stmt 1 view -0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 104
+ 115              		@ frame_needed = 0, uses_anonymous_args = 0
+ 116 0000 10B5     		push	{r4, lr}
+ 117              	.LCFI2:
+ 118              		.cfi_def_cfa_offset 8
+ 119              		.cfi_offset 4, -8
+ 120              		.cfi_offset 14, -4
+ 121 0002 9AB0     		sub	sp, sp, #104
+ 122              	.LCFI3:
+ 123              		.cfi_def_cfa_offset 112
+  46:Drivers/Sensors/Lora/lora.c ****     // show the answer of the module on uart2
+  47:Drivers/Sensors/Lora/lora.c ****     uint8_t rx_buffer[100] = {0}; 
+ARM GAS  /tmp/ccTbp1vM.s 			page 4
+
+
+ 124              		.loc 1 47 5 view .LVU25
+ 125              		.loc 1 47 13 is_stmt 0 view .LVU26
+ 126 0004 6424     		movs	r4, #100
+ 127 0006 2246     		mov	r2, r4
+ 128 0008 0021     		movs	r1, #0
+ 129 000a 01A8     		add	r0, sp, #4
+ 130 000c FFF7FEFF 		bl	memset
+ 131              	.LVL0:
+  48:Drivers/Sensors/Lora/lora.c ****     HAL_UART_Receive(&hlpuart1, rx_buffer, sizeof(rx_buffer), 1000);
+ 132              		.loc 1 48 5 is_stmt 1 view .LVU27
+ 133 0010 4FF47A73 		mov	r3, #1000
+ 134 0014 2246     		mov	r2, r4
+ 135 0016 01A9     		add	r1, sp, #4
+ 136 0018 0748     		ldr	r0, .L11
+ 137 001a FFF7FEFF 		bl	HAL_UART_Receive
+ 138              	.LVL1:
+  49:Drivers/Sensors/Lora/lora.c ****     HAL_UART_Transmit(&huart1, rx_buffer, strlen((char*)rx_buffer), HAL_MAX_DELAY);
+ 139              		.loc 1 49 5 view .LVU28
+ 140              		.loc 1 49 43 is_stmt 0 view .LVU29
+ 141 001e 01A8     		add	r0, sp, #4
+ 142 0020 FFF7FEFF 		bl	strlen
+ 143              	.LVL2:
+ 144              		.loc 1 49 5 discriminator 1 view .LVU30
+ 145 0024 4FF0FF33 		mov	r3, #-1
+ 146 0028 82B2     		uxth	r2, r0
+ 147 002a 01A9     		add	r1, sp, #4
+ 148 002c 0348     		ldr	r0, .L11+4
+ 149 002e FFF7FEFF 		bl	HAL_UART_Transmit
+ 150              	.LVL3:
+  50:Drivers/Sensors/Lora/lora.c ****     //printf("%s", rx_buffer);
+  51:Drivers/Sensors/Lora/lora.c **** }
+ 151              		.loc 1 51 1 view .LVU31
+ 152 0032 1AB0     		add	sp, sp, #104
+ 153              	.LCFI4:
+ 154              		.cfi_def_cfa_offset 8
+ 155              		@ sp needed
+ 156 0034 10BD     		pop	{r4, pc}
+ 157              	.L12:
+ 158 0036 00BF     		.align	2
+ 159              	.L11:
+ 160 0038 00000000 		.word	hlpuart1
+ 161 003c 00000000 		.word	huart1
+ 162              		.cfi_endproc
+ 163              	.LFE162:
+ 165              		.section	.text.lora_SendCommand,"ax",%progbits
+ 166              		.align	1
+ 167              		.global	lora_SendCommand
+ 168              		.syntax unified
+ 169              		.thumb
+ 170              		.thumb_func
+ 172              	lora_SendCommand:
+ 173              	.LVL4:
+ 174              	.LFB161:
+  32:Drivers/Sensors/Lora/lora.c ****     // Purge les octets/erreurs résiduels avant l'échange.
+ 175              		.loc 1 32 40 is_stmt 1 view -0
+ 176              		.cfi_startproc
+ 177              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccTbp1vM.s 			page 5
+
+
+ 178              		@ frame_needed = 0, uses_anonymous_args = 0
+  32:Drivers/Sensors/Lora/lora.c ****     // Purge les octets/erreurs résiduels avant l'échange.
+ 179              		.loc 1 32 40 is_stmt 0 view .LVU33
+ 180 0000 10B5     		push	{r4, lr}
+ 181              	.LCFI5:
+ 182              		.cfi_def_cfa_offset 8
+ 183              		.cfi_offset 4, -8
+ 184              		.cfi_offset 14, -4
+ 185 0002 0446     		mov	r4, r0
+  34:Drivers/Sensors/Lora/lora.c **** 
+ 186              		.loc 1 34 5 is_stmt 1 view .LVU34
+ 187 0004 FFF7FEFF 		bl	lora_flush_rx
+ 188              	.LVL5:
+  37:Drivers/Sensors/Lora/lora.c **** 
+ 189              		.loc 1 37 5 view .LVU35
+  37:Drivers/Sensors/Lora/lora.c **** 
+ 190              		.loc 1 37 49 is_stmt 0 view .LVU36
+ 191 0008 2046     		mov	r0, r4
+ 192 000a FFF7FEFF 		bl	strlen
+ 193              	.LVL6:
+  37:Drivers/Sensors/Lora/lora.c **** 
+ 194              		.loc 1 37 5 discriminator 1 view .LVU37
+ 195 000e 4FF0FF33 		mov	r3, #-1
+ 196 0012 82B2     		uxth	r2, r0
+ 197 0014 2146     		mov	r1, r4
+ 198 0016 0348     		ldr	r0, .L15
+ 199 0018 FFF7FEFF 		bl	HAL_UART_Transmit
+ 200              	.LVL7:
+  40:Drivers/Sensors/Lora/lora.c **** }
+ 201              		.loc 1 40 5 is_stmt 1 view .LVU38
+ 202 001c FFF7FEFF 		bl	lora_ShowResponse
+ 203              	.LVL8:
+  41:Drivers/Sensors/Lora/lora.c **** 
+ 204              		.loc 1 41 1 is_stmt 0 view .LVU39
+ 205 0020 10BD     		pop	{r4, pc}
+ 206              	.LVL9:
+ 207              	.L16:
+  41:Drivers/Sensors/Lora/lora.c **** 
+ 208              		.loc 1 41 1 view .LVU40
+ 209 0022 00BF     		.align	2
+ 210              	.L15:
+ 211 0024 00000000 		.word	hlpuart1
+ 212              		.cfi_endproc
+ 213              	.LFE161:
+ 215              		.section	.rodata.lora_Sleep.str1.4,"aMS",%progbits,1
+ 216              		.align	2
+ 217              	.LC0:
+ 218 0000 41542B4C 		.ascii	"AT+LOWPOWER\015\012\000"
+ 218      4F57504F 
+ 218      5745520D 
+ 218      0A00
+ 219              		.section	.text.lora_Sleep,"ax",%progbits
+ 220              		.align	1
+ 221              		.global	lora_Sleep
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ARM GAS  /tmp/ccTbp1vM.s 			page 6
+
+
+ 226              	lora_Sleep:
+ 227              	.LFB163:
+  52:Drivers/Sensors/Lora/lora.c **** 
+  53:Drivers/Sensors/Lora/lora.c **** 
+  54:Drivers/Sensors/Lora/lora.c **** // Met le lora en sleep
+  55:Drivers/Sensors/Lora/lora.c **** void lora_Sleep(void) {
+ 228              		.loc 1 55 23 is_stmt 1 view -0
+ 229              		.cfi_startproc
+ 230              		@ args = 0, pretend = 0, frame = 0
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232 0000 08B5     		push	{r3, lr}
+ 233              	.LCFI6:
+ 234              		.cfi_def_cfa_offset 8
+ 235              		.cfi_offset 3, -8
+ 236              		.cfi_offset 14, -4
+  56:Drivers/Sensors/Lora/lora.c ****     lora_SendCommand("AT+LOWPOWER\r\n");  
+ 237              		.loc 1 56 5 view .LVU42
+ 238 0002 0248     		ldr	r0, .L19
+ 239 0004 FFF7FEFF 		bl	lora_SendCommand
+ 240              	.LVL10:
+  57:Drivers/Sensors/Lora/lora.c **** }
+ 241              		.loc 1 57 1 is_stmt 0 view .LVU43
+ 242 0008 08BD     		pop	{r3, pc}
+ 243              	.L20:
+ 244 000a 00BF     		.align	2
+ 245              	.L19:
+ 246 000c 00000000 		.word	.LC0
+ 247              		.cfi_endproc
+ 248              	.LFE163:
+ 250              		.section	.rodata.lora_WakeUp.str1.4,"aMS",%progbits,1
+ 251              		.align	2
+ 252              	.LC1:
+ 253 0000 41540D0A 		.ascii	"AT\015\012\000"
+ 253      00
+ 254              		.section	.text.lora_WakeUp,"ax",%progbits
+ 255              		.align	1
+ 256              		.global	lora_WakeUp
+ 257              		.syntax unified
+ 258              		.thumb
+ 259              		.thumb_func
+ 261              	lora_WakeUp:
+ 262              	.LFB164:
+  58:Drivers/Sensors/Lora/lora.c **** 
+  59:Drivers/Sensors/Lora/lora.c **** 
+  60:Drivers/Sensors/Lora/lora.c **** // Reveille le lora
+  61:Drivers/Sensors/Lora/lora.c **** // Sur le Seeed LoRa-E5 en mode LOWPOWER, le 1er caractère reçu sur UART
+  62:Drivers/Sensors/Lora/lora.c **** // sert uniquement à réveiller le module et est perdu. Il faut donc envoyer
+  63:Drivers/Sensors/Lora/lora.c **** // un caractère "dummy" puis attendre ~5 ms avant la vraie commande AT.
+  64:Drivers/Sensors/Lora/lora.c **** void lora_WakeUp(void) {
+ 263              		.loc 1 64 24 is_stmt 1 view -0
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 8
+ 266              		@ frame_needed = 0, uses_anonymous_args = 0
+ 267 0000 00B5     		push	{lr}
+ 268              	.LCFI7:
+ 269              		.cfi_def_cfa_offset 4
+ 270              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccTbp1vM.s 			page 7
+
+
+ 271 0002 83B0     		sub	sp, sp, #12
+ 272              	.LCFI8:
+ 273              		.cfi_def_cfa_offset 16
+  65:Drivers/Sensors/Lora/lora.c ****     uint8_t dummy = 0xFF;
+ 274              		.loc 1 65 5 view .LVU45
+ 275              		.loc 1 65 13 is_stmt 0 view .LVU46
+ 276 0004 FF23     		movs	r3, #255
+ 277 0006 8DF80730 		strb	r3, [sp, #7]
+  66:Drivers/Sensors/Lora/lora.c ****     HAL_UART_Transmit(&hlpuart1, &dummy, 1, HAL_MAX_DELAY);
+ 278              		.loc 1 66 5 is_stmt 1 view .LVU47
+ 279 000a 4FF0FF33 		mov	r3, #-1
+ 280 000e 0122     		movs	r2, #1
+ 281 0010 0DF10701 		add	r1, sp, #7
+ 282 0014 0548     		ldr	r0, .L23
+ 283 0016 FFF7FEFF 		bl	HAL_UART_Transmit
+ 284              	.LVL11:
+  67:Drivers/Sensors/Lora/lora.c ****     HAL_Delay(5);
+ 285              		.loc 1 67 5 view .LVU48
+ 286 001a 0520     		movs	r0, #5
+ 287 001c FFF7FEFF 		bl	HAL_Delay
+ 288              	.LVL12:
+  68:Drivers/Sensors/Lora/lora.c ****     lora_SendCommand("AT\r\n");
+ 289              		.loc 1 68 5 view .LVU49
+ 290 0020 0348     		ldr	r0, .L23+4
+ 291 0022 FFF7FEFF 		bl	lora_SendCommand
+ 292              	.LVL13:
+  69:Drivers/Sensors/Lora/lora.c **** }
+ 293              		.loc 1 69 1 is_stmt 0 view .LVU50
+ 294 0026 03B0     		add	sp, sp, #12
+ 295              	.LCFI9:
+ 296              		.cfi_def_cfa_offset 4
+ 297              		@ sp needed
+ 298 0028 5DF804FB 		ldr	pc, [sp], #4
+ 299              	.L24:
+ 300              		.align	2
+ 301              	.L23:
+ 302 002c 00000000 		.word	hlpuart1
+ 303 0030 00000000 		.word	.LC1
+ 304              		.cfi_endproc
+ 305              	.LFE164:
+ 307              		.section	.rodata.lora_envoi_data.str1.4,"aMS",%progbits,1
+ 308              		.align	2
+ 309              	.LC2:
+ 310 0000 41542B4D 		.ascii	"AT+MSGHEX=%02X%04X%02X%02X%02X\015\012\000"
+ 310      53474845 
+ 310      583D2530 
+ 310      32582530 
+ 310      34582530 
+ 311              		.section	.text.lora_envoi_data,"ax",%progbits
+ 312              		.align	1
+ 313              		.global	lora_envoi_data
+ 314              		.syntax unified
+ 315              		.thumb
+ 316              		.thumb_func
+ 318              	lora_envoi_data:
+ 319              	.LVL14:
+ 320              	.LFB165:
+ARM GAS  /tmp/ccTbp1vM.s 			page 8
+
+
+  70:Drivers/Sensors/Lora/lora.c **** 
+  71:Drivers/Sensors/Lora/lora.c **** 
+  72:Drivers/Sensors/Lora/lora.c **** // Envoie les données avec le lora
+  73:Drivers/Sensors/Lora/lora.c **** void lora_envoi_data(float temperature, float pressure, float humidity,
+  74:Drivers/Sensors/Lora/lora.c ****                      uint8_t class_idx, uint8_t confidence_pct) {
+ 321              		.loc 1 74 65 is_stmt 1 view -0
+ 322              		.cfi_startproc
+ 323              		@ args = 0, pretend = 0, frame = 48
+ 324              		@ frame_needed = 0, uses_anonymous_args = 0
+ 325              		.loc 1 74 65 is_stmt 0 view .LVU52
+ 326 0000 00B5     		push	{lr}
+ 327              	.LCFI10:
+ 328              		.cfi_def_cfa_offset 4
+ 329              		.cfi_offset 14, -4
+ 330 0002 91B0     		sub	sp, sp, #68
+ 331              	.LCFI11:
+ 332              		.cfi_def_cfa_offset 72
+  75:Drivers/Sensors/Lora/lora.c ****     char lora_cmd[40];
+ 333              		.loc 1 75 5 is_stmt 1 view .LVU53
+  76:Drivers/Sensors/Lora/lora.c **** 
+  77:Drivers/Sensors/Lora/lora.c ****     // Packe les valeurs dans 6 octets:
+  78:Drivers/Sensors/Lora/lora.c ****     // 1 byte  temp (int8)
+  79:Drivers/Sensors/Lora/lora.c ****     // 2 bytes pression (int16, x10)
+  80:Drivers/Sensors/Lora/lora.c ****     // 1 byte  humidite (uint8)
+  81:Drivers/Sensors/Lora/lora.c ****     // 1 byte  classe predite (uint8, 0-12)
+  82:Drivers/Sensors/Lora/lora.c ****     // 1 byte  confiance en % (uint8, 0-100)
+  83:Drivers/Sensors/Lora/lora.c ****     int8_t temp_raw = (int8_t)temperature;
+ 334              		.loc 1 83 5 view .LVU54
+ 335              		.loc 1 83 12 is_stmt 0 view .LVU55
+ 336 0004 FDEEC07A 		vcvt.s32.f32	s15, s0
+ 337 0008 CDED047A 		vstr.32	s15, [sp, #16]	@ int
+ 338              	.LVL15:
+  84:Drivers/Sensors/Lora/lora.c ****     int16_t pressure_raw = (int16_t)(pressure * 10.0f);
+ 339              		.loc 1 84 5 is_stmt 1 view .LVU56
+ 340              		.loc 1 84 47 is_stmt 0 view .LVU57
+ 341 000c F2EE047A 		vmov.f32	s15, #1.0e+1
+ 342 0010 60EEA70A 		vmul.f32	s1, s1, s15
+ 343              	.LVL16:
+ 344              		.loc 1 84 13 view .LVU58
+ 345 0014 FDEEE00A 		vcvt.s32.f32	s1, s1
+ 346              	.LVL17:
+  85:Drivers/Sensors/Lora/lora.c ****     uint8_t humidity_raw = (uint8_t)humidity;
+ 347              		.loc 1 85 5 is_stmt 1 view .LVU59
+ 348              		.loc 1 85 13 is_stmt 0 view .LVU60
+ 349 0018 FCEEC17A 		vcvt.u32.f32	s15, s2
+ 350 001c CDED057A 		vstr.32	s15, [sp, #20]	@ int
+ 351 0020 9DF81420 		ldrb	r2, [sp, #20]	@ zero_extendqisi2
+ 352              	.LVL18:
+  86:Drivers/Sensors/Lora/lora.c **** 
+  87:Drivers/Sensors/Lora/lora.c ****     // AT+MSGHEX envoie directement les octets hexadécimaux sur le réseau.
+  88:Drivers/Sensors/Lora/lora.c ****     snprintf(lora_cmd, sizeof(lora_cmd), "AT+MSGHEX=%02X%04X%02X%02X%02X\r\n",
+ 353              		.loc 1 88 5 is_stmt 1 view .LVU61
+  89:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint8_t)temp_raw,
+  90:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint16_t)pressure_raw,
+ 354              		.loc 1 90 28 is_stmt 0 view .LVU62
+ 355 0024 10EE903A 		vmov	r3, s1	@ int
+ 356 0028 9BB2     		uxth	r3, r3
+ARM GAS  /tmp/ccTbp1vM.s 			page 9
+
+
+  88:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint8_t)temp_raw,
+ 357              		.loc 1 88 5 view .LVU63
+ 358 002a 0391     		str	r1, [sp, #12]
+ 359 002c 0290     		str	r0, [sp, #8]
+ 360 002e 0192     		str	r2, [sp, #4]
+ 361 0030 0093     		str	r3, [sp]
+ 362 0032 9DF81030 		ldrb	r3, [sp, #16]	@ zero_extendqisi2
+ 363 0036 054A     		ldr	r2, .L27
+ 364              	.LVL19:
+  88:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint8_t)temp_raw,
+ 365              		.loc 1 88 5 view .LVU64
+ 366 0038 2821     		movs	r1, #40
+ 367              	.LVL20:
+  88:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint8_t)temp_raw,
+ 368              		.loc 1 88 5 view .LVU65
+ 369 003a 06A8     		add	r0, sp, #24
+ 370              	.LVL21:
+  88:Drivers/Sensors/Lora/lora.c ****              (unsigned int)(uint8_t)temp_raw,
+ 371              		.loc 1 88 5 view .LVU66
+ 372 003c FFF7FEFF 		bl	snprintf
+ 373              	.LVL22:
+  91:Drivers/Sensors/Lora/lora.c ****              (unsigned int)humidity_raw,
+  92:Drivers/Sensors/Lora/lora.c ****              (unsigned int)class_idx,
+  93:Drivers/Sensors/Lora/lora.c ****              (unsigned int)confidence_pct);
+  94:Drivers/Sensors/Lora/lora.c ****     lora_SendCommand(lora_cmd);
+ 374              		.loc 1 94 5 is_stmt 1 view .LVU67
+ 375 0040 06A8     		add	r0, sp, #24
+ 376 0042 FFF7FEFF 		bl	lora_SendCommand
+ 377              	.LVL23:
+  95:Drivers/Sensors/Lora/lora.c **** }
+ 378              		.loc 1 95 1 is_stmt 0 view .LVU68
+ 379 0046 11B0     		add	sp, sp, #68
+ 380              	.LCFI12:
+ 381              		.cfi_def_cfa_offset 4
+ 382              		@ sp needed
+ 383 0048 5DF804FB 		ldr	pc, [sp], #4
+ 384              	.LVL24:
+ 385              	.L28:
+ 386              		.loc 1 95 1 view .LVU69
+ 387              		.align	2
+ 388              	.L27:
+ 389 004c 00000000 		.word	.LC2
+ 390              		.cfi_endproc
+ 391              	.LFE165:
+ 393              		.section	.text.send_at_command,"ax",%progbits
+ 394              		.align	1
+ 395              		.global	send_at_command
+ 396              		.syntax unified
+ 397              		.thumb
+ 398              		.thumb_func
+ 400              	send_at_command:
+ 401              	.LVL25:
+ 402              	.LFB167:
+  96:Drivers/Sensors/Lora/lora.c **** 
+  97:Drivers/Sensors/Lora/lora.c **** 
+  98:Drivers/Sensors/Lora/lora.c **** // Configure le module LoRa avec les paramètres de base
+  99:Drivers/Sensors/Lora/lora.c **** void config_Lora(void) {
+ARM GAS  /tmp/ccTbp1vM.s 			page 10
+
+
+ 100:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT\r\n");
+ 101:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 102:Drivers/Sensors/Lora/lora.c **** 
+ 103:Drivers/Sensors/Lora/lora.c ****   // reset le loRa module
+ 104:Drivers/Sensors/Lora/lora.c ****   //send_at_command("AT+FDEFAULT\r\n");
+ 105:Drivers/Sensors/Lora/lora.c ****   //HAL_Delay(1000);
+ 106:Drivers/Sensors/Lora/lora.c **** 
+ 107:Drivers/Sensors/Lora/lora.c ****   // Demande la version du firmaware du module LoRa
+ 108:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+VER\r\n");
+ 109:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 110:Drivers/Sensors/Lora/lora.c **** 
+ 111:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+MODE=LWOTAA\r\n");
+ 112:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 113:Drivers/Sensors/Lora/lora.c **** 
+ 114:Drivers/Sensors/Lora/lora.c ****   // Send the Dr
+ 115:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+DR=EU868\r\n");
+ 116:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 117:Drivers/Sensors/Lora/lora.c **** 
+ 118:Drivers/Sensors/Lora/lora.c ****   // Set the power
+ 119:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+POWER=8\r\n");
+ 120:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 121:Drivers/Sensors/Lora/lora.c **** 
+ 122:Drivers/Sensors/Lora/lora.c ****   // Send the AppEUI (replace with your actual AppEUI)
+ 123:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+ID=APPEUI,7474747474747474\r\n");
+ 124:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 125:Drivers/Sensors/Lora/lora.c **** 
+ 126:Drivers/Sensors/Lora/lora.c ****   // Send the AppKey (replace with your actual AppKey)
+ 127:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+KEY=APPKEY,1D78F0D83FED9FFB83823F9265855366\r\n");
+ 128:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 129:Drivers/Sensors/Lora/lora.c **** 
+ 130:Drivers/Sensors/Lora/lora.c ****   // Send the device EUI (replace with your actual device EUI)
+ 131:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT+ID=DEVEUI,70B3D57ED0077B42\r\n");
+ 132:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 133:Drivers/Sensors/Lora/lora.c **** 
+ 134:Drivers/Sensors/Lora/lora.c ****   // Send the device EUI (replace with your actual device EUI)
+ 135:Drivers/Sensors/Lora/lora.c ****   //lora_SendCommand("AT+SAVE\r\n");
+ 136:Drivers/Sensors/Lora/lora.c ****   //HAL_Delay(1000);
+ 137:Drivers/Sensors/Lora/lora.c **** 
+ 138:Drivers/Sensors/Lora/lora.c ****   // Join the LoRaWAN network
+ 139:Drivers/Sensors/Lora/lora.c ****   // Join avec timeout long pour capturer "+JOIN: Network joined"
+ 140:Drivers/Sensors/Lora/lora.c ****   uint8_t rx_buf[200] = {0};
+ 141:Drivers/Sensors/Lora/lora.c ****   send_at_command("AT+JOIN\r\n", rx_buf, sizeof(rx_buf), 15000);
+ 142:Drivers/Sensors/Lora/lora.c **** }
+ 143:Drivers/Sensors/Lora/lora.c **** 
+ 144:Drivers/Sensors/Lora/lora.c **** 
+ 145:Drivers/Sensors/Lora/lora.c **** // Version modifiée qui retourne le buffer
+ 146:Drivers/Sensors/Lora/lora.c **** uint16_t send_at_command(const char *cmd, uint8_t *rx_buf, uint16_t rx_buf_size, uint32_t timeout_m
+ 403              		.loc 1 146 103 is_stmt 1 view -0
+ 404              		.cfi_startproc
+ 405              		@ args = 0, pretend = 0, frame = 0
+ 406              		@ frame_needed = 0, uses_anonymous_args = 0
+ 407              		.loc 1 146 103 is_stmt 0 view .LVU71
+ 408 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 409              	.LCFI13:
+ 410              		.cfi_def_cfa_offset 24
+ 411              		.cfi_offset 4, -24
+ 412              		.cfi_offset 5, -20
+ARM GAS  /tmp/ccTbp1vM.s 			page 11
+
+
+ 413              		.cfi_offset 6, -16
+ 414              		.cfi_offset 7, -12
+ 415              		.cfi_offset 8, -8
+ 416              		.cfi_offset 14, -4
+ 417 0004 0646     		mov	r6, r0
+ 418 0006 0D46     		mov	r5, r1
+ 419 0008 1446     		mov	r4, r2
+ 420 000a 1F46     		mov	r7, r3
+ 147:Drivers/Sensors/Lora/lora.c ****     // Purge les octets/erreurs résiduels avant l'échange.
+ 148:Drivers/Sensors/Lora/lora.c ****     lora_flush_rx();
+ 421              		.loc 1 148 5 is_stmt 1 view .LVU72
+ 422 000c FFF7FEFF 		bl	lora_flush_rx
+ 423              	.LVL26:
+ 149:Drivers/Sensors/Lora/lora.c **** 
+ 150:Drivers/Sensors/Lora/lora.c ****     HAL_UART_Transmit(&hlpuart1, (uint8_t *)cmd, strlen(cmd), HAL_MAX_DELAY);
+ 424              		.loc 1 150 5 view .LVU73
+ 425              		.loc 1 150 50 is_stmt 0 view .LVU74
+ 426 0010 3046     		mov	r0, r6
+ 427 0012 FFF7FEFF 		bl	strlen
+ 428              	.LVL27:
+ 429              		.loc 1 150 5 discriminator 1 view .LVU75
+ 430 0016 DFF85880 		ldr	r8, .L35
+ 431 001a 4FF0FF33 		mov	r3, #-1
+ 432 001e 82B2     		uxth	r2, r0
+ 433 0020 3146     		mov	r1, r6
+ 434 0022 4046     		mov	r0, r8
+ 435 0024 FFF7FEFF 		bl	HAL_UART_Transmit
+ 436              	.LVL28:
+ 151:Drivers/Sensors/Lora/lora.c **** 
+ 152:Drivers/Sensors/Lora/lora.c ****     memset(rx_buf, 0, rx_buf_size);
+ 437              		.loc 1 152 5 is_stmt 1 view .LVU76
+ 438 0028 2246     		mov	r2, r4
+ 439 002a 0021     		movs	r1, #0
+ 440 002c 2846     		mov	r0, r5
+ 441 002e FFF7FEFF 		bl	memset
+ 442              	.LVL29:
+ 153:Drivers/Sensors/Lora/lora.c ****     uint16_t to_receive = rx_buf_size - 1;
+ 443              		.loc 1 153 5 view .LVU77
+ 444              		.loc 1 153 14 is_stmt 0 view .LVU78
+ 445 0032 013C     		subs	r4, r4, #1
+ 446              	.LVL30:
+ 447              		.loc 1 153 14 view .LVU79
+ 448 0034 A4B2     		uxth	r4, r4
+ 449              	.LVL31:
+ 154:Drivers/Sensors/Lora/lora.c **** 
+ 155:Drivers/Sensors/Lora/lora.c ****     HAL_StatusTypeDef status = HAL_UART_Receive(&hlpuart1, rx_buf, to_receive, timeout_ms);
+ 450              		.loc 1 155 5 is_stmt 1 view .LVU80
+ 451              		.loc 1 155 32 is_stmt 0 view .LVU81
+ 452 0036 3B46     		mov	r3, r7
+ 453 0038 2246     		mov	r2, r4
+ 454 003a 2946     		mov	r1, r5
+ 455 003c 4046     		mov	r0, r8
+ 456 003e FFF7FEFF 		bl	HAL_UART_Receive
+ 457              	.LVL32:
+ 156:Drivers/Sensors/Lora/lora.c **** 
+ 157:Drivers/Sensors/Lora/lora.c ****     uint16_t received = 0;
+ 458              		.loc 1 157 5 is_stmt 1 view .LVU82
+ARM GAS  /tmp/ccTbp1vM.s 			page 12
+
+
+ 158:Drivers/Sensors/Lora/lora.c ****     if (status == HAL_OK || status == HAL_TIMEOUT) {
+ 459              		.loc 1 158 5 view .LVU83
+ 460              		.loc 1 158 8 is_stmt 0 view .LVU84
+ 461 0042 18B1     		cbz	r0, .L30
+ 462              		.loc 1 158 26 discriminator 1 view .LVU85
+ 463 0044 0328     		cmp	r0, #3
+ 464 0046 01D0     		beq	.L30
+ 157:Drivers/Sensors/Lora/lora.c ****     if (status == HAL_OK || status == HAL_TIMEOUT) {
+ 465              		.loc 1 157 14 view .LVU86
+ 466 0048 0024     		movs	r4, #0
+ 467              	.LVL33:
+ 157:Drivers/Sensors/Lora/lora.c ****     if (status == HAL_OK || status == HAL_TIMEOUT) {
+ 468              		.loc 1 157 14 view .LVU87
+ 469 004a 06E0     		b	.L31
+ 470              	.LVL34:
+ 471              	.L30:
+ 159:Drivers/Sensors/Lora/lora.c ****         received = to_receive - hlpuart1.RxXferCount;
+ 472              		.loc 1 159 9 is_stmt 1 view .LVU88
+ 473              		.loc 1 159 41 is_stmt 0 view .LVU89
+ 474 004c 084B     		ldr	r3, .L35
+ 475 004e B3F85E30 		ldrh	r3, [r3, #94]
+ 476 0052 9BB2     		uxth	r3, r3
+ 477              		.loc 1 159 18 view .LVU90
+ 478 0054 E41A     		subs	r4, r4, r3
+ 479              	.LVL35:
+ 480              		.loc 1 159 18 view .LVU91
+ 481 0056 A4B2     		uxth	r4, r4
+ 482              	.LVL36:
+ 160:Drivers/Sensors/Lora/lora.c ****         if (received > 0) {
+ 483              		.loc 1 160 9 is_stmt 1 view .LVU92
+ 484              		.loc 1 160 12 is_stmt 0 view .LVU93
+ 485 0058 14B9     		cbnz	r4, .L34
+ 486              	.LVL37:
+ 487              	.L31:
+ 161:Drivers/Sensors/Lora/lora.c ****             HAL_UART_Transmit(&huart1, rx_buf, received, HAL_MAX_DELAY);
+ 162:Drivers/Sensors/Lora/lora.c ****         }
+ 163:Drivers/Sensors/Lora/lora.c ****     }
+ 164:Drivers/Sensors/Lora/lora.c ****     return received;
+ 488              		.loc 1 164 5 is_stmt 1 view .LVU94
+ 165:Drivers/Sensors/Lora/lora.c **** }
+ 489              		.loc 1 165 1 is_stmt 0 view .LVU95
+ 490 005a 2046     		mov	r0, r4
+ 491 005c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 492              	.LVL38:
+ 493              	.L34:
+ 161:Drivers/Sensors/Lora/lora.c ****             HAL_UART_Transmit(&huart1, rx_buf, received, HAL_MAX_DELAY);
+ 494              		.loc 1 161 13 is_stmt 1 view .LVU96
+ 495 0060 4FF0FF33 		mov	r3, #-1
+ 496 0064 2246     		mov	r2, r4
+ 497 0066 2946     		mov	r1, r5
+ 498 0068 0248     		ldr	r0, .L35+4
+ 499              	.LVL39:
+ 161:Drivers/Sensors/Lora/lora.c ****             HAL_UART_Transmit(&huart1, rx_buf, received, HAL_MAX_DELAY);
+ 500              		.loc 1 161 13 is_stmt 0 view .LVU97
+ 501 006a FFF7FEFF 		bl	HAL_UART_Transmit
+ 502              	.LVL40:
+ 503 006e F4E7     		b	.L31
+ARM GAS  /tmp/ccTbp1vM.s 			page 13
+
+
+ 504              	.L36:
+ 505              		.align	2
+ 506              	.L35:
+ 507 0070 00000000 		.word	hlpuart1
+ 508 0074 00000000 		.word	huart1
+ 509              		.cfi_endproc
+ 510              	.LFE167:
+ 512              		.section	.rodata.config_Lora.str1.4,"aMS",%progbits,1
+ 513              		.align	2
+ 514              	.LC3:
+ 515 0000 41542B56 		.ascii	"AT+VER\015\012\000"
+ 515      45520D0A 
+ 515      00
+ 516 0009 000000   		.align	2
+ 517              	.LC4:
+ 518 000c 41542B4D 		.ascii	"AT+MODE=LWOTAA\015\012\000"
+ 518      4F44453D 
+ 518      4C574F54 
+ 518      41410D0A 
+ 518      00
+ 519 001d 000000   		.align	2
+ 520              	.LC5:
+ 521 0020 41542B44 		.ascii	"AT+DR=EU868\015\012\000"
+ 521      523D4555 
+ 521      3836380D 
+ 521      0A00
+ 522 002e 0000     		.align	2
+ 523              	.LC6:
+ 524 0030 41542B50 		.ascii	"AT+POWER=8\015\012\000"
+ 524      4F574552 
+ 524      3D380D0A 
+ 524      00
+ 525 003d 000000   		.align	2
+ 526              	.LC7:
+ 527 0040 41542B49 		.ascii	"AT+ID=APPEUI,7474747474747474\015\012\000"
+ 527      443D4150 
+ 527      50455549 
+ 527      2C373437 
+ 527      34373437 
+ 528              		.align	2
+ 529              	.LC8:
+ 530 0060 41542B4B 		.ascii	"AT+KEY=APPKEY,1D78F0D83FED9FFB83823F9265855366\015\012"
+ 530      45593D41 
+ 530      50504B45 
+ 530      592C3144 
+ 530      37384630 
+ 531 0090 00       		.ascii	"\000"
+ 532 0091 000000   		.align	2
+ 533              	.LC9:
+ 534 0094 41542B49 		.ascii	"AT+ID=DEVEUI,70B3D57ED0077B42\015\012\000"
+ 534      443D4445 
+ 534      56455549 
+ 534      2C373042 
+ 534      33443537 
+ 535              		.align	2
+ 536              	.LC10:
+ 537 00b4 41542B4A 		.ascii	"AT+JOIN\015\012\000"
+ARM GAS  /tmp/ccTbp1vM.s 			page 14
+
+
+ 537      4F494E0D 
+ 537      0A00
+ 538              		.section	.text.config_Lora,"ax",%progbits
+ 539              		.align	1
+ 540              		.global	config_Lora
+ 541              		.syntax unified
+ 542              		.thumb
+ 543              		.thumb_func
+ 545              	config_Lora:
+ 546              	.LFB166:
+  99:Drivers/Sensors/Lora/lora.c ****   lora_SendCommand("AT\r\n");
+ 547              		.loc 1 99 24 is_stmt 1 view -0
+ 548              		.cfi_startproc
+ 549              		@ args = 0, pretend = 0, frame = 200
+ 550              		@ frame_needed = 0, uses_anonymous_args = 0
+ 551 0000 10B5     		push	{r4, lr}
+ 552              	.LCFI14:
+ 553              		.cfi_def_cfa_offset 8
+ 554              		.cfi_offset 4, -8
+ 555              		.cfi_offset 14, -4
+ 556 0002 B2B0     		sub	sp, sp, #200
+ 557              	.LCFI15:
+ 558              		.cfi_def_cfa_offset 208
+ 100:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 559              		.loc 1 100 3 view .LVU99
+ 560 0004 2348     		ldr	r0, .L39
+ 561 0006 FFF7FEFF 		bl	lora_SendCommand
+ 562              	.LVL41:
+ 101:Drivers/Sensors/Lora/lora.c **** 
+ 563              		.loc 1 101 3 view .LVU100
+ 564 000a 4FF47A70 		mov	r0, #1000
+ 565 000e FFF7FEFF 		bl	HAL_Delay
+ 566              	.LVL42:
+ 108:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 567              		.loc 1 108 3 view .LVU101
+ 568 0012 2148     		ldr	r0, .L39+4
+ 569 0014 FFF7FEFF 		bl	lora_SendCommand
+ 570              	.LVL43:
+ 109:Drivers/Sensors/Lora/lora.c **** 
+ 571              		.loc 1 109 3 view .LVU102
+ 572 0018 4FF47A70 		mov	r0, #1000
+ 573 001c FFF7FEFF 		bl	HAL_Delay
+ 574              	.LVL44:
+ 111:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 575              		.loc 1 111 3 view .LVU103
+ 576 0020 1E48     		ldr	r0, .L39+8
+ 577 0022 FFF7FEFF 		bl	lora_SendCommand
+ 578              	.LVL45:
+ 112:Drivers/Sensors/Lora/lora.c **** 
+ 579              		.loc 1 112 3 view .LVU104
+ 580 0026 4FF47A70 		mov	r0, #1000
+ 581 002a FFF7FEFF 		bl	HAL_Delay
+ 582              	.LVL46:
+ 115:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 583              		.loc 1 115 3 view .LVU105
+ 584 002e 1C48     		ldr	r0, .L39+12
+ 585 0030 FFF7FEFF 		bl	lora_SendCommand
+ARM GAS  /tmp/ccTbp1vM.s 			page 15
+
+
+ 586              	.LVL47:
+ 116:Drivers/Sensors/Lora/lora.c **** 
+ 587              		.loc 1 116 3 view .LVU106
+ 588 0034 4FF47A70 		mov	r0, #1000
+ 589 0038 FFF7FEFF 		bl	HAL_Delay
+ 590              	.LVL48:
+ 119:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 591              		.loc 1 119 3 view .LVU107
+ 592 003c 1948     		ldr	r0, .L39+16
+ 593 003e FFF7FEFF 		bl	lora_SendCommand
+ 594              	.LVL49:
+ 120:Drivers/Sensors/Lora/lora.c **** 
+ 595              		.loc 1 120 3 view .LVU108
+ 596 0042 4FF47A70 		mov	r0, #1000
+ 597 0046 FFF7FEFF 		bl	HAL_Delay
+ 598              	.LVL50:
+ 123:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 599              		.loc 1 123 3 view .LVU109
+ 600 004a 1748     		ldr	r0, .L39+20
+ 601 004c FFF7FEFF 		bl	lora_SendCommand
+ 602              	.LVL51:
+ 124:Drivers/Sensors/Lora/lora.c **** 
+ 603              		.loc 1 124 3 view .LVU110
+ 604 0050 4FF47A70 		mov	r0, #1000
+ 605 0054 FFF7FEFF 		bl	HAL_Delay
+ 606              	.LVL52:
+ 127:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 607              		.loc 1 127 3 view .LVU111
+ 608 0058 1448     		ldr	r0, .L39+24
+ 609 005a FFF7FEFF 		bl	lora_SendCommand
+ 610              	.LVL53:
+ 128:Drivers/Sensors/Lora/lora.c **** 
+ 611              		.loc 1 128 3 view .LVU112
+ 612 005e 4FF47A70 		mov	r0, #1000
+ 613 0062 FFF7FEFF 		bl	HAL_Delay
+ 614              	.LVL54:
+ 131:Drivers/Sensors/Lora/lora.c ****   HAL_Delay(1000);
+ 615              		.loc 1 131 3 view .LVU113
+ 616 0066 1248     		ldr	r0, .L39+28
+ 617 0068 FFF7FEFF 		bl	lora_SendCommand
+ 618              	.LVL55:
+ 132:Drivers/Sensors/Lora/lora.c **** 
+ 619              		.loc 1 132 3 view .LVU114
+ 620 006c 4FF47A70 		mov	r0, #1000
+ 621 0070 FFF7FEFF 		bl	HAL_Delay
+ 622              	.LVL56:
+ 140:Drivers/Sensors/Lora/lora.c ****   send_at_command("AT+JOIN\r\n", rx_buf, sizeof(rx_buf), 15000);
+ 623              		.loc 1 140 3 view .LVU115
+ 140:Drivers/Sensors/Lora/lora.c ****   send_at_command("AT+JOIN\r\n", rx_buf, sizeof(rx_buf), 15000);
+ 624              		.loc 1 140 11 is_stmt 0 view .LVU116
+ 625 0074 C824     		movs	r4, #200
+ 626 0076 2246     		mov	r2, r4
+ 627 0078 0021     		movs	r1, #0
+ 628 007a 6846     		mov	r0, sp
+ 629 007c FFF7FEFF 		bl	memset
+ 630              	.LVL57:
+ 141:Drivers/Sensors/Lora/lora.c **** }
+ARM GAS  /tmp/ccTbp1vM.s 			page 16
+
+
+ 631              		.loc 1 141 3 is_stmt 1 view .LVU117
+ 632 0080 43F69823 		movw	r3, #15000
+ 633 0084 2246     		mov	r2, r4
+ 634 0086 6946     		mov	r1, sp
+ 635 0088 0A48     		ldr	r0, .L39+32
+ 636 008a FFF7FEFF 		bl	send_at_command
+ 637              	.LVL58:
+ 142:Drivers/Sensors/Lora/lora.c **** 
+ 638              		.loc 1 142 1 is_stmt 0 view .LVU118
+ 639 008e 32B0     		add	sp, sp, #200
+ 640              	.LCFI16:
+ 641              		.cfi_def_cfa_offset 8
+ 642              		@ sp needed
+ 643 0090 10BD     		pop	{r4, pc}
+ 644              	.L40:
+ 645 0092 00BF     		.align	2
+ 646              	.L39:
+ 647 0094 00000000 		.word	.LC1
+ 648 0098 00000000 		.word	.LC3
+ 649 009c 0C000000 		.word	.LC4
+ 650 00a0 20000000 		.word	.LC5
+ 651 00a4 30000000 		.word	.LC6
+ 652 00a8 40000000 		.word	.LC7
+ 653 00ac 60000000 		.word	.LC8
+ 654 00b0 94000000 		.word	.LC9
+ 655 00b4 B4000000 		.word	.LC10
+ 656              		.cfi_endproc
+ 657              	.LFE166:
+ 659              		.text
+ 660              	.Letext0:
+ 661              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 662              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 663              		.file 4 "Drivers/CMSIS/Device/ST/STM32U5xx/Include/stm32u545xx.h"
+ 664              		.file 5 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/lib/gcc/arm-none-eabi/13.3.1/include/stdd
+ 665              		.file 6 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_def.h"
+ 666              		.file 7 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_dma.h"
+ 667              		.file 8 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_dma_ex.h"
+ 668              		.file 9 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal_uart.h"
+ 669              		.file 10 "Drivers/Sensors/Lora/lora.h"
+ 670              		.file 11 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/string.h"
+ 671              		.file 12 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/stdio.h"
+ 672              		.file 13 "Drivers/STM32U5xx_HAL_Driver/Inc/stm32u5xx_hal.h"
+ 673              		.file 14 "<built-in>"
+ARM GAS  /tmp/ccTbp1vM.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 lora.c
+     /tmp/ccTbp1vM.s:22     .text.lora_flush_rx:00000000 $t
+     /tmp/ccTbp1vM.s:28     .text.lora_flush_rx:00000000 lora_flush_rx
+     /tmp/ccTbp1vM.s:99     .text.lora_flush_rx:00000048 $d
+     /tmp/ccTbp1vM.s:104    .text.lora_ShowResponse:00000000 $t
+     /tmp/ccTbp1vM.s:110    .text.lora_ShowResponse:00000000 lora_ShowResponse
+     /tmp/ccTbp1vM.s:160    .text.lora_ShowResponse:00000038 $d
+     /tmp/ccTbp1vM.s:166    .text.lora_SendCommand:00000000 $t
+     /tmp/ccTbp1vM.s:172    .text.lora_SendCommand:00000000 lora_SendCommand
+     /tmp/ccTbp1vM.s:211    .text.lora_SendCommand:00000024 $d
+     /tmp/ccTbp1vM.s:216    .rodata.lora_Sleep.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:220    .text.lora_Sleep:00000000 $t
+     /tmp/ccTbp1vM.s:226    .text.lora_Sleep:00000000 lora_Sleep
+     /tmp/ccTbp1vM.s:246    .text.lora_Sleep:0000000c $d
+     /tmp/ccTbp1vM.s:251    .rodata.lora_WakeUp.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:255    .text.lora_WakeUp:00000000 $t
+     /tmp/ccTbp1vM.s:261    .text.lora_WakeUp:00000000 lora_WakeUp
+     /tmp/ccTbp1vM.s:302    .text.lora_WakeUp:0000002c $d
+     /tmp/ccTbp1vM.s:308    .rodata.lora_envoi_data.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:312    .text.lora_envoi_data:00000000 $t
+     /tmp/ccTbp1vM.s:318    .text.lora_envoi_data:00000000 lora_envoi_data
+     /tmp/ccTbp1vM.s:389    .text.lora_envoi_data:0000004c $d
+     /tmp/ccTbp1vM.s:394    .text.send_at_command:00000000 $t
+     /tmp/ccTbp1vM.s:400    .text.send_at_command:00000000 send_at_command
+     /tmp/ccTbp1vM.s:507    .text.send_at_command:00000070 $d
+     /tmp/ccTbp1vM.s:513    .rodata.config_Lora.str1.4:00000000 $d
+     /tmp/ccTbp1vM.s:539    .text.config_Lora:00000000 $t
+     /tmp/ccTbp1vM.s:545    .text.config_Lora:00000000 config_Lora
+     /tmp/ccTbp1vM.s:647    .text.config_Lora:00000094 $d
+
+UNDEFINED SYMBOLS
+hlpuart1
+memset
+HAL_UART_Receive
+strlen
+HAL_UART_Transmit
+huart1
+HAL_Delay
+snprintf

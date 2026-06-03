@@ -1,0 +1,352 @@
+ST Edge AI Core v2.2.0-20266 2adc00962
+Created date          : 2026-05-31 11:42:36
+Parameters            : generate --target stm32u5 --name network -m /home/benjaminavocat-maulaz/Downloads/metai_v2_int8.tflite --compression none --verbosity 1 --workspace /tmp/mxAI_workspace63769124404499444240355395465864 --output /home/benjaminavocat-maulaz/.stm32cubemx/network_output
+
+Exec/report summary (generate)
+----------------------------------------------------------------------------------------------------------------------------
+model file         :   /home/benjaminavocat-maulaz/Downloads/metai_v2_int8.tflite                                           
+type               :   tflite                                                                                               
+c_name             :   network                                                                                              
+compression        :   none                                                                                                 
+options            :   allocate-inputs, allocate-outputs                                                                    
+optimization       :   balanced                                                                                             
+target/series      :   stm32u5                                                                                              
+workspace dir      :   /tmp/mxAI_workspace63769124404499444240355395465864                                                  
+output dir         :   /home/benjaminavocat-maulaz/.stm32cubemx/network_output                                              
+model_fmt          :   ss/sa per channel                                                                                    
+model_name         :   metai_v2_int8                                                                                        
+model_hash         :   0x831726b3062b67602e3a40eeed6a8985                                                                   
+params #           :   22,617 items (23.38 KiB)                                                                             
+----------------------------------------------------------------------------------------------------------------------------
+input 1/1          :   'serving_default_sensor_input0', int8(1x18), 18 Bytes, QLinear(0.003921569,-128,int8), activations   
+output 1/1         :   'nl_13', int8(1x9), 9 Bytes, QLinear(0.003906250,-128,int8), activations                             
+macc               :   22,896                                                                                               
+weights (ro)       :   23,940 B (23.38 KiB) (1 segment) / -66,528(-73.5%) vs float model                                    
+activations (rw)   :   1,004 B (1004 B) (1 segment) *                                                                       
+ram (total)        :   1,004 B (1004 B) = 1,004 + 0 + 0                                                                     
+----------------------------------------------------------------------------------------------------------------------------
+(*) 'input'/'output' buffers are allocated in the activations buffer
+
+Model name - metai_v2_int8
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+m_id   layer (type,original)                     oshape        param/size       macc                    connected to   | c_size            c_macc            c_type                 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+0      serving_default_sensor_input0 (Input, )   [b:1,c:18]                                                            | +1,408(+100.0%)   +1,216(+100.0%)   Dense_[0]              
+       tfl_pseudo_qconst19 (Placeholder, )       [b:64,c:18]   1,152/1,152                                             | -1,152(-100.0%)                     
+       tfl_pseudo_qconst18 (Placeholder, )       [b:64]        64/256                                                  | -256(-100.0%)                       
+       gemm_0 (Gemm, FULLY_CONNECTED)            [b:1,c:64]                    1,216   serving_default_sensor_input0   |                   -1,216(-100.0%)   
+                                                                                                 tfl_pseudo_qconst19   | 
+                                                                                                 tfl_pseudo_qconst18   | 
+       nl_0_nl (Nonlinearity, FULLY_CONNECTED)   [b:1,c:64]                       64                          gemm_0   |                   -64(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+1      tfl_pseudo_qconst17 (Placeholder, )       [b:64,c:64]   4,096/4,096                                             | +256(+6.2%)       +4,160(+100.0%)   Dense_[1]              
+       tfl_pseudo_qconst16 (Placeholder, )       [b:64]        64/256                                                  | -256(-100.0%)                       
+       gemm_1 (Gemm, FULLY_CONNECTED)            [b:1,c:64]                    4,160                         nl_0_nl   |                   -4,160(-100.0%)   
+                                                                                                 tfl_pseudo_qconst17   | 
+                                                                                                 tfl_pseudo_qconst16   | 
+       nl_1_nl (Nonlinearity, FULLY_CONNECTED)   [b:1,c:64]                       64                          gemm_1   |                   -64(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+2      tfl_pseudo_qconst15 (Placeholder, )       [b:64,c:64]   4,096/4,096                                             | +256(+6.2%)       +4,160(+100.0%)   Dense_[2]              
+       tfl_pseudo_qconst14 (Placeholder, )       [b:64]        64/256                                                  | -256(-100.0%)                       
+       gemm_2 (Gemm, FULLY_CONNECTED)            [b:1,c:64]                    4,160                         nl_1_nl   |                   -4,160(-100.0%)   
+                                                                                                 tfl_pseudo_qconst15   | 
+                                                                                                 tfl_pseudo_qconst14   | 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+3      eltwise_3 (Eltwise, ADD)                  [b:1,c:64]                       64                          gemm_2   |                                     Eltwise/add_[3]        
+                                                                                                             nl_0_nl   | 
+       nl_3_nl (Nonlinearity, ADD)               [b:1,c:64]                       64                       eltwise_3   |                   -64(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+4      tfl_pseudo_qconst13 (Placeholder, )       [b:48,c:64]   3,072/3,072                                             | +192(+6.2%)       +3,120(+100.0%)   Dense_[4]              
+       tfl_pseudo_qconst12 (Placeholder, )       [b:48]        48/192                                                  | -192(-100.0%)                       
+       gemm_4 (Gemm, FULLY_CONNECTED)            [b:1,c:48]                    3,120                         nl_3_nl   |                   -3,120(-100.0%)   
+                                                                                                 tfl_pseudo_qconst13   | 
+                                                                                                 tfl_pseudo_qconst12   | 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+5      tfl_pseudo_qconst11 (Placeholder, )       [b:48,c:64]   3,072/3,072                                             | +192(+6.2%)       +3,120(+100.0%)   Dense_[5]              
+       tfl_pseudo_qconst10 (Placeholder, )       [b:48]        48/192                                                  | -192(-100.0%)                       
+       gemm_5 (Gemm, FULLY_CONNECTED)            [b:1,c:48]                    3,120                         nl_3_nl   |                   -3,120(-100.0%)   
+                                                                                                 tfl_pseudo_qconst11   | 
+                                                                                                 tfl_pseudo_qconst10   | 
+       nl_5_nl (Nonlinearity, FULLY_CONNECTED)   [b:1,c:48]                       48                          gemm_5   |                   -48(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+6      tfl_pseudo_qconst9 (Placeholder, )        [b:48,c:48]   2,304/2,304                                             | +192(+8.3%)       +2,352(+100.0%)   Dense_[6]              
+       tfl_pseudo_qconst8 (Placeholder, )        [b:48]        48/192                                                  | -192(-100.0%)                       
+       gemm_6 (Gemm, FULLY_CONNECTED)            [b:1,c:48]                    2,352                         nl_5_nl   |                   -2,352(-100.0%)   
+                                                                                                  tfl_pseudo_qconst9   | 
+                                                                                                  tfl_pseudo_qconst8   | 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+7      eltwise_7 (Eltwise, ADD)                  [b:1,c:48]                       48                          gemm_6   |                                     Eltwise/add_[7]        
+                                                                                                              gemm_4   | 
+       nl_7_nl (Nonlinearity, ADD)               [b:1,c:48]                       48                       eltwise_7   |                   -48(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+8      tfl_pseudo_qconst7 (Placeholder, )        [b:32,c:48]   1,536/1,536                                             | +128(+8.3%)       +1,568(+100.0%)   Dense_[8]              
+       tfl_pseudo_qconst6 (Placeholder, )        [b:32]        32/128                                                  | -128(-100.0%)                       
+       gemm_8 (Gemm, FULLY_CONNECTED)            [b:1,c:32]                    1,568                         nl_7_nl   |                   -1,568(-100.0%)   
+                                                                                                  tfl_pseudo_qconst7   | 
+                                                                                                  tfl_pseudo_qconst6   | 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+9      tfl_pseudo_qconst5 (Placeholder, )        [b:32,c:48]   1,536/1,536                                             | +128(+8.3%)       +1,568(+100.0%)   Dense_[9]              
+       tfl_pseudo_qconst4 (Placeholder, )        [b:32]        32/128                                                  | -128(-100.0%)                       
+       gemm_9 (Gemm, FULLY_CONNECTED)            [b:1,c:32]                    1,568                         nl_7_nl   |                   -1,568(-100.0%)   
+                                                                                                  tfl_pseudo_qconst5   | 
+                                                                                                  tfl_pseudo_qconst4   | 
+       nl_9_nl (Nonlinearity, FULLY_CONNECTED)   [b:1,c:32]                       32                          gemm_9   |                   -32(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+10     tfl_pseudo_qconst3 (Placeholder, )        [b:32,c:32]   1,024/1,024                                             | +128(+12.5%)      +1,056(+100.0%)   Dense_[10]             
+       tfl_pseudo_qconst2 (Placeholder, )        [b:32]        32/128                                                  | -128(-100.0%)                       
+       gemm_10 (Gemm, FULLY_CONNECTED)           [b:1,c:32]                    1,056                         nl_9_nl   |                   -1,056(-100.0%)   
+                                                                                                  tfl_pseudo_qconst3   | 
+                                                                                                  tfl_pseudo_qconst2   | 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+11     eltwise_11 (Eltwise, ADD)                 [b:1,c:32]                       32                         gemm_10   |                                     Eltwise/add_[11]       
+                                                                                                              gemm_8   | 
+       nl_11_nl (Nonlinearity, ADD)              [b:1,c:32]                       32                      eltwise_11   |                   -32(-100.0%)      
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+12     tfl_pseudo_qconst1 (Placeholder, )        [b:9,c:32]    288/288                                                 | +36(+12.5%)       +297(+100.0%)     Dense_[12]             
+       tfl_pseudo_qconst (Placeholder, )         [b:9]         9/36                                                    | -36(-100.0%)                        
+       gemm_12 (Gemm, FULLY_CONNECTED)           [b:1,c:9]                       297                        nl_11_nl   |                   -297(-100.0%)     
+                                                                                                  tfl_pseudo_qconst1   | 
+                                                                                                   tfl_pseudo_qconst   | 
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+13     nl_13 (Nonlinearity, SOFTMAX)             [b:1,c:9]                       135                         gemm_12   |                                     Nonlinearity_[o][13]   
+------ ----------------------------------------- ------------- ------------- ------- ------------------------------- --- ----------------- ----------------- ---------------------- 
+model/c-model: macc=23,248/22,896 -352(-1.5%) weights=23,940/23,940  activations=--/1,004 io=--/0
+
+
+
+Generated C-graph summary
+------------------------------------------------------------------------------------------------------------------------
+model name            : metai_v2_int8
+c-name                : network
+c-node #              : 14
+c-array #             : 46
+activations size      : 1004 (1 segment)
+weights size          : 23940 (1 segment)
+macc                  : 22896
+inputs                : ['serving_default_sensor_input0_output']
+outputs               : ['nl_13_output']
+
+C-Arrays (46)
+------ -------------------------------------- ----------- ------------------------- ----------- --------- 
+c_id   name (*_array)                         item/size   domain/mem-pool           c-type      comment   
+------ -------------------------------------- ----------- ------------------------- ----------- --------- 
+0      eltwise_11_output                      32/32       activations/**default**   s8                    
+1      eltwise_3_output                       64/64       activations/**default**   s8                    
+2      eltwise_7_output                       48/48       activations/**default**   s8                    
+3      gemm_0_bias                            64/256      weights/weights           const s32             
+4      gemm_0_output                          64/64       activations/**default**   s8                    
+5      gemm_0_scratch0                        338/676     activations/**default**   s16                   
+6      gemm_0_weights                         1152/1152   weights/weights           const s8              
+7      gemm_10_bias                           32/128      weights/weights           const s32             
+8      gemm_10_output                         32/32       activations/**default**   s8                    
+9      gemm_10_scratch0                       192/384     activations/**default**   s16                   
+10     gemm_10_weights                        1024/1024   weights/weights           const s8              
+11     gemm_12_bias                           9/36        weights/weights           const s32             
+12     gemm_12_output                         9/9         activations/**default**   s8                    
+13     gemm_12_scratch0                       77/154      activations/**default**   s16                   
+14     gemm_12_weights                        288/288     weights/weights           const s8              
+15     gemm_1_bias                            64/256      weights/weights           const s32             
+16     gemm_1_output                          64/64       activations/**default**   s8                    
+17     gemm_1_scratch0                        384/768     activations/**default**   s16                   
+18     gemm_1_weights                         4096/4096   weights/weights           const s8              
+19     gemm_2_bias                            64/256      weights/weights           const s32             
+20     gemm_2_output                          64/64       activations/**default**   s8                    
+21     gemm_2_scratch0                        384/768     activations/**default**   s16                   
+22     gemm_2_weights                         4096/4096   weights/weights           const s8              
+23     gemm_4_bias                            48/192      weights/weights           const s32             
+24     gemm_4_output                          48/48       activations/**default**   s8                    
+25     gemm_4_scratch0                        304/608     activations/**default**   s16                   
+26     gemm_4_weights                         3072/3072   weights/weights           const s8              
+27     gemm_5_bias                            48/192      weights/weights           const s32             
+28     gemm_5_output                          48/48       activations/**default**   s8                    
+29     gemm_5_scratch0                        304/608     activations/**default**   s16                   
+30     gemm_5_weights                         3072/3072   weights/weights           const s8              
+31     gemm_6_bias                            48/192      weights/weights           const s32             
+32     gemm_6_output                          48/48       activations/**default**   s8                    
+33     gemm_6_scratch0                        288/576     activations/**default**   s16                   
+34     gemm_6_weights                         2304/2304   weights/weights           const s8              
+35     gemm_8_bias                            32/128      weights/weights           const s32             
+36     gemm_8_output                          32/32       activations/**default**   s8                    
+37     gemm_8_scratch0                        208/416     activations/**default**   s16                   
+38     gemm_8_weights                         1536/1536   weights/weights           const s8              
+39     gemm_9_bias                            32/128      weights/weights           const s32             
+40     gemm_9_output                          32/32       activations/**default**   s8                    
+41     gemm_9_scratch0                        208/416     activations/**default**   s16                   
+42     gemm_9_weights                         1536/1536   weights/weights           const s8              
+43     nl_13_output                           9/9         activations/**default**   s8          /output   
+44     nl_13_scratch0                         248/992     activations/**default**   s32                   
+45     serving_default_sensor_input0_output   18/18       activations/**default**   s8          /input    
+------ -------------------------------------- ----------- ------------------------- ----------- --------- 
+
+C-Layers (14)
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+c_id   name (*_layer)   id   layer_type      macc   rom    tensors                                   shape (array id)   
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+0      gemm_0           0    Dense           1216   1408   I: serving_default_sensor_input0_output   int8(1x18) (45)    
+                                                           S: gemm_0_scratch0                                           
+                                                           W: gemm_0_weights                         int8(64x18) (6)    
+                                                           W: gemm_0_bias                            int32(64) (3)      
+                                                           O: gemm_0_output                          int8(1x64) (4)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+1      gemm_1           1    Dense           4160   4352   I: gemm_0_output                          int8(1x64) (4)     
+                                                           S: gemm_1_scratch0                                           
+                                                           W: gemm_1_weights                         int8(64x64) (18)   
+                                                           W: gemm_1_bias                            int32(64) (15)     
+                                                           O: gemm_1_output                          int8(1x64) (16)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+2      gemm_2           2    Dense           4160   4352   I: gemm_1_output                          int8(1x64) (16)    
+                                                           S: gemm_2_scratch0                                           
+                                                           W: gemm_2_weights                         int8(64x64) (22)   
+                                                           W: gemm_2_bias                            int32(64) (19)     
+                                                           O: gemm_2_output                          int8(1x64) (20)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+3      eltwise_3        3    Eltwise/add     64     0      I: gemm_2_output                          int8(1x64) (20)    
+                                                           I: gemm_0_output                          int8(1x64) (20)    
+                                                           O: eltwise_3_output                       int8(1x64) (1)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+4      gemm_4           4    Dense           3120   3264   I: eltwise_3_output                       int8(1x64) (1)     
+                                                           S: gemm_4_scratch0                                           
+                                                           W: gemm_4_weights                         int8(48x64) (26)   
+                                                           W: gemm_4_bias                            int32(48) (23)     
+                                                           O: gemm_4_output                          int8(1x48) (24)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+5      gemm_5           5    Dense           3120   3264   I: eltwise_3_output                       int8(1x64) (1)     
+                                                           S: gemm_5_scratch0                                           
+                                                           W: gemm_5_weights                         int8(48x64) (30)   
+                                                           W: gemm_5_bias                            int32(48) (27)     
+                                                           O: gemm_5_output                          int8(1x48) (28)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+6      gemm_6           6    Dense           2352   2496   I: gemm_5_output                          int8(1x48) (28)    
+                                                           S: gemm_6_scratch0                                           
+                                                           W: gemm_6_weights                         int8(48x48) (34)   
+                                                           W: gemm_6_bias                            int32(48) (31)     
+                                                           O: gemm_6_output                          int8(1x48) (32)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+7      eltwise_7        7    Eltwise/add     48     0      I: gemm_6_output                          int8(1x48) (32)    
+                                                           I: gemm_4_output                          int8(1x48) (32)    
+                                                           O: eltwise_7_output                       int8(1x48) (2)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+8      gemm_8           8    Dense           1568   1664   I: eltwise_7_output                       int8(1x48) (2)     
+                                                           S: gemm_8_scratch0                                           
+                                                           W: gemm_8_weights                         int8(32x48) (38)   
+                                                           W: gemm_8_bias                            int32(32) (35)     
+                                                           O: gemm_8_output                          int8(1x32) (36)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+9      gemm_9           9    Dense           1568   1664   I: eltwise_7_output                       int8(1x48) (2)     
+                                                           S: gemm_9_scratch0                                           
+                                                           W: gemm_9_weights                         int8(32x48) (42)   
+                                                           W: gemm_9_bias                            int32(32) (39)     
+                                                           O: gemm_9_output                          int8(1x32) (40)    
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+10     gemm_10          10   Dense           1056   1152   I: gemm_9_output                          int8(1x32) (40)    
+                                                           S: gemm_10_scratch0                                          
+                                                           W: gemm_10_weights                        int8(32x32) (10)   
+                                                           W: gemm_10_bias                           int32(32) (7)      
+                                                           O: gemm_10_output                         int8(1x32) (8)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+11     eltwise_11       11   Eltwise/add     32     0      I: gemm_10_output                         int8(1x32) (8)     
+                                                           I: gemm_8_output                          int8(1x32) (8)     
+                                                           O: eltwise_11_output                      int8(1x32) (0)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+12     gemm_12          12   Dense           297    324    I: eltwise_11_output                      int8(1x32) (0)     
+                                                           S: gemm_12_scratch0                                          
+                                                           W: gemm_12_weights                        int8(9x32) (14)    
+                                                           W: gemm_12_bias                           int32(9) (11)      
+                                                           O: gemm_12_output                         int8(1x9) (12)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+13     nl_13            13   Nonlinearity    135    0      I: gemm_12_output                         int8(1x9) (12)     
+                                                           S: nl_13_scratch0                                            
+                                                           O: nl_13_output                           int8(1x9) (43)     
+------ ---------------- ---- --------------- ------ ------ ----------------------------------------- ------------------ 
+
+
+
+Number of operations per c-layer
+------- ------ -------------------------- -------- ------------ 
+c_id    m_id   name (type)                     #op         type 
+------- ------ -------------------------- -------- ------------ 
+0       0      gemm_0 (Dense)                1,216   smul_s8_s8 
+1       1      gemm_1 (Dense)                4,160   smul_s8_s8 
+2       2      gemm_2 (Dense)                4,160   smul_s8_s8 
+3       3      eltwise_3 (Eltwise/add)          64     op_s8_s8 
+4       4      gemm_4 (Dense)                3,120   smul_s8_s8 
+5       5      gemm_5 (Dense)                3,120   smul_s8_s8 
+6       6      gemm_6 (Dense)                2,352   smul_s8_s8 
+7       7      eltwise_7 (Eltwise/add)          48     op_s8_s8 
+8       8      gemm_8 (Dense)                1,568   smul_s8_s8 
+9       9      gemm_9 (Dense)                1,568   smul_s8_s8 
+10      10     gemm_10 (Dense)               1,056   smul_s8_s8 
+11      11     eltwise_11 (Eltwise/add)         32     op_s8_s8 
+12      12     gemm_12 (Dense)                 297   smul_s8_s8 
+13      13     nl_13 (Nonlinearity)            135     op_s8_s8 
+------- ------ -------------------------- -------- ------------ 
+total                                       22,896 
+
+Number of operation types
+---------------- -------- ----------- 
+operation type          #           % 
+---------------- -------- ----------- 
+smul_s8_s8         22,617       98.8% 
+op_s8_s8              279        1.2% 
+
+Complexity report (model)
+------ ------------------------------- ------------------------- ------------------------- ------ 
+m_id   name                            c_macc                    c_rom                     c_id   
+------ ------------------------------- ------------------------- ------------------------- ------ 
+0      serving_default_sensor_input0   |||||              5.3%   |||||              5.9%   [0]    
+1      tfl_pseudo_qconst17             ||||||||||||||||  18.2%   ||||||||||||||||  18.2%   [1]    
+2      tfl_pseudo_qconst15             ||||||||||||||||  18.2%   ||||||||||||||||  18.2%   [2]    
+3      eltwise_3                       |                  0.3%   |                  0.0%   [3]    
+4      tfl_pseudo_qconst13             ||||||||||||      13.6%   ||||||||||||      13.6%   [4]    
+5      tfl_pseudo_qconst11             ||||||||||||      13.6%   ||||||||||||      13.6%   [5]    
+6      tfl_pseudo_qconst9              |||||||||         10.3%   |||||||||         10.4%   [6]    
+7      eltwise_7                       |                  0.2%   |                  0.0%   [7]    
+8      tfl_pseudo_qconst7              ||||||             6.8%   ||||||             7.0%   [8]    
+9      tfl_pseudo_qconst5              ||||||             6.8%   ||||||             7.0%   [9]    
+10     tfl_pseudo_qconst3              ||||               4.6%   ||||               4.8%   [10]   
+11     eltwise_11                      |                  0.1%   |                  0.0%   [11]   
+12     tfl_pseudo_qconst1              ||                 1.3%   ||                 1.4%   [12]   
+13     nl_13                           |                  0.6%   |                  0.0%   [13]   
+------ ------------------------------- ------------------------- ------------------------- ------ 
+macc=22,896 weights=23,940 act=1,004 ram_io=0
+ 
+ Requested memory size by section - "stm32u5" target
+ ------------------------------- -------- -------- ------- ------- 
+ module                              text   rodata    data     bss 
+ ------------------------------- -------- -------- ------- ------- 
+ NetworkRuntime1020_CM33_GCC.a     13,276        0       0       0 
+ network.o                          1,110    2,820   5,060     140 
+ network_data.o                        44       16      88       0 
+ lib (toolchain)*                       0        0       0       0 
+ ------------------------------- -------- -------- ------- ------- 
+ RT total**                        14,430    2,836   5,148     140 
+ ------------------------------- -------- -------- ------- ------- 
+ weights                                0   23,944       0       0 
+ activations                            0        0       0   1,004 
+ io                                     0        0       0       0 
+ ------------------------------- -------- -------- ------- ------- 
+ TOTAL                             14,430   26,780   5,148   1,144 
+ ------------------------------- -------- -------- ------- ------- 
+ *  toolchain objects (libm/libgcc*)
+ ** RT AI runtime objects (kernels+infrastructure)
+  
+  Summary - "stm32u5" target
+  ---------------------------------------------------
+               FLASH (ro)      %*   RAM (rw)       % 
+  ---------------------------------------------------
+  RT total         22,414   48.3%      5,288   84.0% 
+  ---------------------------------------------------
+  TOTAL            46,358              6,292         
+  ---------------------------------------------------
+  *  rt/total
+
+
+Generated files (7)
+------------------------------------------------------------------------------- 
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network_data_params.h   
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network_data_params.c   
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network_data.h          
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network_data.c          
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network_config.h        
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network.h               
+/home/benjaminavocat-maulaz/.stm32cubemx/network_output/network.c               

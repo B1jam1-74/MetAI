@@ -1,0 +1,921 @@
+ARM GAS  /tmp/ccMkDCD5.s 			page 1
+
+
+   1              		.cpu cortex-m33
+   2              		.arch armv8-m.main
+   3              		.fpu fpv5-sp-d16
+   4              		.arch_extension dsp
+   5              		.eabi_attribute 27, 1
+   6              		.eabi_attribute 28, 1
+   7              		.eabi_attribute 20, 1
+   8              		.eabi_attribute 21, 1
+   9              		.eabi_attribute 23, 3
+  10              		.eabi_attribute 24, 1
+  11              		.eabi_attribute 25, 1
+  12              		.eabi_attribute 26, 1
+  13              		.eabi_attribute 30, 1
+  14              		.eabi_attribute 34, 1
+  15              		.eabi_attribute 18, 4
+  16              		.file	"sht40x_driver_basic.c"
+  17              		.text
+  18              	.Ltext0:
+  19              		.cfi_sections	.debug_frame
+  20              		.file 1 "Drivers/Sensors/SHT4/sht40x_driver_basic.c"
+  21              		.section	.text.sht40x_basic_initialize,"ax",%progbits
+  22              		.align	1
+  23              		.global	sht40x_basic_initialize
+  24              		.syntax unified
+  25              		.thumb
+  26              		.thumb_func
+  28              	sht40x_basic_initialize:
+  29              	.LVL0:
+  30              	.LFB3:
+   1:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+   2:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * The MIT License (MIT)
+   3:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *
+   4:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * Permission is hereby granted, free of charge, to any person obtaining a copy
+   5:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * of this software and associated documentation files (the "Software"), to deal
+   6:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * in the Software without restriction, including without limitation the rights
+   7:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * to use, copy, modify, merge, publish, distribute, sub-license, and/or sell
+   8:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * copies of the Software, and to permit persons to whom the Software is
+   9:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * furnished to do so, subject to the following conditions:
+  10:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *
+  11:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * The above copyright notice and this permission notice shall be included in all
+  12:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * copies or substantial portions of the Software.
+  13:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *
+  14:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  15:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  16:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  17:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  18:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  19:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  20:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * SOFTWARE.
+  21:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *
+  22:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * File:   sht40x_driver_basic.c
+  23:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * Author: Cedric Akilimali
+  24:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *
+  25:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * Created on April 14, 2023, 22:48 PM
+  26:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+  27:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  28:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** #include "sht40x_driver_basic.h"
+ARM GAS  /tmp/ccMkDCD5.s 			page 2
+
+
+  29:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  30:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  31:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+  32:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief basic example initialize
+  33:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[in] variant is the device type
+  34:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return status code
+  35:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *          - 0 success
+  36:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *          - 1 initialize failed
+  37:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note    none
+  38:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+  39:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  40:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_initialize(sht40x_variant_t variant)
+  41:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+  31              		.loc 1 41 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 41 1 is_stmt 0 view .LVU1
+  36 0000 38B5     		push	{r3, r4, r5, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 16
+  39              		.cfi_offset 3, -16
+  40              		.cfi_offset 4, -12
+  41              		.cfi_offset 5, -8
+  42              		.cfi_offset 14, -4
+  43 0002 0446     		mov	r4, r0
+  42:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int err;
+  44              		.loc 1 42 5 is_stmt 1 view .LVU2
+  43:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  44:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     /*link function*/
+  45:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_INIT(&sht40x_handler, sht40x_handle_t);                               /**< L
+  45              		.loc 1 45 5 view .LVU3
+  46 0004 1548     		ldr	r0, .L5
+  47              	.LVL1:
+  48              		.loc 1 45 5 is_stmt 0 view .LVU4
+  49 0006 0023     		movs	r3, #0
+  50 0008 0360     		str	r3, [r0]
+  51 000a 4360     		str	r3, [r0, #4]
+  52 000c 8360     		str	r3, [r0, #8]
+  53 000e C360     		str	r3, [r0, #12]
+  54 0010 0361     		str	r3, [r0, #16]
+  55 0012 4361     		str	r3, [r0, #20]
+  56 0014 8361     		str	r3, [r0, #24]
+  46:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_I2C_INIT(&sht40x_handler, sht40x_interface_i2c_init);                 /**< L
+  57              		.loc 1 46 5 is_stmt 1 view .LVU5
+  58 0016 124B     		ldr	r3, .L5+4
+  59 0018 0360     		str	r3, [r0]
+  47:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_I2C_DEINIT(&sht40x_handler, sht40x_interface_i2c_deinit);             /**< L
+  60              		.loc 1 47 5 view .LVU6
+  61 001a 124B     		ldr	r3, .L5+8
+  62 001c 4360     		str	r3, [r0, #4]
+  48:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_I2C_WRITE(&sht40x_handler, sht40x_interface_i2c_write);               /**< L
+  63              		.loc 1 48 5 view .LVU7
+  64 001e 124B     		ldr	r3, .L5+12
+  65 0020 C360     		str	r3, [r0, #12]
+  49:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_I2C_READ(&sht40x_handler, sht40x_interface_i2c_read);                 /**< L
+  66              		.loc 1 49 5 view .LVU8
+ARM GAS  /tmp/ccMkDCD5.s 			page 3
+
+
+  67 0022 124B     		ldr	r3, .L5+16
+  68 0024 8360     		str	r3, [r0, #8]
+  50:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_DELAY_MS(&sht40x_handler,sht40x_interface_delay_ms);                  /**< L
+  69              		.loc 1 50 5 view .LVU9
+  70 0026 124B     		ldr	r3, .L5+20
+  71 0028 0361     		str	r3, [r0, #16]
+  51:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     DRIVER_SHT40X_LINK_DEBUG_PRINT(&sht40x_handler, sht40x_interface_debug_print);           /**< L
+  72              		.loc 1 51 5 view .LVU10
+  73 002a 124B     		ldr	r3, .L5+24
+  74 002c 4361     		str	r3, [r0, #20]
+  52:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  53:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     /* sht40x initialize */
+  54:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     err = sht40x_init(&sht40x_handler);
+  75              		.loc 1 54 5 view .LVU11
+  76              		.loc 1 54 11 is_stmt 0 view .LVU12
+  77 002e FFF7FEFF 		bl	sht40x_init
+  78              	.LVL2:
+  55:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+  79              		.loc 1 55 5 is_stmt 1 view .LVU13
+  80              		.loc 1 55 7 is_stmt 0 view .LVU14
+  81 0032 0546     		mov	r5, r0
+  82 0034 08B1     		cbz	r0, .L4
+  83              	.LVL3:
+  84              	.L2:
+  56:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+  57:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         return err;   /**< return error status*/
+  58:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     }
+  59:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  60:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     /* set device variant */
+  61:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     err = sht40x_set_variant(&sht40x_handler, variant);
+  62:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+  63:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+  64:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****        return err;   /**< return error status*/
+  65:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     }
+  66:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  67:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     /** set device address */
+  68:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     err= sht40x_set_addr(&sht40x_handler);
+  69:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+  70:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+  71:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         return err;   /**< return error status*/
+  72:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     }
+  73:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  74:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     sht40x_interface_delay_ms(10);         /**< wait 10 ms after initialize complete */
+  75:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  76:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     return 0;   /**< success */
+  77:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+  85              		.loc 1 77 1 view .LVU15
+  86 0036 2846     		mov	r0, r5
+  87 0038 38BD     		pop	{r3, r4, r5, pc}
+  88              	.LVL4:
+  89              	.L4:
+  61:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+  90              		.loc 1 61 5 is_stmt 1 view .LVU16
+  61:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+  91              		.loc 1 61 11 is_stmt 0 view .LVU17
+  92 003a 2146     		mov	r1, r4
+  93 003c 0748     		ldr	r0, .L5
+ARM GAS  /tmp/ccMkDCD5.s 			page 4
+
+
+  94              	.LVL5:
+  61:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+  95              		.loc 1 61 11 view .LVU18
+  96 003e FFF7FEFF 		bl	sht40x_set_variant
+  97              	.LVL6:
+  62:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+  98              		.loc 1 62 5 is_stmt 1 view .LVU19
+  62:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+  99              		.loc 1 62 7 is_stmt 0 view .LVU20
+ 100 0042 0546     		mov	r5, r0
+ 101 0044 0028     		cmp	r0, #0
+ 102 0046 F6D1     		bne	.L2
+  68:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+ 103              		.loc 1 68 5 is_stmt 1 view .LVU21
+  68:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+ 104              		.loc 1 68 10 is_stmt 0 view .LVU22
+ 105 0048 0448     		ldr	r0, .L5
+ 106              	.LVL7:
+  68:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if(err)
+ 107              		.loc 1 68 10 view .LVU23
+ 108 004a FFF7FEFF 		bl	sht40x_set_addr
+ 109              	.LVL8:
+  69:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+ 110              		.loc 1 69 5 is_stmt 1 view .LVU24
+  69:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+ 111              		.loc 1 69 7 is_stmt 0 view .LVU25
+ 112 004e 0546     		mov	r5, r0
+ 113 0050 0028     		cmp	r0, #0
+ 114 0052 F0D1     		bne	.L2
+  74:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 115              		.loc 1 74 5 is_stmt 1 view .LVU26
+ 116 0054 0A20     		movs	r0, #10
+ 117              	.LVL9:
+  74:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 118              		.loc 1 74 5 is_stmt 0 view .LVU27
+ 119 0056 FFF7FEFF 		bl	sht40x_interface_delay_ms
+ 120              	.LVL10:
+  76:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 121              		.loc 1 76 5 is_stmt 1 view .LVU28
+  76:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 122              		.loc 1 76 12 is_stmt 0 view .LVU29
+ 123 005a ECE7     		b	.L2
+ 124              	.L6:
+ 125              		.align	2
+ 126              	.L5:
+ 127 005c 00000000 		.word	sht40x_handler
+ 128 0060 00000000 		.word	sht40x_interface_i2c_init
+ 129 0064 00000000 		.word	sht40x_interface_i2c_deinit
+ 130 0068 00000000 		.word	sht40x_interface_i2c_write
+ 131 006c 00000000 		.word	sht40x_interface_i2c_read
+ 132 0070 00000000 		.word	sht40x_interface_delay_ms
+ 133 0074 00000000 		.word	sht40x_interface_debug_print
+ 134              		.cfi_endproc
+ 135              	.LFE3:
+ 137              		.section	.text.sht40x_basic_get_variant,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	sht40x_basic_get_variant
+ARM GAS  /tmp/ccMkDCD5.s 			page 5
+
+
+ 140              		.syntax unified
+ 141              		.thumb
+ 142              		.thumb_func
+ 144              	sht40x_basic_get_variant:
+ 145              	.LVL11:
+ 146              	.LFB4:
+  78:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  79:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+  80:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief     This function get the device variant
+  81:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[out] pVariant point to the device variant
+  82:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+  83:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+  84:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed to get device variant
+  85:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+  86:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+  87:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_get_variant(sht40x_variant_t *pVariant)
+  88:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 147              		.loc 1 88 1 is_stmt 1 view -0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		.loc 1 88 1 is_stmt 0 view .LVU31
+ 152 0000 08B5     		push	{r3, lr}
+ 153              	.LCFI1:
+ 154              		.cfi_def_cfa_offset 8
+ 155              		.cfi_offset 3, -8
+ 156              		.cfi_offset 14, -4
+ 157 0002 0146     		mov	r1, r0
+  89:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int err;
+ 158              		.loc 1 89 5 is_stmt 1 view .LVU32
+  90:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     err = sht40x_get_variant(&sht40x_handler, pVariant);
+ 159              		.loc 1 90 5 view .LVU33
+ 160              		.loc 1 90 11 is_stmt 0 view .LVU34
+ 161 0004 0148     		ldr	r0, .L9
+ 162              	.LVL12:
+ 163              		.loc 1 90 11 view .LVU35
+ 164 0006 FFF7FEFF 		bl	sht40x_get_variant
+ 165              	.LVL13:
+  91:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     return err;   /**< return error status*/
+ 166              		.loc 1 91 5 is_stmt 1 view .LVU36
+  92:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 167              		.loc 1 92 1 is_stmt 0 view .LVU37
+ 168 000a 08BD     		pop	{r3, pc}
+ 169              	.L10:
+ 170              		.align	2
+ 171              	.L9:
+ 172 000c 00000000 		.word	sht40x_handler
+ 173              		.cfi_endproc
+ 174              	.LFE4:
+ 176              		.section	.text.sht40x_basic_get_temp_rh,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	sht40x_basic_get_temp_rh
+ 179              		.syntax unified
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	sht40x_basic_get_temp_rh:
+ 184              	.LVL14:
+ARM GAS  /tmp/ccMkDCD5.s 			page 6
+
+
+ 185              	.LFB5:
+  93:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+  94:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+  95:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief     Basic implementation to read the temperature and relative humidity
+  96:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[in] precision is the data read accuracy
+  97:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[out] pData point to the sensor data to read
+  98:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+  99:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+ 100:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed to get temp/humidity
+ 101:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+ 102:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+ 103:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_get_temp_rh(sht40x_precision_t precision, sht40x_data_t *pData)
+ 104:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 186              		.loc 1 104 1 is_stmt 1 view -0
+ 187              		.cfi_startproc
+ 188              		@ args = 0, pretend = 0, frame = 0
+ 189              		@ frame_needed = 0, uses_anonymous_args = 0
+ 190              		.loc 1 104 1 is_stmt 0 view .LVU39
+ 191 0000 08B5     		push	{r3, lr}
+ 192              	.LCFI2:
+ 193              		.cfi_def_cfa_offset 8
+ 194              		.cfi_offset 3, -8
+ 195              		.cfi_offset 14, -4
+ 196 0002 0A46     		mov	r2, r1
+ 105:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int err;
+ 197              		.loc 1 105 5 is_stmt 1 view .LVU40
+ 106:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****    err = sht40x_get_temp_rh(&sht40x_handler, precision, pData);
+ 198              		.loc 1 106 4 view .LVU41
+ 199              		.loc 1 106 10 is_stmt 0 view .LVU42
+ 200 0004 0146     		mov	r1, r0
+ 201              	.LVL15:
+ 202              		.loc 1 106 10 view .LVU43
+ 203 0006 0248     		ldr	r0, .L13
+ 204              	.LVL16:
+ 205              		.loc 1 106 10 view .LVU44
+ 206 0008 FFF7FEFF 		bl	sht40x_get_temp_rh
+ 207              	.LVL17:
+ 107:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****    return err;   /**< return error status*/
+ 208              		.loc 1 107 4 is_stmt 1 view .LVU45
+ 108:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 209              		.loc 1 108 1 is_stmt 0 view .LVU46
+ 210 000c 08BD     		pop	{r3, pc}
+ 211              	.L14:
+ 212 000e 00BF     		.align	2
+ 213              	.L13:
+ 214 0010 00000000 		.word	sht40x_handler
+ 215              		.cfi_endproc
+ 216              	.LFE5:
+ 218              		.global	__aeabi_f2d
+ 219              		.global	__aeabi_dadd
+ 220              		.global	__aeabi_i2d
+ 221              		.global	__aeabi_ddiv
+ 222              		.global	__aeabi_d2f
+ 223              		.section	.text.sht40x_basic_get_temp_humidity_nSample,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	sht40x_basic_get_temp_humidity_nSample
+ 226              		.syntax unified
+ARM GAS  /tmp/ccMkDCD5.s 			page 7
+
+
+ 227              		.thumb
+ 228              		.thumb_func
+ 230              	sht40x_basic_get_temp_humidity_nSample:
+ 231              	.LVL18:
+ 232              	.LFB6:
+ 109:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 110:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+ 111:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief     Basic implementation to read the temperature and relative humidity with n number of s
+ 112:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[in] precision is the data read accuracy
+ 113:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[out] pData point to the sensor data to read
+ 114:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[in] u8NumSample is the number of samples to read
+ 115:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+ 116:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+ 117:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed to get temp/humidity
+ 118:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+ 119:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+ 120:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_get_temp_humidity_nSample(sht40x_precision_t precision, sht40x_data_t *pData, 
+ 121:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 233              		.loc 1 121 1 is_stmt 1 view -0
+ 234              		.cfi_startproc
+ 235              		@ args = 0, pretend = 0, frame = 8
+ 236              		@ frame_needed = 0, uses_anonymous_args = 0
+ 122:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int index, err;
+ 237              		.loc 1 122 5 view .LVU48
+ 123:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     double temp_C_Samples = 0;
+ 238              		.loc 1 123 5 view .LVU49
+ 124:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     double humiditySamples = 0;
+ 239              		.loc 1 124 5 view .LVU50
+ 125:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     double temp_F_Samples = 0;
+ 240              		.loc 1 125 5 view .LVU51
+ 126:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 127:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     if (u8NumSample == 0)
+ 241              		.loc 1 127 5 view .LVU52
+ 242              		.loc 1 127 8 is_stmt 0 view .LVU53
+ 243 0000 002A     		cmp	r2, #0
+ 244 0002 61D0     		beq	.L19
+ 121:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int index, err;
+ 245              		.loc 1 121 1 view .LVU54
+ 246 0004 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 247              	.LCFI3:
+ 248              		.cfi_def_cfa_offset 36
+ 249              		.cfi_offset 4, -36
+ 250              		.cfi_offset 5, -32
+ 251              		.cfi_offset 6, -28
+ 252              		.cfi_offset 7, -24
+ 253              		.cfi_offset 8, -20
+ 254              		.cfi_offset 9, -16
+ 255              		.cfi_offset 10, -12
+ 256              		.cfi_offset 11, -8
+ 257              		.cfi_offset 14, -4
+ 258 0008 83B0     		sub	sp, sp, #12
+ 259              	.LCFI4:
+ 260              		.cfi_def_cfa_offset 48
+ 261 000a 8246     		mov	r10, r0
+ 262 000c 0C46     		mov	r4, r1
+ 263 000e 9346     		mov	fp, r2
+ 125:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     double temp_F_Samples = 0;
+ARM GAS  /tmp/ccMkDCD5.s 			page 8
+
+
+ 264              		.loc 1 125 12 view .LVU55
+ 265 0010 0026     		movs	r6, #0
+ 266 0012 0027     		movs	r7, #0
+ 124:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     double temp_F_Samples = 0;
+ 267              		.loc 1 124 12 view .LVU56
+ 268 0014 CDE90067 		strd	r6, [sp]
+ 123:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     double humiditySamples = 0;
+ 269              		.loc 1 123 12 view .LVU57
+ 270 0018 B046     		mov	r8, r6
+ 271 001a B946     		mov	r9, r7
+ 128:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+ 129:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         return 1;
+ 130:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     }
+ 131:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 132:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     for(index = 0; index < u8NumSample; index++)
+ 272              		.loc 1 132 15 view .LVU58
+ 273 001c 0025     		movs	r5, #0
+ 274              	.LVL19:
+ 275              	.L17:
+ 276              		.loc 1 132 26 is_stmt 1 discriminator 1 view .LVU59
+ 277 001e AB45     		cmp	fp, r5
+ 278 0020 2DDD     		ble	.L25
+ 133:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+ 134:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         err = sht40x_get_temp_rh(&sht40x_handler, precision, pData);
+ 279              		.loc 1 134 9 view .LVU60
+ 280              		.loc 1 134 15 is_stmt 0 view .LVU61
+ 281 0022 2246     		mov	r2, r4
+ 282 0024 5146     		mov	r1, r10
+ 283 0026 2A48     		ldr	r0, .L26
+ 284 0028 FFF7FEFF 		bl	sht40x_get_temp_rh
+ 285              	.LVL20:
+ 135:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 	    if(err)
+ 286              		.loc 1 135 6 is_stmt 1 view .LVU62
+ 287              		.loc 1 135 8 is_stmt 0 view .LVU63
+ 288 002c 0346     		mov	r3, r0
+ 289 002e 0028     		cmp	r0, #0
+ 290 0030 46D1     		bne	.L16
+ 136:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 	    {
+ 137:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 		    return err;   /**< return error status*/
+ 138:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 	    }
+ 139:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         sht40x_interface_delay_ms(100);              /**< wait 100 ms between each sample measureme
+ 291              		.loc 1 139 9 is_stmt 1 view .LVU64
+ 292 0032 6420     		movs	r0, #100
+ 293              	.LVL21:
+ 294              		.loc 1 139 9 is_stmt 0 view .LVU65
+ 295 0034 FFF7FEFF 		bl	sht40x_interface_delay_ms
+ 296              	.LVL22:
+ 140:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         temp_C_Samples += pData->temperature_C;
+ 297              		.loc 1 140 9 is_stmt 1 view .LVU66
+ 298              		.loc 1 140 32 is_stmt 0 view .LVU67
+ 299 0038 2068     		ldr	r0, [r4]	@ float
+ 300 003a FFF7FEFF 		bl	__aeabi_f2d
+ 301              	.LVL23:
+ 302 003e 0246     		mov	r2, r0
+ 303 0040 0B46     		mov	r3, r1
+ 304              		.loc 1 140 24 view .LVU68
+ 305 0042 4046     		mov	r0, r8
+ARM GAS  /tmp/ccMkDCD5.s 			page 9
+
+
+ 306 0044 4946     		mov	r1, r9
+ 307 0046 FFF7FEFF 		bl	__aeabi_dadd
+ 308              	.LVL24:
+ 309 004a 8046     		mov	r8, r0
+ 310              	.LVL25:
+ 311              		.loc 1 140 24 view .LVU69
+ 312 004c 8946     		mov	r9, r1
+ 313              	.LVL26:
+ 141:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         temp_F_Samples += pData->temperature_F;
+ 314              		.loc 1 141 9 is_stmt 1 view .LVU70
+ 315              		.loc 1 141 32 is_stmt 0 view .LVU71
+ 316 004e 6068     		ldr	r0, [r4, #4]	@ float
+ 317 0050 FFF7FEFF 		bl	__aeabi_f2d
+ 318              	.LVL27:
+ 319 0054 0246     		mov	r2, r0
+ 320 0056 0B46     		mov	r3, r1
+ 321              		.loc 1 141 24 view .LVU72
+ 322 0058 3046     		mov	r0, r6
+ 323 005a 3946     		mov	r1, r7
+ 324 005c FFF7FEFF 		bl	__aeabi_dadd
+ 325              	.LVL28:
+ 326 0060 0646     		mov	r6, r0
+ 327              	.LVL29:
+ 328              		.loc 1 141 24 view .LVU73
+ 329 0062 0F46     		mov	r7, r1
+ 330              	.LVL30:
+ 142:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****         humiditySamples += pData->humidity;
+ 331              		.loc 1 142 9 is_stmt 1 view .LVU74
+ 332              		.loc 1 142 33 is_stmt 0 view .LVU75
+ 333 0064 A068     		ldr	r0, [r4, #8]	@ float
+ 334 0066 FFF7FEFF 		bl	__aeabi_f2d
+ 335              	.LVL31:
+ 336 006a 0246     		mov	r2, r0
+ 337 006c 0B46     		mov	r3, r1
+ 338              		.loc 1 142 25 view .LVU76
+ 339 006e DDE90001 		ldrd	r0, [sp]
+ 340 0072 FFF7FEFF 		bl	__aeabi_dadd
+ 341              	.LVL32:
+ 342 0076 CDE90001 		strd	r0, [sp]
+ 343              	.LVL33:
+ 132:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+ 344              		.loc 1 132 46 is_stmt 1 discriminator 2 view .LVU77
+ 345 007a 0135     		adds	r5, r5, #1
+ 346              	.LVL34:
+ 132:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     {
+ 347              		.loc 1 132 46 is_stmt 0 discriminator 2 view .LVU78
+ 348 007c CFE7     		b	.L17
+ 349              	.LVL35:
+ 350              	.L25:
+ 143:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     }
+ 144:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 145:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     pData->temperature_C = (float)(temp_C_Samples / u8NumSample);
+ 351              		.loc 1 145 5 is_stmt 1 view .LVU79
+ 352              		.loc 1 145 51 is_stmt 0 view .LVU80
+ 353 007e 5846     		mov	r0, fp
+ 354 0080 FFF7FEFF 		bl	__aeabi_i2d
+ 355              	.LVL36:
+ARM GAS  /tmp/ccMkDCD5.s 			page 10
+
+
+ 356 0084 8246     		mov	r10, r0
+ 357              	.LVL37:
+ 358              		.loc 1 145 51 view .LVU81
+ 359 0086 8B46     		mov	fp, r1
+ 360              	.LVL38:
+ 361              		.loc 1 145 51 view .LVU82
+ 362 0088 0246     		mov	r2, r0
+ 363 008a 0B46     		mov	r3, r1
+ 364 008c 4046     		mov	r0, r8
+ 365 008e 4946     		mov	r1, r9
+ 366 0090 FFF7FEFF 		bl	__aeabi_ddiv
+ 367              	.LVL39:
+ 368              		.loc 1 145 28 view .LVU83
+ 369 0094 FFF7FEFF 		bl	__aeabi_d2f
+ 370              	.LVL40:
+ 371              		.loc 1 145 26 view .LVU84
+ 372 0098 2060     		str	r0, [r4]	@ float
+ 146:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     pData->temperature_F = (float)(temp_F_Samples / u8NumSample);
+ 373              		.loc 1 146 5 is_stmt 1 view .LVU85
+ 374              		.loc 1 146 51 is_stmt 0 view .LVU86
+ 375 009a 5246     		mov	r2, r10
+ 376 009c 5B46     		mov	r3, fp
+ 377 009e 3046     		mov	r0, r6
+ 378 00a0 3946     		mov	r1, r7
+ 379 00a2 FFF7FEFF 		bl	__aeabi_ddiv
+ 380              	.LVL41:
+ 381              		.loc 1 146 28 view .LVU87
+ 382 00a6 FFF7FEFF 		bl	__aeabi_d2f
+ 383              	.LVL42:
+ 384              		.loc 1 146 26 view .LVU88
+ 385 00aa 6060     		str	r0, [r4, #4]	@ float
+ 147:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     pData->humidity = (float)(humiditySamples / u8NumSample);
+ 386              		.loc 1 147 5 is_stmt 1 view .LVU89
+ 387              		.loc 1 147 47 is_stmt 0 view .LVU90
+ 388 00ac 5246     		mov	r2, r10
+ 389 00ae 5B46     		mov	r3, fp
+ 390 00b0 DDE90001 		ldrd	r0, [sp]
+ 391 00b4 FFF7FEFF 		bl	__aeabi_ddiv
+ 392              	.LVL43:
+ 393              		.loc 1 147 23 view .LVU91
+ 394 00b8 FFF7FEFF 		bl	__aeabi_d2f
+ 395              	.LVL44:
+ 396              		.loc 1 147 21 view .LVU92
+ 397 00bc A060     		str	r0, [r4, #8]	@ float
+ 148:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 149:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****      return 0;   /**< success*/
+ 398              		.loc 1 149 6 is_stmt 1 view .LVU93
+ 399              		.loc 1 149 13 is_stmt 0 view .LVU94
+ 400 00be 0023     		movs	r3, #0
+ 401              	.L16:
+ 150:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 402              		.loc 1 150 1 view .LVU95
+ 403 00c0 1846     		mov	r0, r3
+ 404 00c2 03B0     		add	sp, sp, #12
+ 405              	.LCFI5:
+ 406              		.cfi_def_cfa_offset 36
+ 407              	.LVL45:
+ARM GAS  /tmp/ccMkDCD5.s 			page 11
+
+
+ 408              		.loc 1 150 1 view .LVU96
+ 409              		@ sp needed
+ 410 00c4 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 411              	.LVL46:
+ 412              	.L19:
+ 413              	.LCFI6:
+ 414              		.cfi_def_cfa_offset 0
+ 415              		.cfi_restore 4
+ 416              		.cfi_restore 5
+ 417              		.cfi_restore 6
+ 418              		.cfi_restore 7
+ 419              		.cfi_restore 8
+ 420              		.cfi_restore 9
+ 421              		.cfi_restore 10
+ 422              		.cfi_restore 11
+ 423              		.cfi_restore 14
+ 129:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     }
+ 424              		.loc 1 129 16 view .LVU97
+ 425 00c8 0123     		movs	r3, #1
+ 426              		.loc 1 150 1 view .LVU98
+ 427 00ca 1846     		mov	r0, r3
+ 428              	.LVL47:
+ 429              		.loc 1 150 1 view .LVU99
+ 430 00cc 7047     		bx	lr
+ 431              	.L27:
+ 432 00ce 00BF     		.align	2
+ 433              	.L26:
+ 434 00d0 00000000 		.word	sht40x_handler
+ 435              		.cfi_endproc
+ 436              	.LFE6:
+ 438              		.section	.text.sht40x_basic_get_serial_number,"ax",%progbits
+ 439              		.align	1
+ 440              		.global	sht40x_basic_get_serial_number
+ 441              		.syntax unified
+ 442              		.thumb
+ 443              		.thumb_func
+ 445              	sht40x_basic_get_serial_number:
+ 446              	.LVL48:
+ 447              	.LFB7:
+ 151:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 152:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+ 153:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief     Basic implementation to get the device serial number
+ 154:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[out] pSerial_Number point to the device serial number
+ 155:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+ 156:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+ 157:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed to get S/N
+ 158:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+ 159:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+ 160:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_get_serial_number(uint32_t *pSerial_Number)
+ 161:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 448              		.loc 1 161 1 is_stmt 1 view -0
+ 449              		.cfi_startproc
+ 450              		@ args = 0, pretend = 0, frame = 0
+ 451              		@ frame_needed = 0, uses_anonymous_args = 0
+ 452              		.loc 1 161 1 is_stmt 0 view .LVU101
+ 453 0000 08B5     		push	{r3, lr}
+ 454              	.LCFI7:
+ARM GAS  /tmp/ccMkDCD5.s 			page 12
+
+
+ 455              		.cfi_def_cfa_offset 8
+ 456              		.cfi_offset 3, -8
+ 457              		.cfi_offset 14, -4
+ 458 0002 0146     		mov	r1, r0
+ 162:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****   int err;
+ 459              		.loc 1 162 3 is_stmt 1 view .LVU102
+ 163:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****   err = sht40x_get_serial_number(&sht40x_handler, (uint32_t *)pSerial_Number);
+ 460              		.loc 1 163 3 view .LVU103
+ 461              		.loc 1 163 9 is_stmt 0 view .LVU104
+ 462 0004 0148     		ldr	r0, .L30
+ 463              	.LVL49:
+ 464              		.loc 1 163 9 view .LVU105
+ 465 0006 FFF7FEFF 		bl	sht40x_get_serial_number
+ 466              	.LVL50:
+ 164:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****   return err;   /**< return error status*/
+ 467              		.loc 1 164 3 is_stmt 1 view .LVU106
+ 165:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 468              		.loc 1 165 1 is_stmt 0 view .LVU107
+ 469 000a 08BD     		pop	{r3, pc}
+ 470              	.L31:
+ 471              		.align	2
+ 472              	.L30:
+ 473 000c 00000000 		.word	sht40x_handler
+ 474              		.cfi_endproc
+ 475              	.LFE7:
+ 477              		.section	.text.sht40x_basic_activate_heater,"ax",%progbits
+ 478              		.align	1
+ 479              		.global	sht40x_basic_activate_heater
+ 480              		.syntax unified
+ 481              		.thumb
+ 482              		.thumb_func
+ 484              	sht40x_basic_activate_heater:
+ 485              	.LVL51:
+ 486              	.LFB8:
+ 166:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 167:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 168:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+ 169:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief     Basic implementation to activate heater
+ 170:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[in]  power is the heater power desired
+ 171:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[out] pData point to the sensor data to read
+ 172:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+ 173:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+ 174:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed activate heater
+ 175:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+ 176:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+ 177:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_activate_heater(sht40x_heater_power_t power, sht40x_data_t *pData)
+ 178:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 487              		.loc 1 178 1 is_stmt 1 view -0
+ 488              		.cfi_startproc
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 491              		.loc 1 178 1 is_stmt 0 view .LVU109
+ 492 0000 08B5     		push	{r3, lr}
+ 493              	.LCFI8:
+ 494              		.cfi_def_cfa_offset 8
+ 495              		.cfi_offset 3, -8
+ 496              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccMkDCD5.s 			page 13
+
+
+ 497 0002 0A46     		mov	r2, r1
+ 179:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int err;
+ 498              		.loc 1 179 5 is_stmt 1 view .LVU110
+ 180:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     err = sht40x_activate_heater(&sht40x_handler, power, pData);
+ 499              		.loc 1 180 5 view .LVU111
+ 500              		.loc 1 180 11 is_stmt 0 view .LVU112
+ 501 0004 0146     		mov	r1, r0
+ 502              	.LVL52:
+ 503              		.loc 1 180 11 view .LVU113
+ 504 0006 0248     		ldr	r0, .L34
+ 505              	.LVL53:
+ 506              		.loc 1 180 11 view .LVU114
+ 507 0008 FFF7FEFF 		bl	sht40x_activate_heater
+ 508              	.LVL54:
+ 181:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     return err;   /**< return error status*/
+ 509              		.loc 1 181 5 is_stmt 1 view .LVU115
+ 182:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 510              		.loc 1 182 1 is_stmt 0 view .LVU116
+ 511 000c 08BD     		pop	{r3, pc}
+ 512              	.L35:
+ 513 000e 00BF     		.align	2
+ 514              	.L34:
+ 515 0010 00000000 		.word	sht40x_handler
+ 516              		.cfi_endproc
+ 517              	.LFE8:
+ 519              		.section	.text.sht40x_basic_soft_reset,"ax",%progbits
+ 520              		.align	1
+ 521              		.global	sht40x_basic_soft_reset
+ 522              		.syntax unified
+ 523              		.thumb
+ 524              		.thumb_func
+ 526              	sht40x_basic_soft_reset:
+ 527              	.LFB9:
+ 183:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 184:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+ 185:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief   Basic implementation to soft reset the device
+ 186:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+ 187:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+ 188:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed to reset
+ 189:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+ 190:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+ 191:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_soft_reset(void)
+ 192:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 528              		.loc 1 192 1 is_stmt 1 view -0
+ 529              		.cfi_startproc
+ 530              		@ args = 0, pretend = 0, frame = 0
+ 531              		@ frame_needed = 0, uses_anonymous_args = 0
+ 532 0000 08B5     		push	{r3, lr}
+ 533              	.LCFI9:
+ 534              		.cfi_def_cfa_offset 8
+ 535              		.cfi_offset 3, -8
+ 536              		.cfi_offset 14, -4
+ 193:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int err;
+ 537              		.loc 1 193 5 view .LVU118
+ 194:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     err = sht40x_soft_reset(&sht40x_handler);
+ 538              		.loc 1 194 5 view .LVU119
+ 539              		.loc 1 194 11 is_stmt 0 view .LVU120
+ARM GAS  /tmp/ccMkDCD5.s 			page 14
+
+
+ 540 0002 0248     		ldr	r0, .L38
+ 541 0004 FFF7FEFF 		bl	sht40x_soft_reset
+ 542              	.LVL55:
+ 195:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     return err;   /**< return error status*/
+ 543              		.loc 1 195 5 is_stmt 1 view .LVU121
+ 196:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 544              		.loc 1 196 1 is_stmt 0 view .LVU122
+ 545 0008 08BD     		pop	{r3, pc}
+ 546              	.L39:
+ 547 000a 00BF     		.align	2
+ 548              	.L38:
+ 549 000c 00000000 		.word	sht40x_handler
+ 550              		.cfi_endproc
+ 551              	.LFE9:
+ 553              		.section	.text.sht40x_basic_get_addr,"ax",%progbits
+ 554              		.align	1
+ 555              		.global	sht40x_basic_get_addr
+ 556              		.syntax unified
+ 557              		.thumb
+ 558              		.thumb_func
+ 560              	sht40x_basic_get_addr:
+ 561              	.LVL56:
+ 562              	.LFB10:
+ 197:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 
+ 198:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** /**
+ 199:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @brief    Basic implementation to get the address
+ 200:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @param[out] pI2c_address point to the chip i2c address
+ 201:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @return  status code
+ 202:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 0 success
+ 203:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  *            - 1 failed to get i2c address
+ 204:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  * @note      none
+ 205:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****  */
+ 206:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** uint8_t sht40x_basic_get_addr(uint8_t  *pI2c_address)
+ 207:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** {
+ 563              		.loc 1 207 1 is_stmt 1 view -0
+ 564              		.cfi_startproc
+ 565              		@ args = 0, pretend = 0, frame = 0
+ 566              		@ frame_needed = 0, uses_anonymous_args = 0
+ 567              		.loc 1 207 1 is_stmt 0 view .LVU124
+ 568 0000 08B5     		push	{r3, lr}
+ 569              	.LCFI10:
+ 570              		.cfi_def_cfa_offset 8
+ 571              		.cfi_offset 3, -8
+ 572              		.cfi_offset 14, -4
+ 573 0002 0146     		mov	r1, r0
+ 208:Drivers/Sensors/SHT4/sht40x_driver_basic.c ****     int err;
+ 574              		.loc 1 208 5 is_stmt 1 view .LVU125
+ 209:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 	err = sht40x_get_addr(&sht40x_handler, (uint8_t *)pI2c_address);
+ 575              		.loc 1 209 2 view .LVU126
+ 576              		.loc 1 209 8 is_stmt 0 view .LVU127
+ 577 0004 0148     		ldr	r0, .L42
+ 578              	.LVL57:
+ 579              		.loc 1 209 8 view .LVU128
+ 580 0006 FFF7FEFF 		bl	sht40x_get_addr
+ 581              	.LVL58:
+ 210:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** 	return err;   /**< return error status*/
+ 582              		.loc 1 210 2 is_stmt 1 view .LVU129
+ARM GAS  /tmp/ccMkDCD5.s 			page 15
+
+
+ 211:Drivers/Sensors/SHT4/sht40x_driver_basic.c **** }
+ 583              		.loc 1 211 1 is_stmt 0 view .LVU130
+ 584 000a 08BD     		pop	{r3, pc}
+ 585              	.L43:
+ 586              		.align	2
+ 587              	.L42:
+ 588 000c 00000000 		.word	sht40x_handler
+ 589              		.cfi_endproc
+ 590              	.LFE10:
+ 592              		.section	.bss.sht40x_handler,"aw",%nobits
+ 593              		.align	2
+ 596              	sht40x_handler:
+ 597 0000 00000000 		.space	28
+ 597      00000000 
+ 597      00000000 
+ 597      00000000 
+ 597      00000000 
+ 598              		.text
+ 599              	.Letext0:
+ 600              		.file 2 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/machine/_default_ty
+ 601              		.file 3 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/lib/gcc/arm-none-eabi/13.3.1/include/stdd
+ 602              		.file 4 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/sys/_stdint.h"
+ 603              		.file 5 "Drivers/Sensors/SHT4/sht40x_driver.h"
+ 604              		.file 6 "Drivers/Sensors/SHT4/sht40x_driver_interface.h"
+ 605              		.file 7 "/opt/st/stm32cubeclt_1.20.0/GNU-tools-for-STM32/arm-none-eabi/include/string.h"
+ARM GAS  /tmp/ccMkDCD5.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sht40x_driver_basic.c
+     /tmp/ccMkDCD5.s:22     .text.sht40x_basic_initialize:00000000 $t
+     /tmp/ccMkDCD5.s:28     .text.sht40x_basic_initialize:00000000 sht40x_basic_initialize
+     /tmp/ccMkDCD5.s:127    .text.sht40x_basic_initialize:0000005c $d
+     /tmp/ccMkDCD5.s:596    .bss.sht40x_handler:00000000 sht40x_handler
+     /tmp/ccMkDCD5.s:138    .text.sht40x_basic_get_variant:00000000 $t
+     /tmp/ccMkDCD5.s:144    .text.sht40x_basic_get_variant:00000000 sht40x_basic_get_variant
+     /tmp/ccMkDCD5.s:172    .text.sht40x_basic_get_variant:0000000c $d
+     /tmp/ccMkDCD5.s:177    .text.sht40x_basic_get_temp_rh:00000000 $t
+     /tmp/ccMkDCD5.s:183    .text.sht40x_basic_get_temp_rh:00000000 sht40x_basic_get_temp_rh
+     /tmp/ccMkDCD5.s:214    .text.sht40x_basic_get_temp_rh:00000010 $d
+     /tmp/ccMkDCD5.s:224    .text.sht40x_basic_get_temp_humidity_nSample:00000000 $t
+     /tmp/ccMkDCD5.s:230    .text.sht40x_basic_get_temp_humidity_nSample:00000000 sht40x_basic_get_temp_humidity_nSample
+     /tmp/ccMkDCD5.s:434    .text.sht40x_basic_get_temp_humidity_nSample:000000d0 $d
+     /tmp/ccMkDCD5.s:439    .text.sht40x_basic_get_serial_number:00000000 $t
+     /tmp/ccMkDCD5.s:445    .text.sht40x_basic_get_serial_number:00000000 sht40x_basic_get_serial_number
+     /tmp/ccMkDCD5.s:473    .text.sht40x_basic_get_serial_number:0000000c $d
+     /tmp/ccMkDCD5.s:478    .text.sht40x_basic_activate_heater:00000000 $t
+     /tmp/ccMkDCD5.s:484    .text.sht40x_basic_activate_heater:00000000 sht40x_basic_activate_heater
+     /tmp/ccMkDCD5.s:515    .text.sht40x_basic_activate_heater:00000010 $d
+     /tmp/ccMkDCD5.s:520    .text.sht40x_basic_soft_reset:00000000 $t
+     /tmp/ccMkDCD5.s:526    .text.sht40x_basic_soft_reset:00000000 sht40x_basic_soft_reset
+     /tmp/ccMkDCD5.s:549    .text.sht40x_basic_soft_reset:0000000c $d
+     /tmp/ccMkDCD5.s:554    .text.sht40x_basic_get_addr:00000000 $t
+     /tmp/ccMkDCD5.s:560    .text.sht40x_basic_get_addr:00000000 sht40x_basic_get_addr
+     /tmp/ccMkDCD5.s:588    .text.sht40x_basic_get_addr:0000000c $d
+     /tmp/ccMkDCD5.s:593    .bss.sht40x_handler:00000000 $d
+
+UNDEFINED SYMBOLS
+sht40x_init
+sht40x_set_variant
+sht40x_set_addr
+sht40x_interface_delay_ms
+sht40x_interface_i2c_init
+sht40x_interface_i2c_deinit
+sht40x_interface_i2c_write
+sht40x_interface_i2c_read
+sht40x_interface_debug_print
+sht40x_get_variant
+sht40x_get_temp_rh
+__aeabi_f2d
+__aeabi_dadd
+__aeabi_i2d
+__aeabi_ddiv
+__aeabi_d2f
+sht40x_get_serial_number
+sht40x_activate_heater
+sht40x_soft_reset
+sht40x_get_addr
