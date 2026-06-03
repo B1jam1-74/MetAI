@@ -326,6 +326,17 @@ app.get('/influx_history', async (req, res) => {
   }
 });
 
+app.post('/reset', (req, res) => {
+  try {
+    db.prepare('DELETE FROM uplinks').run();
+    broadcastUpdate();
+    res.json({ status: 'ok', message: 'Stats reset successfully' });
+  } catch (e) {
+    console.error(`[API] reset failed:`, e.message);
+    res.status(500).json({ status: 'error', message: e.message });
+  }
+});
+
 app.get('/events', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');

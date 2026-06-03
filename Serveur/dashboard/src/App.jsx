@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Thermometer, Droplets, Gauge, Cloud, CloudRain, CheckCircle, XCircle, Database } from 'lucide-react';
+import { Thermometer, Droplets, Gauge, Cloud, CloudRain, CheckCircle, XCircle, Database, RotateCcw } from 'lucide-react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   BarChart, Bar, RadialBarChart, RadialBar
@@ -131,6 +131,22 @@ export default function App() {
               </text>
             </RadialBarChart>
           </ResponsiveContainer>
+          <button 
+            onClick={async () => {
+              if (window.confirm('Êtes-vous sûr de vouloir réinitialiser toutes les statistiques et l\'historique ?')) {
+                try {
+                  await axios.post(`${API_URL}/reset`);
+                  fetchData();
+                } catch (err) {
+                  console.error('Failed to reset stats:', err);
+                  alert('Échec de la réinitialisation');
+                }
+              }
+            }}
+            className="mt-6 w-full py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition flex items-center justify-center gap-2"
+          >
+            <RotateCcw className="w-4 h-4" /> Réinitialiser les statistiques
+          </button>
         </div>
 
         {/* Recent Uplinks */}
