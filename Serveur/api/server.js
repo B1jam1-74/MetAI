@@ -262,6 +262,20 @@ app.post('/prediction', async (req, res) => {
     );
   }
 
+  // Ensure InfluxDB gets the complete record (prediction + sensor data)
+  if (temp !== null && finalPredFr !== null) {
+    const influxData = {
+      device_id: data.device_id,
+      received_at: existing ? existing.received_at : data.received_at,
+      temperature_deg_c: temp,
+      humidity_percent: hum,
+      pressure_hpa: press,
+      predicted_class: finalPredClass,
+      prediction_fr: finalPredFr
+    };
+    writeInflux(influxData, { real_temp: real.real_temp, real_condition: real.real_condition }, match);
+  }
+
   broadcastUpdate();
 
   res.json({ status: 'ok', match: Boolean(match) });
@@ -289,13 +303,16 @@ app.get('/stats', (req, res) => {
 
 app.get('/influx_history', async (req, res) => {
   const limit = parseInt(req.query.limit, 10) || 200;
-  const query = `SELECT * FROM weather_sensor ORDER BY time DESC LIMIT ${limit}`;
+  const query = `SELECT time, temperature_C, humidity_pct, pressure_hPa, weather_label, real_condition FROM weather_sensor ORDER BY time DESC LIMIT ${limit}`;
   const url = `http://192.168.0.79:8181/api/v3/query_sql?db=metai&q=${encodeURIComponent(query)}`;
   try {
     const response = await axios.get(url, { timeout: 5000 });
-    res.json(response.data);
+    // InfluxDB v3 often returns { data: [...] } or similar, ensure we pass an array
+    const responseData = Array.isArray(response.data) ? response.data : (response.data.data || []);
+    res.json(responseData);
   } catch (e) {
-    res.json({ error: e.message });
+    console.error(`[InfluxDB] query failed:`, e.message);
+    res.json([]);
   }
 });
 
