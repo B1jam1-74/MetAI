@@ -5,6 +5,9 @@ services:
       - "8000:8000"
     volumes:
       - ./data:/data
+    environment:
+      - DB_PATH=/data/metai.db
+      - INFLUX_URL=http://192.168.0.79:8181/api/v3/write_lp?db=metai
     dns:
       - 8.8.8.8
       - 1.1.1.1
@@ -14,8 +17,6 @@ services:
     build: ./dashboard
     ports:
       - "8501:8501"
-    volumes:
-      - ./data:/data
     dns:
       - 8.8.8.8
       - 1.1.1.1
