@@ -1,0 +1,366 @@
+[
+    {
+        "id": "0739ecf24a48a045",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0021f823ed6ecb0b",
+        "type": "mqtt in",
+        "z": "0739ecf24a48a045",
+        "name": "MetAI",
+        "topic": "v3/benjamin-lora-app@ttn/devices/lora-e5/up",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "38027c2dc8e29d98",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 350,
+        "y": 360,
+        "wires": [
+            [
+                "d24d8f86b6cd80e9",
+                "3d35216fdb06e7a8",
+                "71f6d59ab0fccf5f"
+            ]
+        ]
+    },
+    {
+        "id": "d24d8f86b6cd80e9",
+        "type": "debug",
+        "z": "0739ecf24a48a045",
+        "name": "debug TTN",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "3d35216fdb06e7a8",
+        "type": "switch",
+        "z": "0739ecf24a48a045",
+        "name": "If uplink",
+        "property": "payload.uplink_message.f_port",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 580,
+        "y": 280,
+        "wires": [
+            [
+                "e2b4b8eafabfb324"
+            ]
+        ]
+    },
+    {
+        "id": "e5a49b0e19975e1f",
+        "type": "http request",
+        "z": "0739ecf24a48a045",
+        "name": "Database request",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 970,
+        "y": 280,
+        "wires": [
+            [
+                "575262fa624d9c43"
+            ]
+        ]
+    },
+    {
+        "id": "8035dbd9e4963e47",
+        "type": "debug",
+        "z": "0739ecf24a48a045",
+        "name": "debug Downlink",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1580,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "e2b4b8eafabfb324",
+        "type": "function",
+        "z": "0739ecf24a48a045",
+        "name": "Query database",
+        "func": "const now = Date.now();\n\nconst t3h_start = new Date(now - 3 * 3600 * 1000 - 5 * 60 * 1000).toISOString();\nconst t3h_end   = new Date(now - 3 * 3600 * 1000 + 5 * 60 * 1000).toISOString();\nconst t6h_start = new Date(now - 6 * 3600 * 1000 - 5 * 60 * 1000).toISOString();\nconst t6h_end   = new Date(now - 6 * 3600 * 1000 + 5 * 60 * 1000).toISOString();\n\nconst q = `SELECT \n  \"temperature_C\", \n  \"humidity_pct\", \n  \"pressure_hPa\", \n  time \nFROM weather_sensor\nWHERE (time >= '${t3h_start}' AND time <= '${t3h_end}')\n   OR (time >= '${t6h_start}' AND time <= '${t6h_end}')\nORDER BY time ASC`;\n\nmsg.url = \"http://192.168.0.79:8181/api/v3/query_sql\"\n        + \"?db=metai\"\n        + \"&q=\" + encodeURIComponent(q);\nmsg.method = \"GET\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 280,
+        "wires": [
+            [
+                "e5a49b0e19975e1f"
+            ]
+        ]
+    },
+    {
+        "id": "575262fa624d9c43",
+        "type": "function",
+        "z": "0739ecf24a48a045",
+        "name": "Send downlink",
+        "func": "// Parse the string from InfluxDB\nconst rows = typeof msg.payload === 'string' ? JSON.parse(msg.payload) : msg.payload;\n\nif (!rows || rows.length < 2) {\n    node.warn(\"Not enough rows: \" + (rows ? rows.length : 0));\n    return null;\n}\n\nconst r3 = rows[0];\nconst r6 = rows[rows.length - 1];\n\n//node.warn(\"r3: \" + JSON.stringify(r3));\n//node.warn(\"r6: \" + JSON.stringify(r6));\n\nmsg.url = \"https://eu1.cloud.thethings.network/api/v3/as/applications/benjamin-lora-app/devices/lora-e5/down/push\";\nmsg.method = \"POST\";\nmsg.headers = {\n    \"Authorization\": \"Bearer NNSXS.ASS55SSF55M4AI6EO36ZJJSYRY7SNSRK3O6DO7Y.PE36VE4NBL5H37A5HALATJUPT3FC4BOPEGZ72IJRDWQZGQYXXFLQ\",\n    \"Content-Type\": \"application/json\"\n};\nmsg.payload = JSON.stringify({\n    downlinks: [{\n        decoded_payload: {\n            temp_3h: r3[\"temperature_C\"],\n            hum_3h:  r3[\"humidity_pct\"],\n            pres_3h: r3[\"pressure_hPa\"],\n            temp_6h: r6[\"temperature_C\"],\n            hum_6h:  r6[\"humidity_pct\"],\n            pres_6h: r6[\"pressure_hPa\"]\n        },\n        f_port: 11,\n        priority: \"NORMAL\"\n    }]\n});\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 280,
+        "wires": [
+            [
+                "863b62b558eed2e6"
+            ]
+        ]
+    },
+    {
+        "id": "863b62b558eed2e6",
+        "type": "http request",
+        "z": "0739ecf24a48a045",
+        "name": "Downlink to TTN",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1380,
+        "y": 280,
+        "wires": [
+            [
+                "8035dbd9e4963e47"
+            ]
+        ]
+    },
+    {
+        "id": "71f6d59ab0fccf5f",
+        "type": "switch",
+        "z": "0739ecf24a48a045",
+        "name": "If sensor data or model prediction",
+        "property": "payload.uplink_message.f_port",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "12",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 660,
+        "y": 420,
+        "wires": [
+            [
+                "f5475c5453432fb6"
+            ],
+            [
+                "9fae7393233bc039"
+            ]
+        ]
+    },
+    {
+        "id": "f5475c5453432fb6",
+        "type": "function",
+        "z": "0739ecf24a48a045",
+        "name": "Parse sensors",
+        "func": "const payload = msg.payload.uplink_message.decoded_payload;\nconst deviceId = msg.payload.end_device_ids.device_id;\nconst receivedAt = msg.payload.received_at;\n\nmsg.url    = \"http://192.168.0.79:8000/uplink\";\nmsg.method = \"POST\";\nmsg.headers = { \"Content-Type\": \"application/json\" };\nmsg.payload = {\n    device_id:         \"metai\",\n    received_at:       receivedAt,\n    temperature_deg_c: payload.temperature_C,\n    humidity_percent:  payload.humidity_pct,\n    pressure_hpa:      payload.pressure_hPa,\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 380,
+        "wires": [
+            [
+                "40344f51193cead1"
+            ]
+        ]
+    },
+    {
+        "id": "9fae7393233bc039",
+        "type": "function",
+        "z": "0739ecf24a48a045",
+        "name": "Parse prediction",
+        "func": "const payload = msg.payload.uplink_message.decoded_payload;\nconst deviceId = msg.payload.end_device_ids.device_id;\nconst receivedAt = msg.payload.received_at;\n\nmsg.url    = \"http://192.168.0.79:8000/prediction\";\nmsg.method = \"POST\";\nmsg.headers = { \"Content-Type\": \"application/json\" };\nmsg.payload = {\n    device_id:         \"metai\",\n    received_at:       receivedAt,\n    confidence_pct:    payload.confidence_pct,\n    predicted_class:   payload.weather_class,\n    prediction_fr:     payload.weather_label\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1000,
+        "y": 460,
+        "wires": [
+            [
+                "34af915313dfe26b"
+            ]
+        ]
+    },
+    {
+        "id": "40344f51193cead1",
+        "type": "http request",
+        "z": "0739ecf24a48a045",
+        "name": "Send sensors values",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1240,
+        "y": 380,
+        "wires": [
+            [
+                "e06f766d0fedbd81"
+            ]
+        ]
+    },
+    {
+        "id": "e06f766d0fedbd81",
+        "type": "debug",
+        "z": "0739ecf24a48a045",
+        "name": "debug sensors",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1480,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "312bdde087477c4f",
+        "type": "debug",
+        "z": "0739ecf24a48a045",
+        "name": "debug model prediction",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1510,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "34af915313dfe26b",
+        "type": "http request",
+        "z": "0739ecf24a48a045",
+        "name": "Send model prediction",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1240,
+        "y": 460,
+        "wires": [
+            [
+                "312bdde087477c4f"
+            ]
+        ]
+    },
+    {
+        "id": "38027c2dc8e29d98",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "eu1.cloud.thethings.network",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
