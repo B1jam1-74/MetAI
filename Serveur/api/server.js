@@ -101,25 +101,21 @@ app.post('/uplink', async (req, res) => {
     return res.json({ status: 'ignored', reason: 'unknown device' });
   }
 
-  // Check if we already have a record for this device and timestamp
   const existing = db.prepare('SELECT * FROM uplinks WHERE device_id = ? AND received_at = ?').get(data.device_id, data.received_at);
   const real = await fetchRealWeather();
 
-  // Determine final values (prefer new data, fallback to existing)
-  const finalTemp = data.temperature_deg_c !== undefined ? data.temperature_deg_c : (existing ? existing.temperature : null);
-  const finalHum = data.humidity_percent !== undefined ? data.humidity_percent : (existing ? existing.humidity : null);
-  const finalPress = data.pressure_hpa !== undefined ? data.pressure_hpa : (existing ? existing.pressure : null);
-  const finalPredClass = data.predicted_class !== undefined ? data.predicted_class : (existing ? existing.predicted_class : null);
-  const finalPredFr = data.prediction_fr !== undefined ? data.prediction_fr : (existing ? existing.prediction_fr : null);
+  const finalTemp = data.temperature_deg_c;
+  const finalHum = data.humidity_percent;
+  const finalPress = data.pressure_hpa;
+  const finalPredClass = existing ? existing.predicted_class : null;
+  const finalPredFr = existing ? existing.prediction_fr : null;
   
-  // Use freshest real weather if sensor data is provided, otherwise keep existing
-  const finalRealTemp = data.temperature_deg_c !== undefined ? real.real_temp : (existing ? existing.real_temp : null);
-  const finalRealHum = data.temperature_deg_c !== undefined ? real.real_humidity : (existing ? existing.real_humidity : null);
-  const finalRealPress = data.temperature_deg_c !== undefined ? real.real_pressure : (existing ? existing.real_pressure : null);
-  const finalRealWmo = data.temperature_deg_c !== undefined ? real.real_wmo_code : (existing ? existing.real_wmo_code : null);
-  const finalRealCond = data.temperature_deg_c !== undefined ? real.real_condition : (existing ? existing.real_condition : null);
+  const finalRealTemp = real.real_temp;
+  const finalRealHum = real.real_humidity;
+  const finalRealPress = real.real_pressure;
+  const finalRealWmo = real.real_wmo_code;
+  const finalRealCond = real.real_condition;
 
-  // Recalculate match if we have both prediction and real condition
   let match = existing ? existing.match : 0;
   if (finalPredFr && finalRealCond) {
     const a = finalPredFr.toLowerCase();
@@ -128,7 +124,6 @@ app.post('/uplink', async (req, res) => {
   }
 
   if (existing) {
-    // Update existing record
     db.prepare(`
       UPDATE uplinks SET 
         temperature = ?, humidity = ?, pressure = ?, 
@@ -137,7 +132,6 @@ app.post('/uplink', async (req, res) => {
       WHERE id = ?
     `).run(finalTemp, finalHum, finalPress, finalPredClass, finalPredFr, finalRealTemp, finalRealHum, finalRealPress, finalRealWmo, finalRealCond, match, existing.id);
   } else {
-    // Insert new record
     db.prepare(`
       INSERT INTO uplinks (device_id, received_at, temperature, humidity, pressure,
         predicted_class, prediction_fr, real_temp, real_humidity, real_pressure, real_wmo_code, real_condition, match)
@@ -149,25 +143,69 @@ app.post('/uplink', async (req, res) => {
     );
   }
 
-  // Write to InfluxDB only when sensor data arrives to avoid duplicate partial writes
-  if (data.temperature_deg_c !== undefined) {
-    const influxData = {
-      device_id: data.device_id,
-      received_at: data.received_at,
-      temperature_deg_c: finalTemp,
-      humidity_percent: finalHum,
-      pressure_hpa: finalPress,
-      predicted_class: finalPredClass,
-      prediction_fr: finalPredFr
-    };
-    writeInflux(influxData, { real_temp: finalRealTemp, real_condition: finalRealCond }, match);
+  const influxData = {
+    device_id: data.device_id,
+    received_at: data.received_at,
+    temperature_deg_c: finalTemp,
+    humidity_percent: finalHum,
+    pressure_hpa: finalPress,
+    predicted_class: finalPredClass,
+    prediction_fr: finalPredFr
+  };
+  writeInflux(influxData, { real_temp: finalRealTemp, real_condition: finalRealCond }, match);
+
+  res.json({ status: 'ok', real_weather: { real_temp: finalRealTemp, real_condition: finalRealCond }, match: Boolean(match) });
+});
+
+app.post('/prediction', async (req, res) => {
+  const data = req.body;
+  if (data.device_id !== 'metai') {
+    return res.json({ status: 'ignored', reason: 'unknown device' });
   }
 
-  res.json({ 
-    status: 'ok', 
-    real_weather: { real_temp: finalRealTemp, real_condition: finalRealCond }, 
-    match: Boolean(match) 
-  });
+  const existing = db.prepare('SELECT * FROM uplinks WHERE device_id = ? AND received_at = ?').get(data.device_id, data.received_at);
+  
+  // If sensors arrived first, use their real weather. Otherwise, fetch it now.
+  const real = (existing && existing.real_condition) ? {
+    real_temp: existing.real_temp,
+    real_humidity: existing.real_humidity,
+    real_pressure: existing.real_pressure,
+    real_wmo_code: existing.real_wmo_code,
+    real_condition: existing.real_condition
+  } : await fetchRealWeather();
+
+  const finalPredClass = data.predicted_class ?? (existing ? existing.predicted_class : null);
+  const finalPredFr = data.prediction_fr ?? (existing ? existing.prediction_fr : null);
+  
+  let match = existing ? existing.match : 0;
+  if (finalPredFr && real.real_condition) {
+    const a = finalPredFr.toLowerCase();
+    const b = real.real_condition.toLowerCase();
+    match = (a.includes(b) || b.includes(a)) ? 1 : 0;
+  }
+
+  if (existing) {
+    db.prepare(`
+      UPDATE uplinks SET 
+        predicted_class = ?, prediction_fr = ?, 
+        real_temp = COALESCE(?, real_temp), real_humidity = COALESCE(?, real_humidity), 
+        real_pressure = COALESCE(?, real_pressure), real_wmo_code = COALESCE(?, real_wmo_code), 
+        real_condition = COALESCE(?, real_condition), match = ?
+      WHERE id = ?
+    `).run(finalPredClass, finalPredFr, real.real_temp, real.real_humidity, real.real_pressure, real.real_wmo_code, real.real_condition, match, existing.id);
+  } else {
+    // Prediction arrived first; insert partial record
+    db.prepare(`
+      INSERT INTO uplinks (device_id, received_at, temperature, humidity, pressure,
+        predicted_class, prediction_fr, real_temp, real_humidity, real_pressure, real_wmo_code, real_condition, match)
+      VALUES (?, ?, NULL, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      data.device_id, data.received_at, finalPredClass, finalPredFr, 
+      real.real_temp, real.real_humidity, real.real_pressure, real.real_wmo_code, real.real_condition, match
+    );
+  }
+
+  res.json({ status: 'ok', match: Boolean(match) });
 });
 
 app.get('/uplinks', (req, res) => {

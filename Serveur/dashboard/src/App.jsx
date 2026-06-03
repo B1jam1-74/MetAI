@@ -6,7 +6,7 @@ import {
   BarChart, Bar, RadialBarChart, RadialBar
 } from 'recharts';
 
-const API_URL = import.meta.env.DEV ? '/api' : 'http://localhost:8000';
+const API_URL = import.meta.env.DEV ? '/api' : `http://${window.location.hostname}:8000`;
 
 const formatTime = (dateStr) => new Date(dateStr).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
