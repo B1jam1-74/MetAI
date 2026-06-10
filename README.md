@@ -32,7 +32,7 @@ On the STM32U545, we read the values of the sensors in order to encode them and 
 3. Pressure (unsigned 16-bit, integer hPa)  
 
 <p align="center">
-	<img src="Images/sensors_uplink .png" alt="sensors_uplink"/>
+	<img src="Images/sensors_uplink.png" alt="sensors_uplink"/>
 </p>
 
 Once these data are sent, the server is going to store the data inside an InfluxDB database. Additionally, the server is also going to answer to the U545 using a LoRaWAN downlink and send the values of the sensors 3 hours ago and 6 hours ago.
