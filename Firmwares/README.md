@@ -78,25 +78,19 @@ Firmwares/
 ```
 
 ---
+<a id="build-instructions"></a>
+## Build Instructions
 
-<a id="prerequisites"></a>
-## Prerequisites
+**How to build and flash on Linux ?**
 
-| Tool | Purpose | Notes |
-|---|---|---|
-| `arm-none-eabi-gcc` | C compiler for Cortex-M | v12+ recommended |
-| `make` | Build system | GNU Make |
-| **STM32CubeProgrammer** | Flash binaries | or use `make flash` |
-| **STM32CubeIDE** *(optional)* | IDE / debug | Only needed for `.ioc` editing |
-
-> **Toolchain path** — If your `arm-none-eabi-gcc` is not in `$PATH`, pass the directory with `make GCC_PATH=/path/to/bin`.
-
-### Install arm-none-eabi-gcc (Ubuntu/Debian)
+All three projects use the same Makefile workflow. Using a makefile allows to simply compile and flash the generated binaries onto the board without using STM32CubeIDE, you can code using your favorite code editor. If you want to compile and flash onto the board you can simply use one command :
+```bash
+make flash
+```
+Note that you need to install a few dependencies such as the following :
 ```bash
 sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
 ```
-
-### Install STM32CubeProgrammer
 Download the installer from [st.com](https://www.st.com/en/development-tools/stm32cubeprog.html) and install it.  
 The Makefile assumes the CLI is at:
 ```
@@ -107,87 +101,21 @@ Override it at compile time if your path differs:
 make flash STM32_CUBE_PROGRAMMER=/path/to/STM32_Programmer_CLI
 ```
 
----
+**How to build and flash using Windows ?**
 
-<a id="build-instructions"></a>
-## Build Instructions
-
-All three projects use the same Makefile workflow.
-
-### 1. Navigate to the target project
+If you are using windows (questionable life choice) you still can compile and run this project. However it is a little less handy than on Linux. We implemented a Linux docker container which is used in order to build the makefile and create the binaries. 
 ```bash
-cd Firmwares/implementation_gros_model   # or model_IA / test
-```
+# Build the image
+docker build -t iks4a1-build .
 
-### 2. Build (debug, with optimisation `-Og`)
-```bash
-make -j
+# Extract artifacts to host
+docker run --rm -v $(pwd)/build:/project/build iks4a1-build make
 ```
-Artifacts are placed in the `build/` subdirectory:
-```
-build/
-├── implementation_gros_model.elf
-├── implementation_gros_model.hex   ← used by STM32CubeProgrammer
-├── implementation_gros_model.bin
-└── implementation_gros_model.map
-```
-
-### 3. Clean
-```bash
-make clean
-```
-
-### Compiler flags summary
-
-| Flag | Value | Description |
-|---|---|---|
-| `-mcpu` | `cortex-m33` | Cortex-M33 core |
-| `-mfpu` | `fpv5-sp-d16` | FPv5 single-precision FPU |
-| `-mfloat-abi` | `hard` | Hardware floating-point ABI |
-| `-Og` | — | Optimise for debugging |
-| `-specs=nano.specs` | — | Newlib-nano (smaller libc) |
-| `-u _printf_float` | — | Enable `%f` in `printf` |
+Once the binaries are created, you can either use STM32CubeProgrammer in order to flash them onto the board or drag and drop them onto the board using the file explorer.
 
 ---
 
-<a id="flash-instructions"></a>
-## Flash Instructions
-
-### Option A — `make flash` (build + flash in one step)
-```bash
-make flash
-# or with a custom programmer path:
-make flash STM32_CUBE_PROGRAMMER=/path/to/STM32_Programmer_CLI
-```
-This connects over SWD at 4 MHz, writes the `.hex`, verifies, and resets the board.
-
-### Option B — STM32CubeProgrammer GUI
-1. Connect the NUCLEO-U545RE-Q over USB (ST-LINK).
-2. Open **STM32CubeProgrammer** → select **ST-LINK** → connect.
-3. Go to **Erasing & Programming** → browse to the `.hex` file (either from `build/` or from `Binaries/`).
-4. Click **Start Programming**, then **Reset**.
-
-### Option C — Flash a prebuilt binary from `Binaries/`
-If you do not want to compile, pre-built `.hex` files are in the root `Binaries/` folder:
-```
-Binaries/
-├── Final project/implementation_gros_model.hex  ← complete AI + LoRaWAN project
-├── First AI model/model_IA.hex                  ← first AI model test
-└── Simple board test/test.hex                   ← basic board validation
-```
-
-### Serial monitor
-After flashing, open a serial terminal at **115 200 baud** (e.g. `minicom`, `picocom`, PuTTY) on the NUCLEO virtual COM port to read runtime logs:
-```bash
-picocom -b 115200 /dev/ttyACM0
-```
-
----
-
-<a id="project-details"></a>
 ## Project Details
-
----
 
 ### `test` — Board validation
 

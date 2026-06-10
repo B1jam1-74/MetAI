@@ -22,10 +22,11 @@ Both notebooks are designed to run on **Google Colab** (GPU runtime recommended)
 <a id="notebooks-overview"></a>
 ## Notebooks Overview
 
-| Notebook | Model | Task | Output |
-|---|---|---|---|
-| `Model_test.ipynb` | Binary classifier (Dense 64→32→1) | Rain / No rain | `rain_model.tflite` |
-| `Model_final.ipynb` | Multi-class classifier (Residual blocks) | 9 weather classes | `meteo_multiclasse.tflite` |
+| Notebook            | Model                                    | Task                                       | Output                     |
+| ------------------- | ---------------------------------------- | ------------------------------------------ | -------------------------- |
+| `Model_test.ipynb`  | Binary classifier (Dense 64→32→1)        | Rain / No rain                             | `rain_model.tflite`        |
+| `Model_final.ipynb` | Multi-class classifier (Residual blocks) | 9 weather classes                          | `meteo_multiclasse.tflite` |
+| `MetAI_v2.ipynb`    | More accurate model using previous data  | 7 weather classes + 3 and 6 hours ago data | `metai_v2.tflite`          |
 
 ---
 

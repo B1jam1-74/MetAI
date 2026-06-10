@@ -54,3 +54,38 @@ A key improvement would be to include additional temporal features (for example,
 </p>
 
 The models were trained using the Jupyter notebooks, which are available in the `Jupyter Notebooks` folder. The training process includes data preprocessing, model architecture definition, training, and evaluation. The final TFLite model is saved as `model.tflite` and can be found in the `AI Models` folder.
+
+# **Model C — Multi-class Weather Classifier using previous data**  
+
+When using the model B, we quickly realized there were too many classes in order for the model to make a good prediction, therefore, the AI model wasn't performing well in terms of accuracy. To fix this, we reduced the number of classes by fusioning the ones which were alike (especially when it comes to the data of the sensor).
+
+<table align="center">
+    <tr>
+        <th>#</th>
+        <th>French label</th>
+        <th>Description</th>
+        <th>International</th>
+    </tr>
+    <tr><td>0</td><td>Clair / ensoleillé</td><td>Clear sky</td><td>☀️</td></tr>
+    <tr><td>1</td><td>Nuageux / couvert</td><td>Overcast</td><td>☁️</td></tr>
+    <tr><td>2</td><td>Pluie</td><td>Rain</td><td>🌧️</td></tr>
+    <tr><td>3</td><td>Averses</td><td>Showers</td><td>🌦️</td></tr>
+    <tr><td>4</td><td>Neige</td><td>Snow</td><td>❄️</td></tr>
+    <tr><td>5</td><td>Orage</td><td>Thunderstorm</td><td>⛈️</td></tr>
+    <tr><td>6</td><td>Brouillard / brume</td><td>Fog / mist</td><td>🌫️</td></tr>
+</table>
+
+In order to find out if reducing the number of classes actually helped we made a matrix of confusion which tells us which classes get mistaken by which.
+<p align="center">
+    <img src="../Images/confusion_matrix.png" alt="Model overview" />
+</p>
+As you can see the first two classes are now clearly distinct for the model which is a big improvment. However, this model is far from perfect since if you take a look at the classes such as "Orage" or "Brouillard/Brume", they are completely mistaken with "nuageux/couvert". We actually have a fex ideas in order to fix this :
+1. Use the internal RTC of the U545 in order to know what time it is and where we actually are in the year. We think this would help since thunderstorm are way less likely to happen in the winter and oppositely, there is no way we are going to get snow in the summer.
+2. Add some more sensors in order to improve the correlation between the sensors data and the current condition.
+
+Not only we reduced the number of class but we also added some more inputs to the model. It still takes into parameter the pressure, humidity and temperature, however, these values are both current, from three hours ago and from six hours ago. Which makes a total of 9 inputs to the model.
+We now have more inputs and less outputs which improves the accuracy of the model by 20 % !
+<p align="center">
+    <img src="../Images/graphs_model_C.png" alt="Model overview" />
+</p>
+Note that the accuracy of the model is 68 %, better than the previous model but still not the best either, we are currently working on an improved version of the model.

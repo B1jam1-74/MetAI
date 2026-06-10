@@ -12,64 +12,124 @@
 - Star-of-stars topology: end-nodes → gateways → Network Server (e.g. TTN) → Application Server  
 
 ### **Payload Encoding and TTN Decoding**  
+
+**1. Uplink used for the sensors values encoding**
+
 On the STM32U545, the uplink payload is encoded as a compact binary frame carrying:  
-1. Temperature (signed 16-bit, ×100 for two-decimal precision)  
+1. Temperature (unsigned 8-bit, integer °C)  
 2. Humidity (unsigned 8-bit, integer %)  
 3. Pressure (unsigned 16-bit, integer hPa)  
-4. Predicted class index (unsigned 8-bit)  
+
+**2. Uplink used for the model prediction**
+
+Once the AI model has run and made its prediction, it outputs the class of the predicted condition along with its confidence :
+1. Confidence (unsigned 8-bit, integer %)
+2. Predicted class (unsigned 8-bit, integer ranging from 0 to 6)
 
 On **The Things Network (TTN)**, a JavaScript *Payload Formatter* (uplink codec) decodes this binary frame back into a structured JSON object:  
 ```javascript
 function decodeUplink(input) {
-  var bytes = input.bytes;
+  const bytes = input.bytes;
+  const port  = input.fPort;
 
-  // Byte 0 : température (int8, signé)
-  var temperature = (bytes[0] & 0x80) ? bytes[0] - 256 : bytes[0];
+  // --- fport 1 : données capteurs (temp + pression + humidité) ---
+  if (port === 1) {
+    const temp_raw  = (bytes[0] & 0x80) ? bytes[0] - 256 : bytes[0]; // int8
+    const pres_raw  = (bytes[1] << 8) | bytes[2];                     // uint16
+    const hum_raw   = bytes[3];                                        // uint8
 
-  // Bytes 1-2 : pression (int16 big-endian, x10) → hPa
-  var pressure_raw = (bytes[1] << 8) | bytes[2];
-  if (pressure_raw & 0x8000) pressure_raw -= 65536;
-  var pressure = pressure_raw / 10.0;
+    return {
+      data: {
+        temperature_C:  temp_raw,
+        pressure_hPa:   pres_raw / 10.0,
+        humidity_pct:   hum_raw
+      },
+      warnings: [], errors: []
+    };
+  }
 
-  // Byte 3 : humidité (uint8, %)
-  var humidity = bytes[3];
+  // --- fport 12 : prédiction MetAI ---
+  if (port === 12) {
+    const CLASS_NAMES = [
+      "Clair / Ensoleille",
+      "Nuageux / Couvert",
+      "Pluie",
+      "Averses",
+      "Neige",
+      "Orage",
+      "Brouillard / Brume"
+    ];
+    const cls  = bytes[0];
+    const conf = bytes[1];  // en %
 
-  // Byte 4 : classe prédite (0-12)
-  var class_idx = bytes[4];
+    return {
+      data: {
+        weather_class:      cls,
+        weather_label:      (cls < CLASS_NAMES.length) ? CLASS_NAMES[cls] : "Inconnu",
+        confidence_pct:     conf
+      },
+      warnings: [], errors: []
+    };
+  }
 
-  // Byte 5 : confiance (0-100 %)
-  var confidence = bytes[5];
+  return { data: {}, warnings: ["fPort inconnu: " + port], errors: [] };
+}
+```
 
-  var classes = [
-    "Clair / ensoleillé",
-    "Peu nuageux",
-    "Partiellement nuageux",
-    "Nuageux / couvert",
-    "Pluie",
-    "Averses",
-    "Neige",
-    "Neige légère / averses de neige",
-    "Pluie et neige mêlées",
-    "Orage",
-    "Brouillard / brume",
-    "Vent fort",
-    "Orage violent"
-  ];
+**3. Downlink used in order to send the data from the database to the U545**
 
-  var weather = (class_idx < classes.length) ? classes[class_idx] : "Inconnu";
+Once the U545 has sent the current values of temperature, pressure and humidity, the server is going to perform a downlink in order to send back the values of 3 and 6 hours ago in order for the model to perform its prediction. 
+1. Humidity from 3 hours ago (unsigned 8-bit, integer %)  
+2. Humidity from 6 hours ago (unsigned 8-bit, integer %)  
+3. Pressure from 3 hours ago (unsigned 16-bit, integer hPa)  
+4. Pressure from 6 hours ago (unsigned 16-bit, integer hPa)  
+5. Temperature from 3 hours ago (unsigned 8-bit, integer °C) 
+6. Temperature from 6 hours ago (unsigned 8-bit, integer °C) 
+```javascript
+function encodeDownlink(input) {
+    const d = input.data;
+    
+    if (!d || d.temp_3h === undefined) {
+        return { 
+            bytes: [], 
+            fPort: 11, 
+            warnings: ["input=" + JSON.stringify(input)], 
+            errors: [] 
+        };
+    }
+    
+    const bytes = [];
 
+    // Helper : encode une valeur en int16 big-endian
+    function pushInt16(val) {
+        const v = val & 0xFFFF;
+        bytes.push((v >> 8) & 0xFF);
+        bytes.push( v       & 0xFF);
+    }
+
+    // temp  : int16, scale ×100  (range -327..+327 °C → suffisant)
+    // hum   : int16, scale ×100  (range 0..327 % → suffisant)
+    // pres  : int16, offset -800 puis ×10 (range 800..4074 hPa)
+    pushInt16(Math.round(d.temp_3h * 100));
+    pushInt16(Math.round(d.hum_3h  * 100));
+    pushInt16(Math.round((d.pres_3h - 800) * 10));
+
+    pushInt16(Math.round(d.temp_6h * 100));
+    pushInt16(Math.round(d.hum_6h  * 100));
+    pushInt16(Math.round((d.pres_6h - 800) * 10));
+
+    return { bytes: bytes, fPort: 11, warnings: [], errors: [] };
+}
+
+function decodeDownlink(input) {
   return {
     data: {
-      temperature_C:    temperature,
-      pressure_hPa:     pressure,
-      humidity_pct:     humidity,
-      weather_class:    class_idx,
-      weather_label:    weather,
-      confidence_pct:   confidence
+      bytes: input.bytes
     },
     warnings: [],
     errors: []
-  };
+  }
 }
 
 ```
+

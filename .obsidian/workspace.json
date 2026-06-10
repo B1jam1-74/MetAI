@@ -1,0 +1,220 @@
+{
+  "main": {
+    "id": "ba16c5fffde3e648",
+    "type": "split",
+    "children": [
+      {
+        "id": "1aef5b0740f4c13b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2840ab40e6f8e0e3",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Jupyter Notebooks/README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7d76ca451ba9f2d0",
+    "type": "split",
+    "children": [
+      {
+        "id": "ab666ae9391044c2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9233cc54b3cdb5ad",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "b52b5965a9d4827f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "95b4cefddc4929b0",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "83ae16de41204c49",
+    "type": "split",
+    "children": [
+      {
+        "id": "2e693bd625b79291",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "86b48d088c47d325",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Firmwares/README.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for README"
+            }
+          },
+          {
+            "id": "0e8ed5b74d29f38c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Firmwares/README.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from README"
+            }
+          },
+          {
+            "id": "a8cd378adfbd0b3d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "016e76f851c2e13a",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "5a3afd255becf761",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Firmwares/README.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "2840ab40e6f8e0e3",
+  "lastOpenFiles": [
+    "Firmwares/README.md",
+    "Jupyter Notebooks/MetAI_v2.ipynb",
+    "Jupyter Notebooks/MetAI_v3.ipynb",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g9xx_sram_s.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g9xx_sram_ns.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g9xx_sram.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g9xx_flash_s.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g9xx_flash_ns.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g9xx_flash.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g7xx_sram_s.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/Source/Templates/iar/linker/stm32u5g7xx_sram_ns.icf",
+    "Firmwares/IKS4A1/Drivers/CMSIS/Device/ST/STM32U5xx/LICENSE.md",
+    "Firmwares/IKS4A1/Drivers/BSP/STM32U5xx_Nucleo/LICENSE.md",
+    "Firmwares/IKS4A1/Drivers/STM32U5xx_HAL_Driver/LICENSE.md",
+    "Binaries/README.md",
+    "AI Models/README.md",
+    "Screenshot From 2026-06-08 20-16-55.png",
+    "Images/graphs_model_C.png",
+    "Images/Screenshot From 2026-06-08 20-16-55.png",
+    "Images/confusion_matrix.png",
+    "Images/Screenshot From 2026-06-08 19-59-47.png",
+    "README.md",
+    "TTN/README.md",
+    "Serveur/README.md",
+    "NodeRED/README.md",
+    "Jupyter Notebooks/README.md",
+    "Images/model_uplink.png",
+    "Images/Screenshot From 2026-06-07 20-20-48.png",
+    "Images/server_dashboard.png",
+    "Images/Screenshot From 2026-06-07 20-19-40.png",
+    "Images/downlink.png"
+  ]
+}

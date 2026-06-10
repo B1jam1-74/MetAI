@@ -6,6 +6,7 @@
 
 ## **Summary**
 - [Introduction](#introduction)
+- [How does the project actually works ?](#How does the project actually works ?)
 - [Part 1 - Hardware](#part-1-hardware)
 - [Part 2 - AI Models](#part-2-ai-models)
 - [Part 3 - LoRaWAN](#part-3-lorawan)
@@ -19,6 +20,36 @@
 <a id="introduction"></a>
 ## **Introduction**  
 MetAI is an embedded AI project that runs a weather prediction model directly on an ultra-low-power STM32U545 microcontroller. Using onboard sensors (temperature, humidity, pressure), the system infers the current weather condition locally — no cloud compute required — and transmits the result over LoRaWAN for remote monitoring. The project demonstrates that meaningful AI inference can coexist with strict energy budgets, making it relevant for battery-operated or energy-harvesting IoT nodes.  
+
+<a id="How_does_the_project_actually_works_?"></a>
+## **How does the project actually works ?**  
+
+The project works the following way : 
+
+On the STM32U545, we read the values of the sensors in order to encode them and send it to the server using LoRaWAN :  
+1. Temperature (signed 16-bit, ×100 for two-decimal precision)  
+2. Humidity (unsigned 8-bit, integer %)  
+3. Pressure (unsigned 16-bit, integer hPa)  
+
+<p align="center">
+	<img src="Images/sensors_uplink.png" alt="sensors_uplink"/>
+</p>
+
+Once these data are sent, the server is going to store the data inside an InfluxDB database. Additionally, the server is also going to answer to the U545 using a LoRaWAN downlink and send the values of the sensors 3 hours ago and 6 hours ago.
+
+<p align="center">
+	<img src="Images/downlink.png" alt="downlink"/>
+</p>
+
+Back on the U545, the AI model will then make a prediction based on the current values measured by the sensors but also using the values of 3 and 6 hours ago.
+The prediction along with the confidence of the AI model is then sent using LoRaWAN in order for the server to display the prediction inside the JS app.
+<p align="center">
+	<img src="Images/model_uplink.png" alt="model_uplink"/>
+</p>
+
+<p align="center">
+	<img src="Images/server_dashboard.png" alt="server_dashboard"/>
+</p>
 
 <a id="part-1-hardware"></a>
 ## **Part 1 — Hardware**  
@@ -34,7 +65,6 @@ The brain of the project is the **STM32U545**, a member of STMicroelectronics' u
 	<tr><td>RAM</td><td>786 KB (SRAM1 + SRAM2 + ICACHE)</td></tr>
 	<tr><td>Supply voltage</td><td>1.71 V - 3.6 V</td></tr>
 	<tr><td>Low-power modes</td><td>Stop 0/1/2/3, Standby, Shutdown</td></tr>
-	<tr><td>Neural-ART Accelerator</td><td>Hardware MAC units for AI inference</td></tr>
 	<tr><td>Development board</td><td>NUCLEO-U545RE-Q</td></tr>
 </table>
 
@@ -45,14 +75,14 @@ The U545's **Neural-ART Accelerator** is what makes on-device AI inference viabl
 </p>
 
 ### **Extension Board**  
-The U545 board is connected to an IKS01A3 extension board. It carries all kind of sensors such as :  
+The U545 board is connected to an IKS4A1 extension board. It carries all kind of sensors such as :  
 - **temperature (°C)**
 - **relative humidity (%)**
 - **barometric pressure (hPa)**
 The three inputs fed to the AI model.  
 
 <p align="center">
-	<img src="Images/IKS01A3.png" alt="IKS01A3 extension board"  width="50%" />
+	<img src="Images/iks4a1.webp" alt="IKS4A1 extension board"  width="50%" />
 </p>
 
 ### **LoRa-E5 module** 
@@ -64,7 +94,7 @@ Handles the LoRaWAN radio link (see Part 3).
 
 <a id="part-2-ai-models"></a>
 ## **Part 2 — AI Models**  
-Both models were trained in Python (TensorFlow/Keras) on historical meteorological data sourced via [Meteostat](https://meteostat.net/ "https://meteostat.net/"), using a weather station near Le Bourget du Lac, France. They take three scalar inputs:  
+All the models were trained in Python (TensorFlow/Keras) on historical meteorological data sourced via [Meteostat](https://meteostat.net/ "https://meteostat.net/"), using a weather station near Thonon les Bains, France. They take three scalar inputs:  
 <table align="center">
 	<tr>
 		<th>Input</th>
@@ -93,18 +123,23 @@ Both models were trained in Python (TensorFlow/Keras) on historical meteorologic
 - Star-of-stars topology: end-nodes → gateways → Network Server (e.g. TTN) → Application Server  
 
 ### **Payload Encoding and TTN Decoding**  
-On the STM32U545, the uplink payload is encoded as a compact binary frame carrying:  
+
+The project works the following way : 
+
+On the STM32U545, we read the values of the sensors in order to encode them and send it to the server using LoRaWAN :  
 1. Temperature (signed 16-bit, ×100 for two-decimal precision)  
 2. Humidity (unsigned 8-bit, integer %)  
 3. Pressure (unsigned 16-bit, integer hPa)  
-4. Predicted class index (unsigned 8-bit)  
+
+The downlink from the server is encoded like this :
+
+
+Back on the U545, the AI model prediction follows this encoding :
+
 
 ### **Node-RED Integration**  
 
-A Node-RED flow subscribes to the TTN application uplink topic, receives the decoded JSON payload, and performs an HTTP POST to an InfluxDB database, the data is then forwarded to a backend API endpoint. This allows us to easily forward the data to any downstream service (database, dashboard, alerting system) without coupling it directly to the STM32 firmware. The flow is simple:  
-1. **TTN Uplink** node listens for incoming messages from TTN.  
-2. **HTTP Request** node sends the payload to the API endpoint (`/uplink`) for storage and further processing.  
-3. **Debug** node allows monitoring the flow and inspecting the payload in Node-RED.
+We use NodeRED in order to manage both the uplinks and the downlinks based on the values sent by the U545 : 
 
 <p align="center">
 	<img src="Images/NodeRED_Flow.png" alt="Flow NodeRED" />
@@ -144,7 +179,7 @@ Between acquisitions, the MCU enters a low-power Stop mode, bringing average con
 <a id="part-5-conclusion"></a>
 ## **Part 5 — Conclusion**  
 This project was an introduction to on-device artificial intelligence in a constrained embedded context. Building and training the models highlighted how much representational power even a small dense network can have — the multi-class classifier reaches solid accuracy using only three sensor inputs. Deploying that model on a Cortex-M33 with a hardware neural accelerator, and watching it produce correct predictions at 5 mW, made the energy argument for edge AI very concrete.  
-At the same time, the project reinforced that **energy consumption is a first-class constraint** in embedded AI, not an afterthought. Every design choice — quantization, model depth, duty cycle, supply voltage — has a direct impact on battery life. Future work could explore INT8 quantization (vs the current float32 baseline) and adaptive duty cycling to extend autonomy further.  
+At the same time, the project reinforced that **energy consumption is a first-class constraint** in embedded AI, not an afterthought. Every design choice — quantization, model depth, duty cycle, supply voltage — has a direct impact on battery life.
 More broadly, the number of connected objects in our daily lives keeps growing — smartphones, cars, dishwashers, toothbrushes — and it seems inevitable that AI will progressively find its way into all of them. MetAI is a small but concrete glimpse of what that future could look like: intelligence running locally, efficiently, at the very edge of the network.
 
 <a id="repository-structure"></a>
