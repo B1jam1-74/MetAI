@@ -38,17 +38,17 @@ On the STM32U545, we read the values of the sensors in order to encode them and 
 Once these data are sent, the server is going to store the data inside an InfluxDB database. Additionally, the server is also going to answer to the U545 using a LoRaWAN downlink and send the values of the sensors 3 hours ago and 6 hours ago.
 
 <p align="center">
-	<img src="Images/downlink.png" alt="downlink"/>
+	<img src="Images/downlink .png" alt="downlink"/>
 </p>
 
 Back on the U545, the AI model will then make a prediction based on the current values measured by the sensors but also using the values of 3 and 6 hours ago.
 The prediction along with the confidence of the AI model is then sent using LoRaWAN in order for the server to display the prediction inside the JS app.
 <p align="center">
-	<img src="Images/model_uplink.png" alt="model_uplink"/>
+	<img src="Images/model_uplink .png" alt="model_uplink"/>
 </p>
 
 <p align="center">
-	<img src="Images/server_dashboard.png" alt="server_dashboard"/>
+	<img src="Images/server_dashboard .png" alt="server_dashboard"/>
 </p>
 
 <a id="part-1-hardware"></a>
