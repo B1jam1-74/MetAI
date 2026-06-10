@@ -6,7 +6,7 @@
 
 ## **Summary**
 - [Introduction](#introduction)
-- [How does the project actually works ?](#How does the project actually works ?)
+- [How does the project actually works ?](#how-does-the-project-actually-works-?)
 - [Part 1 - Hardware](#part-1-hardware)
 - [Part 2 - AI Models](#part-2-ai-models)
 - [Part 3 - LoRaWAN](#part-3-lorawan)
